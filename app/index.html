@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="PCBT" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="PCBT" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="PCBT" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="PCBT" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html lang="en" ng-app="CST" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="CST" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="CST" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="CST" class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,25 +29,25 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-tachometer"></i> Dashboard</a>
+                    <a href="#!/dashboard"><i class="fa fa-tachometer"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="#!/view2"><i class="fa fa-server"></i> Mon Stock</a>
+                    <a href="#!/stock"><i class="fa fa-server"></i> Mon Stock</a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-tasks"></i> Travail à faire</a>
+                    <a href="#!/work"><i class="fa fa-tasks"></i> Travail à faire</a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-user"></i> Demandes client</a>
+                    <a href="#!/dashboard"><i class="fa fa-user"></i> Demandes client</a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-users"></i> Clients</a>
+                    <a href="#!/dashboard"><i class="fa fa-users"></i> Clients</a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-cubes"></i> Logistique</a>
+                    <a href="#!/dashboard"><i class="fa fa-cubes"></i> Logistique</a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-tachometer"></i> Mon atelier</a>
+                    <a href="#!/dashboard"><i class="fa fa-tachometer"></i> Mon atelier</a>
                 </li>
                 <li>
                     <a href="#!/view1"><i class="fa fa-cog"></i> Paramètres</a>
@@ -120,8 +120,9 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
+  <script src="views/dashboard/dashboard.js"></script>
+  <script src="views/stock/stock.js"></script>
+  <script src="views/work/work.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('PCBT.version', [
+angular.module('CST.version', [
   'myApp.version.interpolate-filter',
   'myApp.version.version-directive'
 ])

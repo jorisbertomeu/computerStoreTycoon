@@ -1,14 +1,17 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('PCBT', [
+angular.module('CST', [
   'ngRoute',
-  'PCBT.view1',
-  'PCBT.view2',
-  'PCBT.version'
+  /* VIEWS */
+  'CST.dashboard',
+  'CST.stock',
+  'CST.work',
+  /* VIEWS */
+  'CST.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);

@@ -1,7 +1,7 @@
 'use strict';
 
-describe('PCBT.version module', function() {
-  beforeEach(module('PCBT.version'));
+describe('CST.version module', function() {
+  beforeEach(module('CST.version'));
 
   describe('app-version directive', function() {
     it('should print current version', function() {
