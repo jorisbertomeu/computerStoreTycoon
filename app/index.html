@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="PCBT" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="PCBT" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="PCBT" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="PCBT" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Computer Store Tycoon</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="app.css">
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+  <div id="wrapper">
+     <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        JBuild
+                    </a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-tachometer"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="#!/view2"><i class="fa fa-server"></i> Mon Stock</a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-tasks"></i> Travail à faire</a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-user"></i> Demandes client</a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-users"></i> Clients</a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-cubes"></i> Logistique</a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-tachometer"></i> Mon atelier</a>
+                </li>
+                <li>
+                    <a href="#!/view1"><i class="fa fa-cog"></i> Paramètres</a>
+                </li>
+            </ul>
+            <div class="utilPanel">
+              <span class="pull-left">1442€ (<i class="fa fa-caret-up"></i>)</span>
+              <span class="pull-right"><i class="fa fa-pause"></i> <i class="fa fa-play"></i> <i class="fa fa-forward"></i> <i class="fa fa-fast-forward"></i> - 11:45 - <i class="fa fa-sun-o"></i></span>
+            </div>
+        </div>
+        <div id="page-content-wrapper" style="width: 83% !important">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" ng-view>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rightPanel">
+          <div class="rightWidget">
+            <div class="title">
+              <span class="pull-left"><a href="#"><i class="fa fa-envelope"></i> </a></span>
+              Derniers mails
+            </div>
+            <ul class="sidebar-nav" style="position:relative !important;">
+              <li><a href="#"><b>Ebay</b> - Votre commande N°CX56 ...</a></li>
+              <li><a href="#"><b>Ebay</b> - Votre commande N°CX56 ...</a></li>
+              <li><a href="#"><b>Ebay</b> - Votre commande N°CX56 ...</a></li>
+              <li><a href="#"><b>Ebay</b> - Votre commande N°CX56 ...</a></li>
+              <li><a href="#"><b>Ebay</b> - Votre commande N°CX56 ...</a></li>
+              <li><a href="#"><b>Ebay</b> - Votre commande N°CX56 ...</a></li>
+            </ul>
+          </div>
+          <div class="rightWidget">
+            <div class="title">
+              <span class="pull-left"><a href="#"><i class="fa fa-line-chart"></i> </a></span>
+              Dernières dépenses
+            </div>
+            <ul class="sidebar-nav" style="position:relative !important;">
+              <li><a href="#"><b>38€</b> - 2x4GB Kingston 1333Mhz ...</a></li>
+              <li><a href="#"><b>38€</b> - 2x4GB Kingston 1333Mhz ...</a></li>
+              <li><a href="#"><b>38€</b> - 2x4GB Kingston 1333Mhz ...</a></li>
+              <li><a href="#"><b>38€</b> - 2x4GB Kingston 1333Mhz ...</a></li>
+              <li><a href="#"><b>38€</b> - 2x4GB Kingston 1333Mhz ...</a></li>
+            </ul>
+          </div>
+          <div class="rightWidget">
+            <div class="title">
+              <span class="pull-left"><a href="#"><i class="fa fa-star"></i> </a></span>
+              Avis des clients
+            </div>
+            <ul class="sidebar-nav" style="position:relative !important;">
+              <li><a href="#"><b>Peter</b> - Le temps de réparation ...</a></li>
+              <li><a href="#"><b>Peter</b> - Le temps de réparation ...</a></li>
+              <li><a href="#"><b>Peter</b> - Le temps de réparation ...</a></li>
+              <li><a href="#"><b>Peter</b> - Le temps de réparation ...</a></li>
+              <li><a href="#"><b>Peter</b> - Le temps de réparation ...</a></li>
+              <li><a href="#"><b>Peter</b> - Le temps de réparation ...</a></li>
+            </ul>
+          </div>
+        </div>
+  </div>
+
+  <div>Angular seed app: v<span app-version></span></div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app.js"></script>
+  <script src="view1/view1.js"></script>
+  <script src="view2/view2.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+</body>
+</html>

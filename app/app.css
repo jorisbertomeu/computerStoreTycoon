@@ -1,0 +1,41 @@
+/* app css stylesheet */
+
+.utilPanel {
+	width: 100%;
+    bottom: 0px;
+    position: absolute;
+    background-color: #bdc3c7;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.rightPanel {
+	background-color: white;
+    position: absolute;
+    right: 0px;
+    color: black;
+    height: 100%;
+    top: 0px;
+    width: 15%;
+    overflow-y: auto;
+}
+
+.rightWidget > .sidebar-nav li a:hover {
+	color: black;
+	background-color: #ecf0f1;
+}
+
+.rightWidget {
+	border: 2px solid #bdc3c7;
+    padding: 5px;
+    margin-bottom: -2px;
+}
+
+.rightWidget > .title {
+	border: 2px solid #bdc3c7;
+    margin: -7px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
