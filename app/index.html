@@ -11,21 +11,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
   <!-- Bootstrap Core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link href="css/simple-sidebar.css" rel="stylesheet">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 </head>
-<body>
+<body ng-controller="mainCtrl">
   <div id="wrapper">
      <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
-                        JBuild
+                        CST
                     </a>
                 </li>
                 <li>
@@ -38,24 +41,33 @@
                     <a href="#!/work"><i class="fa fa-tasks"></i> Travail à faire</a>
                 </li>
                 <li>
-                    <a href="#!/dashboard"><i class="fa fa-user"></i> Demandes client</a>
+                    <a href="#!/customersTasks"><i class="fa fa-user"></i> Demandes client</a>
                 </li>
                 <li>
-                    <a href="#!/dashboard"><i class="fa fa-users"></i> Clients</a>
+                    <a href="#!/customers"><i class="fa fa-users"></i> Clients</a>
                 </li>
                 <li>
-                    <a href="#!/dashboard"><i class="fa fa-cubes"></i> Logistique</a>
+                    <a href="#!/management"><i class="fa fa-cubes"></i> Logistique</a>
                 </li>
                 <li>
-                    <a href="#!/dashboard"><i class="fa fa-tachometer"></i> Mon atelier</a>
+                    <a href="#!/myStore"><i class="fa fa-tachometer"></i> Mon magasin</a>
                 </li>
                 <li>
-                    <a href="#!/view1"><i class="fa fa-cog"></i> Paramètres</a>
+                    <a href="#!/settings"><i class="fa fa-cog"></i> Paramètres</a>
                 </li>
             </ul>
-            <div class="utilPanel">
-              <span class="pull-left">1442€ (<i class="fa fa-caret-up"></i>)</span>
-              <span class="pull-right"><i class="fa fa-pause"></i> <i class="fa fa-play"></i> <i class="fa fa-forward"></i> <i class="fa fa-fast-forward"></i> - 11:45 - <i class="fa fa-sun-o"></i></span>
+            <div class="utilPanel" style="text-align: center;">
+              <span class="pull-left">{{system.bank.solde | currency:"€"}} (<i class="fa fa-caret-up"></i>)</span>
+              <span class="pull-right">
+                <a href="#" class="noLink"><i ng-click="system._.pausePressed()" class="fa fa-pause" ng-style="{'color': (system._.timer.speed.pause) ? 'green': ''}"></i> </a>
+                <a href="#" class="noLink"><i ng-click="system._.playPressed()" class="fa fa-play" ng-style="{'color': (system._.timer.speed.play) ? 'green': ''}"></i> </a>
+                <a href="#" class="noLink"><i ng-click="system._.forwardPressed()" class="fa fa-forward" ng-style="{'color': (system._.timer.speed.forward) ? 'green': ''}"></i> </a>
+                <a href="#" class="noLink"><i ng-click="system._.fastForwardPressed()" class="fa fa-fast-forward" ng-style="{'color': (system._.timer.speed.fastForward) ? 'green': ''}"></i> </a> - {{system._.timer.getHour()}}</span><br><br>
+                <i class="{{system._.weather.class}} wi-fw" style="font-size: 25px; width: 100%"></i><br>28.5°C<br>
+                <span class="pull-left" ng-style="{'color': (system._.routines.getPopularity() > 80) ? '#27ae60' : (system._.routines.getPopularity() > 35) ? '#d35400' : '#c0392b'}"><b>{{system._.routines.getPopularity()}}%</b></span>
+                <span class="pull-right">
+                  ???
+                </span>
             </div>
         </div>
         <div id="page-content-wrapper" style="width: 83% !important">
@@ -120,9 +132,16 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
+
   <script src="views/dashboard/dashboard.js"></script>
   <script src="views/stock/stock.js"></script>
   <script src="views/work/work.js"></script>
+  <script src="views/customersTasks/customersTasks.js"></script>
+  <script src="views/customers/customers.js"></script>
+  <script src="views/management/management.js"></script>
+  <script src="views/myStore/myStore.js"></script>
+  <script src="views/settings/settings.js"></script>
+
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>

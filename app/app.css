@@ -2,11 +2,25 @@
 
 .utilPanel {
 	width: 100%;
-    bottom: 0px;
+    bottom: 21px;
     position: absolute;
     background-color: #bdc3c7;
     border: 1px solid black;
     padding: 10px;
+}
+
+.noLink {
+    text-decoration: none;
+    color: #333;
+}
+
+.noLink:hover {
+    text-decoration: none;
+    color: #337ab7;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .karma {
