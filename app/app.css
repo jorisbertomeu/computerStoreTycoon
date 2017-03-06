@@ -9,6 +9,10 @@
     padding: 10px;
 }
 
+.karma {
+	display: none;
+}
+
 .rightPanel {
 	background-color: white;
     position: absolute;

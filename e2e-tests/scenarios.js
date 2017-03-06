@@ -5,37 +5,37 @@
 describe('my app', function() {
 
 
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
+  it('should automatically redirect to /dashboard when location hash/fragment is empty', function() {
     browser.get('index.html');
-    expect(browser.getLocationAbsUrl()).toMatch("/view1");
+    expect(browser.getLocationAbsUrl()).toMatch("/dashboard");
   });
 
 
-  describe('view1', function() {
+  describe('dashboard', function() {
 
     beforeEach(function() {
-      browser.get('index.html#!/view1');
+      browser.get('index.html#!/dashboard');
     });
 
 
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element.all(by.css('[ng-view] p')).first().getText()).
-        toMatch(/partial for view 1/);
+    it('should render dashboard when user navigates to /dashboard', function() {
+      expect(element.all(by.css('.karma')).getText()).
+        toMatch(/karma_dashboard/);
     });
 
   });
 
 
-  describe('view2', function() {
+  describe('stock', function() {
 
     beforeEach(function() {
-      browser.get('index.html#!/view2');
+      browser.get('index.html#!/stock');
     });
 
 
-    it('should render view2 when user navigates to /view2', function() {
-      expect(element.all(by.css('[ng-view] p')).first().getText()).
-        toMatch(/partial for view 2/);
+    it('should render stock when user navigates to /stock', function() {
+      expect(element.all(by.css('.karma')).first().getText()).
+        toMatch(/karma_stock/);
     });
 
   });
