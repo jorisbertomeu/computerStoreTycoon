@@ -43,6 +43,8 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
   }
 
   ctrl.system = {
+    queue: [],
+    stock: [],
     bank: {
       solde: 10000
     },
@@ -77,17 +79,37 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
 
   start();
 
-  $rootScope.$on("removeFromSolde", function(event, data) {
-    if (data.value === 0) {
-      return;
-    }
-    if (ctrl.system.bank.solde - data.value > 0) {
-      Notification.success({message: 'Vous avez dépensé ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
-      ctrl.system.bank.solde -= data.value;
-    } else {
-      Notification.error({message: 'Votre solde est insufisant pour dépenser ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
-    }
+  $rootScope.$on("addToStock", function(event, data) {
+      if (data.value === 0) {
+        return;
+      }
+      if (ctrl.system.bank.solde - data.value > 0) {
+        Notification.success({message: 'Vous avez dépensé ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
+        ctrl.system.bank.solde -= data.value;
+        addEventToQueue(data.delay, (data.type === 0) ? receptionFournisseur : receptionAmazonne, {obj: data.obj, quantity: data.quantity, price: data.value});
+      } else {
+        Notification.error({message: 'Votre solde est insuffisant pour dépenser ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
+      }
+    });
+
+  $rootScope.$on("getStock", function(event, data) {
+    $rootScope.$emit("stock", ctrl.system.stock);
   });
+
+  function receptionFournisseur(data) {
+    console.log('On a reçu un truc dun fournisseur !');
+    console.log(data);
+  }
+
+  function receptionAmazonne(data) {
+    Notification.success({message: 'Vous vennez de recevoir un colis de Amazonne ! Il contient ' + data.quantity + ' "' + data.obj.fields[0] + '". Le contenu a été ajouté à votre stock !'});
+    // console.log('On a reçu un truc de Amazonne !');
+    console.log(data);
+  }
+
+  function addEventToQueue(delay, callback, data) {
+    ctrl.system.queue.push({when: ctrl.system._.timer.timestamp + 3600 * delay, cb: callback, data: data});
+  }
 
   function start() {
     console.log('On démarre !');
@@ -96,11 +118,22 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
     ctrl.system._.timer.startTime = ctrl.system._.timer.timestamp;
   }
 
+  function executeQueue(ts) {
+    for (var i = 0; i < ctrl.system.queue.length; i++) {
+      if (ts >= ctrl.system.queue[i].when) { // task to execute
+        ctrl.system.queue[i].cb(ctrl.system.queue[i].data);
+        ctrl.system.queue.splice(i, 1);
+        continue;
+      }
+    }
+  }
+
   function tickFunction() {
     console.log('Tick');
     ctrl.system._.timer.timestamp += 60;
 
     ctrl.system._.routines.checkNewDay();
+    executeQueue(ctrl.system._.timer.timestamp);
     $scope.$evalAsync();
     if (!ctrl.system._.timer.speed.pause) {
       setTimeout(tickFunction, ctrl.system._.timer.interval);
