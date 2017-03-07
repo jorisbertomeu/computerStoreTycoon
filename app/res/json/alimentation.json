@@ -1,0 +1,34 @@
+[
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire X1200TY", "ATX", 1200, 92, 19, [268, 284], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire P1000LP", "ATX", 1000, 84, 28, [221, 249], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire M800FK", "ATX", 800, 73, 34, [187, 193], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire J600ZT", "ATX", 600, 59, 46, [117, 134], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire V400LA", "ATX", 400, 47, 49, [87, 96], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire W800MQ", "MicroATX", 800, 68, 29, [197, 214], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire Q600VT", "MicroATX", 600, 46, 31, [129, 142], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Corssaire H400MV", "MicroATX", 400, 39, 37, [99, 116], [5, 1], [24, 48], ""]
+	}
+]

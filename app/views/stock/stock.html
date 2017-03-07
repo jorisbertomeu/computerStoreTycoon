@@ -134,7 +134,7 @@
 
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Blocs d'alimentation <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">Blocs d'alimentation <button data-toggle="modal" ng-click="system._.commandeType=5" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
@@ -271,6 +271,7 @@
 					<span ng-show="system._.commandeType===2">Mémoire</span>
 					<span ng-show="system._.commandeType===3">Disques dur</span>
 					<span ng-show="system._.commandeType===4">Cartes mère</span>
+					<span ng-show="system._.commandeType===5">Blocs d'alimentation</span>
 				</h4>
 			</div>
 			<div class="modal-body">

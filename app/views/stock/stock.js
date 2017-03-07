@@ -63,6 +63,9 @@ angular.module('CST.stock', ['ngRoute'])
 		FileLoader.getFile('./res/json/motherboards.json').success(function(data) {
 			ctrl.system.view.data.motherboards = data;
 		});
+		FileLoader.getFile('./res/json/alimentation.json').success(function(data) {
+			ctrl.system.view.data.alimentation = data;
+		});
 		/* Get header's components */
 		FileLoader.getFile('./res/json/processors_header.json').success(function(data) {
 			ctrl.system.view.headers.processors = data;
@@ -75,6 +78,9 @@ angular.module('CST.stock', ['ngRoute'])
 		});
 		FileLoader.getFile('./res/json/motherboards_header.json').success(function(data) {
 			ctrl.system.view.headers.motherboards = data;
+		});
+		FileLoader.getFile('./res/json/alimentation_header.json').success(function(data) {
+			ctrl.system.view.headers.alimentation = data;
 		});
 	}
 
@@ -97,6 +103,8 @@ angular.module('CST.stock', ['ngRoute'])
 			return ctrl.system.view.headers.disks;
 		} else if (type === 4) { // MB
 			return ctrl.system.view.headers.motherboards;
+		} else if (type === 5) { // Alim
+			return ctrl.system.view.headers.alimentation;
 		}
 	}
 
@@ -109,6 +117,8 @@ angular.module('CST.stock', ['ngRoute'])
 			return ctrl.system.view.data.disks;
 		} else if (type === 4) { // MB
 			return ctrl.system.view.data.motherboards;
+		} else if (type === 5) { // Alim
+			return ctrl.system.view.data.alimentation;
 		}
 	}
 
