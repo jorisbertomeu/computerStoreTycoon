@@ -9,7 +9,7 @@ angular.module('CST.stock', ['ngRoute'])
   });
 }])
 
-.controller('stockCtrl', ['$scope', '$filter', 'Notification', '$rootScope', '$q', function($scope, $filter, Notification, $rootScope, $q) {
+.controller('stockCtrl', ['$scope', '$filter', 'Notification', '$rootScope', '$q', '$sce', 'FileLoader', function($scope, $filter, Notification, $rootScope, $q, $sce, FileLoader) {
 	var ctrl = $scope;
 
 	ctrl.system = {
@@ -18,9 +18,8 @@ angular.module('CST.stock', ['ngRoute'])
 			_: {
 				wantBuy: false
 			},
-			data: {
-				processors: null
-			},
+			headers: {},
+			data: {},
 			modal: {
 				getHeaders: getHeaders,
 				getData: getData,
@@ -29,8 +28,10 @@ angular.module('CST.stock', ['ngRoute'])
 			}
 		},
 		_: {
+			receiveStock: null,
 			commandeType: 0,
 			routines: {
+				trustHTML: trustHTML,
 				changeTabTo: changeTabTo
 			},
 			tabs: {
@@ -43,83 +44,38 @@ angular.module('CST.stock', ['ngRoute'])
 	start();
 
 	function start() {
-		$rootScope.$on('stock', function(event, data) {
+		ctrl.system._.receiveStock = $rootScope.$on('stock', function(event, data) {
 			console.log(data);
 			ctrl.system.stock = data;
 		});
+		ctrl.$on("$destroy", ctrl.system._.receiveStock);
 		$rootScope.$emit("getStock", {});
-		ctrl.system.view.data.processors = [
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j7 4680k', 4200, 82, 27, [489, 527], [5, 1], [1, 1], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j7 4370k', 3200, 75, 34, [367, 415], [10, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j7 3680j', 2800, 69, 37, [312, 354], [13, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j5 3180k', 2800, 67, 41, [254, 285], [10, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j5 2450i', 2400, 61, 45, [215, 251], [15, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j5 1590b', 2200, 54, 49, [189, 237], [15, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j5 1320b', 1800, 49, 52, [154, 197], [15, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j3 4890k', 2800, 37, 63, [128, 164], [15, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j3 3460l', 2400, 31, 61, [107, 139], [20, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Intelle Core j3 2450h', 2000, 27, 68, [94, 117], [15, 1], [24, 48], '']
-				},
-			];
-		ctrl.system.view.data.memory = [
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Kingstonne VR16384MBCHS3', 1333, 16, 'DDR3', 87, 17, [84, 99], [10, 1], [24, 72], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Kingstonne GH8192MBLKY94', 1333, 8, 'DDR3', 78, 32, [67, 78], [10, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Corssaire CR8192MBKJS54Z', 1333, 8, 'DDR3', 82, 29, [75, 84], [5, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Corssaire CM4096MBJK65DE', 1333, 4, 'DDR3', 68, 48, [49, 58], [15, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Daille DL4096MBKLSKD', 1333, 4, 'DDR3', 49, 78, [34, 41], [20, 1], [24, 48], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Daille MK4096MBKLSK5', 800, 4, 'DDR2', 34, 84, [28, 35], [15, 1], [24, 72], '']
-				},
-				{
-					_: {wantBuy: [false, false], qte: 0},
-					fields: ['Daille RT2048ML45QI', 800, 2, 'DDR2', 27, 78, [21, 28], [20, 1], [24, 72], '']
-				}
-			];
+		/* Get components data to populate Shop */
+		FileLoader.getFile('./res/json/processors.json').success(function(data) {
+			ctrl.system.view.data.processors = data;
+		});
+		FileLoader.getFile('./res/json/memory.json').success(function(data) {
+			ctrl.system.view.data.memory = data;
+		});
+		FileLoader.getFile('./res/json/disks.json').success(function(data) {
+			ctrl.system.view.data.disks = data;
+		});
+		FileLoader.getFile('./res/json/motherboards.json').success(function(data) {
+			ctrl.system.view.data.motherboards = data;
+		});
+		/* Get header's components */
+		FileLoader.getFile('./res/json/processors_header.json').success(function(data) {
+			ctrl.system.view.headers.processors = data;
+		});
+		FileLoader.getFile('./res/json/memory_header.json').success(function(data) {
+			ctrl.system.view.headers.memory = data;
+		});
+		FileLoader.getFile('./res/json/disks_header.json').success(function(data) {
+			ctrl.system.view.headers.disks = data;
+		});
+		FileLoader.getFile('./res/json/motherboards_header.json').success(function(data) {
+			ctrl.system.view.headers.motherboards = data;
+		});
 	}
 
 	function changeTabTo(dest) {
@@ -134,9 +90,13 @@ angular.module('CST.stock', ['ngRoute'])
 
 	function getHeaders(type) {
 		if (type === 1) { // Processeurs
-			return ['#', 'Modèle', 'Fréquence', 'Indice Perf.', 'Pop.', 'Prix unit.', 'Qté. min.', 'Livraison', 'En stock', ''];
+			return ctrl.system.view.headers.processors;
 		} else if (type === 2) { // Mémoire
-			return ['#', 'Modèle', 'Fréquence', 'Capacité', 'Format', 'Indice Perf.', 'Pop.', 'Prix unit.', 'Qté. min.', 'Livraison', 'En stock', ''];
+			return ctrl.system.view.headers.memory;
+		} else if (type === 3) { // Disks
+			return ctrl.system.view.headers.disks;
+		} else if (type === 4) { // MB
+			return ctrl.system.view.headers.motherboards;
 		}
 	}
 
@@ -145,6 +105,10 @@ angular.module('CST.stock', ['ngRoute'])
 			return ctrl.system.view.data.processors;
 		} else if (type === 2) { // Mémoire
 			return ctrl.system.view.data.memory;
+		} else if (type === 3) { // Mémoire
+			return ctrl.system.view.data.disks;
+		} else if (type === 4) { // MB
+			return ctrl.system.view.data.motherboards;
 		}
 	}
 
@@ -161,15 +125,21 @@ angular.module('CST.stock', ['ngRoute'])
 			var classe = (field > 75) ? 'indice75' : (field > 50) ? 'indice50': (field > 25) ? 'indice25' : 'indice0';
 
 			return {value: field + '%', class: classe};
-		} else if (header === 'Fréquence') {
+		} else if (header === 'Fréquence' || header === 'Fréquence mémoire') {
 			return {value: field + ' Mhz', class: ''};
 		} else if (header === 'Capacité') {
 			return {value: field + ' GB', class: ''};
 		} else if (header === 'En stock') {
 			return {value: '???', class:''};
+		} else if (header === 'SSD') {
+			return {value: (field === true) ? $sce.trustAsHtml('YES') : $sce.trustAsHtml('NO'), class: (field === true) ? 'greenText' : 'redText'};
 		} else {
 			return {value: field, class:''};
 		}
+	}
+
+	function trustHTML(val) {
+		return $sce.trustAsHtml(val);
 	}
 
 	function buy(item, headers, type) {
@@ -191,10 +161,10 @@ angular.module('CST.stock', ['ngRoute'])
 			}
 		}
 		if (item._.qte < item.fields[idxQte][type]) { // Quantité min non respectée
-			Notification.error({message: 'Vous devez en commander au moins ' + item.fields[idxQte][type], delay: 5000});
+			Notification.error({message: 'Vous devez en commander au moins ' + item.fields[idxQte][type], delay: null});
 		} else {
 			$rootScope.$emit("addToStock", {value: item.fields[idxPrice][type] * item._.qte, libelle: item.fields[0], obj: item, delay: delay, quantity: item._.qte, type: type});
-			item._.qte = 0;
+			item._.qte = 1;
 			item._.wantBuy[type] = false;
 		}
 	}

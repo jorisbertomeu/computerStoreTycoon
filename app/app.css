@@ -19,6 +19,14 @@
     color: #337ab7;
 }
 
+.greenText {
+    color: green;
+}
+
+.redText {
+    color: red;
+}
+
 .text-center {
     text-align: center;
 }

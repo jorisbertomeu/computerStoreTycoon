@@ -84,11 +84,11 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
         return;
       }
       if (ctrl.system.bank.solde - data.value > 0) {
-        Notification.success({message: 'Vous avez dépensé ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
+        Notification.success({message: 'Vous avez dépensé ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: null});
         ctrl.system.bank.solde -= data.value;
         addEventToQueue(data.delay, (data.type === 0) ? receptionFournisseur : receptionAmazonne, {obj: data.obj, quantity: data.quantity, price: data.value});
       } else {
-        Notification.error({message: 'Votre solde est insuffisant pour dépenser ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
+        Notification.error({message: 'Votre solde est insuffisant pour dépenser ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: null});
       }
     });
 
@@ -102,7 +102,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
   }
 
   function receptionAmazonne(data) {
-    Notification.success({message: 'Vous vennez de recevoir un colis de Amazonne ! Il contient ' + data.quantity + ' "' + data.obj.fields[0] + '". Le contenu a été ajouté à votre stock !'});
+    Notification.success({message: 'Vous vennez de recevoir un colis de Amazonne ! Il contient ' + data.quantity + ' "' + data.obj.fields[0] + '". Le contenu a été ajouté à votre stock !', delay: null});
     // console.log('On a reçu un truc de Amazonne !');
     console.log(data);
   }
