@@ -13,7 +13,9 @@ var CST = angular.module('CST', [
   'CST.myStore',
   'CST.settings',
   /* VIEWS */
-  'CST.version'
+  'CST.version',
+  /* External module */
+  'ui-notification'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
@@ -21,7 +23,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
-CST.controller('mainCtrl', ['$scope', function($scope) {
+CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', function($scope, $rootScope, Notification, $filter) {
   var ctrl = $scope;
 
   ctrl.config = {
@@ -42,7 +44,7 @@ CST.controller('mainCtrl', ['$scope', function($scope) {
 
   ctrl.system = {
     bank: {
-      solde: 42
+      solde: 10000
     },
     _: {
       weatherReference: {
@@ -74,6 +76,18 @@ CST.controller('mainCtrl', ['$scope', function($scope) {
   };
 
   start();
+
+  $rootScope.$on("removeFromSolde", function(event, data) {
+    if (data.value === 0) {
+      return;
+    }
+    if (ctrl.system.bank.solde - data.value > 0) {
+      Notification.success({message: 'Vous avez dépensé ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
+      ctrl.system.bank.solde -= data.value;
+    } else {
+      Notification.error({message: 'Votre solde est insufisant pour dépenser ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: 5000});
+    }
+  });
 
   function start() {
     console.log('On démarre !');

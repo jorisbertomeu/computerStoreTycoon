@@ -1,8 +1,8 @@
 <p class="karma">karma_stock</p>
 <div class="col-lg-12">
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Processeurs <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">Processeurs <button data-toggle="modal" ng-click="system._.commandeType=1" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
@@ -30,9 +30,9 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Mémoire <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">Mémoire <button data-toggle="modal" ng-click="system._.commandeType=2" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
@@ -64,7 +64,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">Disques dur <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
@@ -96,7 +96,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">Cartes mère <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
@@ -132,7 +132,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">Blocs d'alimentation <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
@@ -164,7 +164,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">Boitiers <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
@@ -198,7 +198,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">Lecteurs DVD/BD <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
@@ -228,7 +228,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">Cartes graphique <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
@@ -256,6 +256,92 @@
 				        </tr>
 				    </tbody>
 				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="stockModalLabel">Commandes - 
+				<span ng-show="system._.commandeType===1">Processeurs</span>
+				<span ng-show="system._.commandeType===2">Mémoire</span>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<ul class="nav nav-tabs">
+				    <li style="cursor: pointer; cursor: hand;" ng-click="system._.routines.changeTabTo(0)" ng-class="{'active': system._.tabs.fournisseur}"><a><i class="fa fa-truck"></i> Fournisseur</a></li>
+				    <li style="cursor: pointer; cursor: hand;" ng-click="system._.routines.changeTabTo(1)" ng-class="{'active': system._.tabs.amazon}"><a><i class="fa fa-amazon"></i> Amazonne</a></li>
+				</ul>
+
+				<div class="tab-content">
+				    <div class="tab-pane" ng-class="{'active': system._.tabs.fournisseur}">
+				    	<div style="padding: 10px;">
+				    		<div class="alert alert-info" role="alert">Info ! La commande par fournisseur permet d'avoir des prix plus avantageux et des délais d'expédition plus courts, mais une quantité <b>minimum</b> doit être commandée. De plus, vous devrez être présent pour vous occuper de la récéption des marchandises.</div>
+				    		<div style="max-height: 300px; overflow-y: auto">
+					    		<table class="table table-striped">
+								    <thead>
+								        <tr>
+								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}}</th>
+								        </tr>
+								    </thead>
+								    <tbody>
+								        <tr ng-repeat="item in system.view.modal.getData(system._.commandeType)">
+								            <th scope="row">{{$index + 1}}</th>
+								            <td ng-repeat="field in item.fields" class="{{system.view.modal.displayField(field, 0, system.view.modal.getHeaders(system._.commandeType)[$index + 1]).class}}">{{system.view.modal.displayField(field, 0, system.view.modal.getHeaders(system._.commandeType)[$index + 1]).value}}</td>
+								            <td>
+								            	<div class="input-group add-on" ng-show="item._.wantBuy[0]" style="width: 100px">
+													<input class="form-control" type="number" ng-model="item._.qte">
+													 <div class="input-group-btn">
+												        <button class="btn btn-success" ng-click="system.view.modal.buy(item, system.view.modal.getHeaders(system._.commandeType), 0)"><i class="fa fa-shopping-cart"></i></button>
+												      </div>
+												</div>
+								            	<button ng-show="!item._.wantBuy[0]" ng-click="item._.wantBuy[0] = !item._.wantBuy[0]" class="btn btn-success btn-sm"><i class="fa fa-cart-arrow-down"></i> Acheter</button>
+								            </td>
+								        </tr>
+								    </tbody>
+								</table>
+							</div>
+				    	</div>
+				    </div>
+
+				    <div class="tab-pane" ng-class="{'active': system._.tabs.amazon}">
+				        <div style="padding: 10px;">
+				        	<div class="alert alert-info" role="alert">Info ! Les produits commandés sur Amazonne ont un prix plus élevé et ont un délai d'expédition plus long, mais vous pouvez commander les pièces à l'unité. Vous n'aurez pas à être présent pour la reception des marchandises, celles-ci seront placées dans votre boite aux lettres.</div>
+				        	<div style="max-height: 300px; overflow-y: auto">
+					        	<table class="table table-striped">
+								    <thead>
+								       <tr>
+								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}}</th>
+								        </tr>
+								    </thead>
+								    <tbody>
+								       <tr ng-repeat="item in system.view.modal.getData(system._.commandeType)">
+								            <th scope="row">{{$index + 1}}</th>
+								            <td ng-repeat="field in item.fields" class="{{system.view.modal.displayField(field, 1, system.view.modal.getHeaders(system._.commandeType)[$index + 1]).class}}">{{system.view.modal.displayField(field, 1, system.view.modal.getHeaders(system._.commandeType)[$index + 1]).value}}</td>
+								            <td>
+								            	<div class="input-group add-on" ng-show="item._.wantBuy[1]" style="width: 100px">
+													<input class="form-control" type="number" ng-model="item._.qte">
+													 <div class="input-group-btn">
+												        <button class="btn btn-success" ng-click="system.view.modal.buy(item, system.view.modal.getHeaders(system._.commandeType), 1)"><i class="fa fa-shopping-cart"></i></button>
+												      </div>
+												</div>
+								            	<button ng-show="!item._.wantBuy[1]" ng-click="item._.wantBuy[1] = !item._.wantBuy[1]" class="btn btn-success btn-sm"><i class="fa fa-cart-arrow-down"></i> Acheter</button>
+								            </td>
+								        </tr>
+								    </tbody>
+								</table>
+							</div>
+				        </div>
+				    </div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 	</div>

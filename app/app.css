@@ -27,6 +27,22 @@
 	display: none;
 }
 
+.indice75 {
+    color: #27ae60;
+}
+
+.indice50 {
+    color: #f39c12;
+}
+
+.indice25 {
+    color: #d35400;
+}
+
+.indice0 {
+    color: #c0392b;
+}
+
 .rightPanel {
 	background-color: white;
     position: absolute;
