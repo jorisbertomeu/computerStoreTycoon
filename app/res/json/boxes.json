@@ -1,0 +1,34 @@
+[
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["ColourMäster MX12B", "ATX", "Noir", 6, 93, 9, [357, 372], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["ColourMäster AT87Z", "ATX", "Blanc", 4, 73, 19, [212, 234], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["ColourMäster MV4EVR", "MicroATX", "Noir", 2, 59, 32, [197, 219], [8, 1], [24, 72], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Zalmanne 12BT", "ATX", "Noir & Blanc", 8, 92, 12, [318, 331], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Zalmanne 42XT", "ATX", "Gris", 4, 64, 41, [154, 172], [3, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Zalmanne 28SK", "MicroATX", "Blanc", 2, 49, 57, [97, 111], [8, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["NoName NN18T", "ATX", "Noir", 1, 41, 73, [63, 78], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["NoName PT48X", "MicroATX", "Noir", 1, 31, 61, [59, 67], [5, 1], [24, 48], ""]
+	}
+]

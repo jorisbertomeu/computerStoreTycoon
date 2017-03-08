@@ -1,0 +1,22 @@
+[
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Pionïre 14BA", "Blueray", 93, 28, [198, 223], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["Pionïre 12TK", "CD/DVD", 54, 59, [59, 68], [8, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["SamSoüng 28CX", "Blueray", 79, 34, [157, 169], [5, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["SamSoüng 48MX", "CD/DVD", 46, 78, [42, 59], [10, 1], [24, 48], ""]
+	},
+	{
+		"_": {"wantBuy": [false, false], "qte": 1},
+		"fields": ["LH 09A", "CD/DVD", 34, 67, [29, 38], [10, 1], [48, 72], ""]
+	}
+]

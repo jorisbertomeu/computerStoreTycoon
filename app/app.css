@@ -7,6 +7,7 @@
     background-color: #bdc3c7;
     border: 1px solid black;
     padding: 10px;
+    z-index: 99999;
 }
 
 .noLink {
@@ -21,6 +22,28 @@
 
 .greenText {
     color: green;
+}
+
+.bottomPanel {
+    border-right: 1px solid black;
+    position: fixed;
+    bottom: 0px;
+    padding: 30px;
+    border-top: 1px solid black;
+    width: 72%;
+    background-color: white;
+    text-align: center;
+    z-index: 99999;
+}
+
+.backdrop {
+    z-index: 9999;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .4);
 }
 
 .redText {

@@ -166,7 +166,7 @@
 
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Boitiers <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">Boitiers <button data-toggle="modal" ng-click="system._.commandeType=6" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
@@ -200,7 +200,7 @@
 
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Lecteurs DVD/BD <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">Lecteurs DVD/BD <button data-toggle="modal" ng-click="system._.commandeType=7" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
@@ -230,7 +230,7 @@
 
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Cartes graphique <button class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">Cartes graphique <button data-toggle="modal" ng-click="system._.commandeType=8" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
@@ -272,6 +272,9 @@
 					<span ng-show="system._.commandeType===3">Disques dur</span>
 					<span ng-show="system._.commandeType===4">Cartes mère</span>
 					<span ng-show="system._.commandeType===5">Blocs d'alimentation</span>
+					<span ng-show="system._.commandeType===6">Boitiers</span>
+					<span ng-show="system._.commandeType===7">Lecteurs DVD/BD</span>
+					<span ng-show="system._.commandeType===8">Cartes graphiques</span>
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -292,7 +295,7 @@
 								        </tr>
 								    </thead>
 								    <tbody>
-								        <tr ng-repeat="item in system.view.modal.getData(system._.commandeType)">
+								        <tr ng-repeat="item in system.view.modal.getData(system._.commandeType) | orderBy: item.fields[5][0]">
 								            <th scope="row">{{$index + 1}}</th>
 								            <td ng-repeat="field in item.fields" class="{{system.view.modal.displayField(field, 0, system.view.modal.getHeaders(system._.commandeType)[$index + 1]).class}}">{{system.view.modal.displayField(field, 0, system.view.modal.getHeaders(system._.commandeType)[$index + 1]).value}}</td>
 								            <td>

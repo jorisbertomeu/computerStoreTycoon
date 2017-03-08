@@ -58,14 +58,17 @@
                 <li>
                     <a href="#!/settings"><i class="fa fa-cog"></i> Paramètres</a>
                 </li>
+                <li>
+                    <a ng-click="system._.newClient()"><i class="fa fa-cubes"></i> Nouveau client</a>
+                </li>
             </ul>
             <div class="utilPanel" style="text-align: center;">
               <span class="pull-left">{{system.bank.solde | currency:"€"}} (<i class="fa fa-caret-up"></i>)</span>
               <span class="pull-right">
-                <a href="#" class="noLink"><i ng-click="system._.pausePressed()" class="fa fa-pause" ng-style="{'color': (system._.timer.speed.pause) ? 'green': ''}"></i> </a>
-                <a href="#" class="noLink"><i ng-click="system._.playPressed()" class="fa fa-play" ng-style="{'color': (system._.timer.speed.play) ? 'green': ''}"></i> </a>
-                <a href="#" class="noLink"><i ng-click="system._.forwardPressed()" class="fa fa-forward" ng-style="{'color': (system._.timer.speed.forward) ? 'green': ''}"></i> </a>
-                <a href="#" class="noLink"><i ng-click="system._.fastForwardPressed()" class="fa fa-fast-forward" ng-style="{'color': (system._.timer.speed.fastForward) ? 'green': ''}"></i> </a> - {{system._.timer.getHour()}}</span><br><br>
+                <a class="noLink"><i ng-click="system._.pausePressed()" class="fa fa-pause" ng-style="{'color': (system._.timer.speed.pause) ? 'green': ''}"></i> </a>
+                <a class="noLink"><i ng-click="system._.playPressed()" class="fa fa-play" ng-style="{'color': (system._.timer.speed.play) ? 'green': ''}"></i> </a>
+                <a class="noLink"><i ng-click="system._.forwardPressed()" class="fa fa-forward" ng-style="{'color': (system._.timer.speed.forward) ? 'green': ''}"></i> </a>
+                <a class="noLink"><i ng-click="system._.fastForwardPressed()" class="fa fa-fast-forward" ng-style="{'color': (system._.timer.speed.fastForward) ? 'green': ''}"></i> </a> - {{system._.timer.getHour()}}</span><br><br>
                 <i class="{{system._.weather.class}} wi-fw" style="font-size: 25px; width: 100%"></i><br>28.5°C<br>
                 <span class="pull-left" ng-style="{'color': (system._.routines.getPopularity() > 80) ? '#27ae60' : (system._.routines.getPopularity() > 35) ? '#d35400' : '#c0392b'}"><b>{{system._.routines.getPopularity()}}%</b></span>
                 <span class="pull-right">
@@ -81,6 +84,29 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="backdrop" ng-show="system._.currentTask.active || system._.dialoging.status">
+          <div style="margin-top: 5%; opacity: .85" class="col-lg-4 col-lg-offset-4" ng-show="system._.dialoging.status">
+            <div class="well">
+              <div class="col-lg-3"><b>{{system._.dialoging.people.name}}</b> : </div>
+              <div class="col-lg-9" style="text-align: justify;">{{system._.dialoging.text}}</div>
+              &nbsp;
+            </div>
+             <div class="well">
+              <button class="btn btn-primary btn-block" ng-repeat="res in system._.dialoging.response" ng-click="system._.dialoging.nextStep(res.idx)">{{res.libelle}}</button>
+              <button class="btn btn-warning btn-block" ng-show="!system._.dialoging.finished" ng-disabled="!system._.dialoging.dialog.cancel" ng-click="system._.dialoging.nextStep(res.idx)">Couper court à la discussion</button>
+              <button class="btn btn-warning btn-block" ng-show="system._.dialoging.finished" ng-click="system._.dialoging.nextStep(res.idx)">Fermer</button>
+             </div>
+          </div>
+        </div>
+        <div class="bottomPanel" ng-show="system._.currentTask.active">
+          <div class="progress" style="width:30%; margin-left: 35%">
+            <div class="progress-bar progress-bar-striped active" role="progressbar"
+            aria-valuenow="{{system._.currentTask.percentage}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': system._.currentTask.percentage + '%'}">
+              {{system._.currentTask.percentage}}%
+            </div>
+          </div>
+          <!-- Récupération d'un colis d'un fournisseur -->
         </div>
         <div class="rightPanel">
           <div class="rightWidget">

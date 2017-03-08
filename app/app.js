@@ -23,7 +23,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
-CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', function($scope, $rootScope, Notification, $filter) {
+CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$timeout', function($scope, $rootScope, Notification, $filter, $timeout) {
   var ctrl = $scope;
 
   ctrl.config = {
@@ -37,7 +37,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
       speeds: {
         play: 1000,
         forward: 500,
-        fastForward: 250
+        fastForward: 50
       }
     }
   }
@@ -49,6 +49,23 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
       solde: 10000
     },
     _: {
+      dialoging: {
+        status: false,
+        people: null,
+        answers: [],
+        response: [],
+        finished: false,
+        text: null,
+        nextStep: nextStep,
+        dialog: null,
+        step: 0
+      },
+      currentTask: {
+        active: false,
+        percentage: 0,
+        tso: 0,
+        title: null
+      },
       weatherReference: {
         day: [{ratio: 1, class: 'wi wi-day-sunny'}, {ratio: 2, class: 'wi wi-day-cloudy'}, {ratio: 3, class: 'wi wi-rain'}, {ratio: 4, class: 'wi wi-snow'}],
         night: [{ratio: 10, class: 'wi wi-night-clear'}, {ratio: 11, class: 'wi wi-thunderstorm'}]
@@ -62,6 +79,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
       playPressed: playPressed,
       forwardPressed: forwardPressed,
       fastForwardPressed: fastForwardPressed,
+      newClient: newClient,
       timer: {
         startTime: 0,
         timestamp: 1488779400,
@@ -96,19 +114,150 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
     $rootScope.$emit("stock", ctrl.system.stock);
   });
 
+  function receptionFournisseurDone(data) {
+    ctrl.system._.currentTask.active = false;
+    Notification.success({message: "Vous avez récupéré le colis contenant '" + data.obj.fields[0] + "', il a été placé dans le stock", delay: null});
+  }
+
+  function newClientDone(data) {
+    console.log('Fin de la discussion');
+  }
+
+  function newDialog(cbFinished, mayCancel, cbCancel) {
+    return {
+      _: {
+        currentStep: 0
+      },
+      people: {
+        name: 'John Doe',
+        email: 'john.doe@gmail.com',
+        tel: '+33658457584',
+        photo: 'http://alliancecom.ro/components/com_k2/images/placeholder/user.png'
+      },
+      steps: [],
+      cancel: mayCancel,
+      cbCancel: cbCancel,
+      cbFinished: cbFinished
+    };
+  }
+
+  function addStepToDialog(dialog, stepsFromClient, stepsFromMe) {
+    dialog.steps.push({client: stepsFromClient, me: stepsFromMe});
+    return dialog;
+  }
+
+  function nextStep(idx) {
+    var dialog = ctrl.system._.dialoging.dialog;
+    var clientResponse = null;
+    var reponses = [];
+    var bse = null;
+    var dse = null;
+
+    ctrl.system._.dialoging.step += 1;
+    ctrl.system._.dialoging.response = [];
+
+    if (ctrl.system._.dialoging.step === dialog.steps.length) {
+      ctrl.system._.dialoging.status = false;
+      dialog.cbFinished(ctrl.system._.dialoging.answers);
+      return;
+    }
+    ctrl.system._.dialoging.answers.push(idx);
+    for (var i = 0; i < ctrl.system._.dialoging.answers.length; i++) {
+      if (i === 0) {
+        bse = dialog.steps[ctrl.system._.dialoging.step].client[ctrl.system._.dialoging.answers[i]];
+        dse = dialog.steps[ctrl.system._.dialoging.step].me[ctrl.system._.dialoging.answers[i]];
+      } else {
+        if (bse) {
+          bse = bse[ctrl.system._.dialoging.answers[i]];
+        }
+        if (dse) {
+          dse = dse[ctrl.system._.dialoging.answers[i]];
+        }
+      }
+    }
+    ctrl.system._.dialoging.text = bse;
+    if (dse) {
+      for (var i = 0; i < dse.length; i++) {
+          ctrl.system._.dialoging.response.push({libelle: dse[i], idx: i});
+      }
+    } else if (!bse) { /* Discussion terminée ! */
+      ctrl.system._.dialoging.status = false;
+      dialog.cbFinished();
+    } else {
+      ctrl.system._.dialoging.finished = true;
+    }
+  }
+
+  function launchDialog(dialog) {
+    ctrl.system._.dialoging.status = true;
+    ctrl.system._.dialoging.people = dialog.people;
+    ctrl.system._.dialoging.finished = false;
+    ctrl.system._.dialoging.answers = [];
+
+    ctrl.system._.dialoging.text = dialog.steps[0].client[0];
+    ctrl.system._.dialoging.step = 0;
+    ctrl.system._.dialoging.dialog = dialog;
+    for (var i = 0; i < dialog.steps[0].me.length; i++) {
+        ctrl.system._.dialoging.response.push({libelle: dialog.steps[0].me[i], idx: i, cb: dialog.steps[0].cb});
+    }
+  }
+
+  function newClient() {
+    var dialog = newDialog(function(data) {
+      console.log('Le dialog est finished !');
+      console.log(data);
+    }, false, function() {
+      console.log('Il a kill la new client !');
+    });
+
+    dialog = addStepToDialog(dialog, ["Bonjour, je souhaiterai un ordinateur puissant pour jouer aux derniers jeux en ultra ..."],
+                              ['Bonjour, oui, tout à fait, quel serait votre budget ?', "Désolé, je n'ai pas le temps en ce moment .. Essayez de repasser ?"]);
+    dialog = addStepToDialog(dialog, ["Et bien écoutez, je peux mettre entre €800 et €900 dans mon ordinateur s'il correspond à ce que je veux.", "Ah .. Très bien, je repasserai"],
+                              [
+                                ['Et bien super, revennez dans 4 jours pour le récupérer !', 'Ah mince, ça fera pas assez .. Ne pouvez-vous pas mettre plus ?'], 
+                                ["Merci, bonne journée !", "Vraiment désolé, essayez de repasser demain, je m'occuperai de vous !"]
+                              ]);
+    dialog = addStepToDialog(dialog, [
+                                ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
+                                ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
+                              [
+                                [["D'accord 1", "D'accord 2"], ["D'accord 3", "D'accord 4"]],
+                                [["D'accord 5", "D'accord 6"], ["D'accord 7", "D'accord 8"]]
+                              ]);
+     dialog = addStepToDialog(dialog, [
+                                ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
+                                ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
+                              []);
+    launchDialog(dialog);
+  }
+
+  function newInProgressTask(title, cb, data) {
+    ctrl.system._.currentTask.title = title;
+    ctrl.system._.currentTask.active = true;
+    ctrl.system._.currentTask.tso = ctrl.system._.timer.timestamp;
+    ctrl.system._.currentTask.percentage = 0;
+    ctrl.system._.currentTask.cb = cb;
+    ctrl.system._.currentTask.cbData = data;
+    playPressed();
+  }
+
+  function addEventToQueueWithInProgressTask(delay, cb, data) {
+    newInProgressTask(taskTitle, null);
+    addEventToQueue(delay, cb, data, true);
+  }
+
   function receptionFournisseur(data) {
-    console.log('On a reçu un truc dun fournisseur !');
-    console.log(data);
+    addEventToQueueWithInProgressTask("Réception d'un colis du fournisseur ...", 0.17, receptionFournisseurDone, data);
+    Notification.primary({message: "Le fournisseur vient d'arriver, vous allez réceptionner le colis", delay: null});
   }
 
   function receptionAmazonne(data) {
     Notification.success({message: 'Vous vennez de recevoir un colis de Amazonne ! Il contient ' + data.quantity + ' "' + data.obj.fields[0] + '". Le contenu a été ajouté à votre stock !', delay: null});
-    // console.log('On a reçu un truc de Amazonne !');
     console.log(data);
   }
 
-  function addEventToQueue(delay, callback, data) {
-    ctrl.system.queue.push({when: ctrl.system._.timer.timestamp + 3600 * delay, cb: callback, data: data});
+  function addEventToQueue(delay, callback, data, ip) {
+    ctrl.system.queue.push({when: ctrl.system._.timer.timestamp + 3600 * delay, cb: callback, data: data, inProgress: (ip) ? ip : false});
   }
 
   function start() {
@@ -120,9 +269,20 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', f
 
   function executeQueue(ts) {
     for (var i = 0; i < ctrl.system.queue.length; i++) {
-      if (ts >= ctrl.system.queue[i].when) { // task to execute
-        ctrl.system.queue[i].cb(ctrl.system.queue[i].data);
-        ctrl.system.queue.splice(i, 1);
+      if (ts >= ctrl.system.queue[i].when || ctrl.system.queue[i].inProgress) { // task to execute
+        if (ctrl.system.queue[i].inProgress && ts < ctrl.system.queue[i].when) {
+          ctrl.system._.currentTask.percentage = Math.round(((ctrl.system.queue[i].when - ctrl.system._.currentTask.tso) - (ctrl.system.queue[i].when - ts)) * 100 / (ctrl.system.queue[i].when - ctrl.system._.currentTask.tso));
+        } else {
+          ctrl.system.queue[i].cb(ctrl.system.queue[i].data);
+          if (ctrl.system.queue[i].inProgress) {
+            ctrl.system._.currentTask.percentage = 100;
+            ctrl.system._.currentTask.active = false;
+            if (ctrl.system._.currentTask.cb) {
+              ctrl.system._.currentTask.cb(ctrl.system._.currentTask.cbData);
+            }
+          }
+          ctrl.system.queue.splice(i, 1);
+        }
         continue;
       }
     }

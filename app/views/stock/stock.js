@@ -21,6 +21,7 @@ angular.module('CST.stock', ['ngRoute'])
 			headers: {},
 			data: {},
 			modal: {
+				getPrice: getPrice,
 				getHeaders: getHeaders,
 				getData: getData,
 				displayField: displayField,
@@ -66,6 +67,15 @@ angular.module('CST.stock', ['ngRoute'])
 		FileLoader.getFile('./res/json/alimentation.json').success(function(data) {
 			ctrl.system.view.data.alimentation = data;
 		});
+		FileLoader.getFile('./res/json/boxes.json').success(function(data) {
+			ctrl.system.view.data.boxes = data;
+		});
+		FileLoader.getFile('./res/json/lecteurs.json').success(function(data) {
+			ctrl.system.view.data.lecteurs = data;
+		});
+		FileLoader.getFile('./res/json/graphic.json').success(function(data) {
+			ctrl.system.view.data.graphic = data;
+		});
 		/* Get header's components */
 		FileLoader.getFile('./res/json/processors_header.json').success(function(data) {
 			ctrl.system.view.headers.processors = data;
@@ -81,6 +91,15 @@ angular.module('CST.stock', ['ngRoute'])
 		});
 		FileLoader.getFile('./res/json/alimentation_header.json').success(function(data) {
 			ctrl.system.view.headers.alimentation = data;
+		});
+		FileLoader.getFile('./res/json/boxes_header.json').success(function(data) {
+			ctrl.system.view.headers.boxes = data;
+		});
+		FileLoader.getFile('./res/json/lecteurs_header.json').success(function(data) {
+			ctrl.system.view.headers.lecteurs = data;
+		});
+		FileLoader.getFile('./res/json/graphic_header.json').success(function(data) {
+			ctrl.system.view.headers.graphic = data;
 		});
 	}
 
@@ -105,6 +124,12 @@ angular.module('CST.stock', ['ngRoute'])
 			return ctrl.system.view.headers.motherboards;
 		} else if (type === 5) { // Alim
 			return ctrl.system.view.headers.alimentation;
+		}  else if (type === 6) { // Boitiers
+			return ctrl.system.view.headers.boxes;
+		} else if (type === 7) { // Lecteurs
+			return ctrl.system.view.headers.lecteurs;
+		} else if (type === 8) { // graphic
+			return ctrl.system.view.headers.graphic;
 		}
 	}
 
@@ -119,6 +144,12 @@ angular.module('CST.stock', ['ngRoute'])
 			return ctrl.system.view.data.motherboards;
 		} else if (type === 5) { // Alim
 			return ctrl.system.view.data.alimentation;
+		} else if (type === 6) { // Boitiers
+			return ctrl.system.view.data.boxes;
+		} else if (type === 7) { // Lecteurs
+			return ctrl.system.view.data.lecteurs;
+		} else if (type === 8) { // graphic
+			return ctrl.system.view.data.graphic;
 		}
 	}
 
@@ -150,6 +181,18 @@ angular.module('CST.stock', ['ngRoute'])
 
 	function trustHTML(val) {
 		return $sce.trustAsHtml(val);
+	}
+
+	function getPrice(item, headers, type) {
+		var price = 0;
+
+		for (var i = 0; i < headers.length; i++) {
+			if (headers[i] === 'Prix unit.') {
+				price = item.fields[i - 1][type];
+				break;
+			}
+		}
+		return price;
 	}
 
 	function buy(item, headers, type) {
