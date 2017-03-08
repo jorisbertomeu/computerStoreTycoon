@@ -20,6 +20,10 @@
     color: #337ab7;
 }
 
+.img-circle {
+    border-radius: 50%;
+}
+
 .greenText {
     color: green;
 }

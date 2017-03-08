@@ -86,16 +86,21 @@
             </div>
         </div>
         <div class="backdrop" ng-show="system._.currentTask.active || system._.dialoging.status">
-          <div style="margin-top: 5%; opacity: .85" class="col-lg-4 col-lg-offset-4" ng-show="system._.dialoging.status">
+          <div style="margin-top: 20px; opacity: .85" class="col-lg-4 col-lg-offset-4" ng-show="system._.dialoging.status">
+            <div class="well" style="text-align: center;">
+              <img class="img-circle" src="{{system._.dialoging.people.photo}}"><br>
+              <b>{{system._.dialoging.people.name}}</b><br>
+              {{system._.dialoging.people.email}}
+            </div>
             <div class="well">
-              <div class="col-lg-3"><b>{{system._.dialoging.people.name}}</b> : </div>
+              <div class="col-lg-3" style="text-align: right;"><b>{{system._.dialoging.people.name}}</b> : </div>
               <div class="col-lg-9" style="text-align: justify;">{{system._.dialoging.text}}</div>
               &nbsp;
             </div>
              <div class="well">
               <button class="btn btn-primary btn-block" ng-repeat="res in system._.dialoging.response" ng-click="system._.dialoging.nextStep(res.idx)">{{res.libelle}}</button>
               <button class="btn btn-warning btn-block" ng-show="!system._.dialoging.finished" ng-disabled="!system._.dialoging.dialog.cancel" ng-click="system._.dialoging.nextStep(res.idx)">Couper court à la discussion</button>
-              <button class="btn btn-warning btn-block" ng-show="system._.dialoging.finished" ng-click="system._.dialoging.nextStep(res.idx)">Fermer</button>
+              <button class="btn btn-warning btn-block" ng-show="system._.dialoging.finished" ng-click="">Fermer</button>
              </div>
           </div>
         </div>
