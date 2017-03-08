@@ -23,7 +23,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
-CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$timeout', function($scope, $rootScope, Notification, $filter, $timeout) {
+CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', function($scope, $rootScope, Notification, $filter, $http, $q) {
   var ctrl = $scope;
 
   ctrl.config = {
@@ -202,6 +202,22 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     }
   }
 
+  function setRandomPeopleToDialog(dialog) {
+    var defered = $q.defer();
+
+    $http.get('https://api.randomuser.me/', null).then(function(res) {
+      res = res.data;
+      dialog.people = {
+        name: res.results[0].name.first + ' ' + res.results[0].name.last,
+        email: res.results[0].email,
+        tel: res.results[0].cell,
+        photo: res.results[0].picture.large
+      };
+      defered.resolve(dialog);
+    });
+    return defered.promise;
+  }
+
   function newClient() {
     var dialog = newDialog(function(data) {
       console.log('Le dialog est finished !');
@@ -210,25 +226,27 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       console.log('Il a kill la new client !');
     });
 
-    dialog = addStepToDialog(dialog, ["Bonjour, je souhaiterai un ordinateur puissant pour jouer aux derniers jeux en ultra ..."],
-                              ['Bonjour, oui, tout à fait, quel serait votre budget ?', "Désolé, je n'ai pas le temps en ce moment .. Essayez de repasser ?"]);
-    dialog = addStepToDialog(dialog, ["Et bien écoutez, je peux mettre entre €800 et €900 dans mon ordinateur s'il correspond à ce que je veux.", "Ah .. Très bien, je repasserai"],
-                              [
-                                ['Et bien super, revennez dans 4 jours pour le récupérer !', 'Ah mince, ça fera pas assez .. Ne pouvez-vous pas mettre plus ?'], 
-                                ["Merci, bonne journée !", "Vraiment désolé, essayez de repasser demain, je m'occuperai de vous !"]
-                              ]);
-    dialog = addStepToDialog(dialog, [
-                                ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
-                                ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
-                              [
-                                [["D'accord 1", "D'accord 2"], ["D'accord 3", "D'accord 4"]],
-                                [["D'accord 5", "D'accord 6"], ["D'accord 7", "D'accord 8"]]
-                              ]);
-     dialog = addStepToDialog(dialog, [
-                                ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
-                                ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
-                              []);
-    launchDialog(dialog);
+    setRandomPeopleToDialog(dialog).then(function(dialog) {
+      dialog = addStepToDialog(dialog, ["Bonjour, je souhaiterai un ordinateur puissant pour jouer aux derniers jeux en ultra ..."],
+                                ['Bonjour, oui, tout à fait, quel serait votre budget ?', "Désolé, je n'ai pas le temps en ce moment .. Essayez de repasser ?"]);
+      dialog = addStepToDialog(dialog, ["Et bien écoutez, je peux mettre entre €800 et €900 dans mon ordinateur s'il correspond à ce que je veux.", "Ah .. Très bien, je repasserai"],
+                                [
+                                  ['Et bien super, revennez dans 4 jours pour le récupérer !', 'Ah mince, ça fera pas assez .. Ne pouvez-vous pas mettre plus ?'], 
+                                  ["Merci, bonne journée !", "Vraiment désolé, essayez de repasser demain, je m'occuperai de vous !"]
+                                ]);
+      dialog = addStepToDialog(dialog, [
+                                  ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
+                                  ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
+                                [
+                                  [["D'accord 1", "D'accord 2"], ["D'accord 3", "D'accord 4"]],
+                                  [["D'accord 5", "D'accord 6"], ["D'accord 7", "D'accord 8"]]
+                                ]);
+       dialog = addStepToDialog(dialog, [
+                                  ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
+                                  ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
+                                []);
+      launchDialog(dialog);
+    });
   }
 
   function newInProgressTask(title, cb, data) {
