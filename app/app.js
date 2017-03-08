@@ -156,7 +156,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     ctrl.system._.dialoging.step += 1;
     ctrl.system._.dialoging.response = [];
 
-    if (ctrl.system._.dialoging.step === dialog.steps.length) {
+    if (idx === -1) {
       ctrl.system._.dialoging.status = false;
       dialog.cbFinished(ctrl.system._.dialoging.answers);
       return;
@@ -237,10 +237,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       dialog = addStepToDialog(dialog, [
                                   ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
                                   ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
-                                [
-                                  [["D'accord 1", "D'accord 2"], ["D'accord 3", "D'accord 4"]],
-                                  [["D'accord 5", "D'accord 6"], ["D'accord 7", "D'accord 8"]]
-                                ]);
+                                []);
        dialog = addStepToDialog(dialog, [
                                   ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
                                   ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],

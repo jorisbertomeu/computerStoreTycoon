@@ -100,7 +100,7 @@
              <div class="well">
               <button class="btn btn-primary btn-block" ng-repeat="res in system._.dialoging.response" ng-click="system._.dialoging.nextStep(res.idx)">{{res.libelle}}</button>
               <button class="btn btn-warning btn-block" ng-show="!system._.dialoging.finished" ng-disabled="!system._.dialoging.dialog.cancel" ng-click="system._.dialoging.nextStep(res.idx)">Couper court à la discussion</button>
-              <button class="btn btn-warning btn-block" ng-show="system._.dialoging.finished" ng-click="">Fermer</button>
+              <button class="btn btn-warning btn-block" ng-show="system._.dialoging.finished" ng-click="system._.dialoging.nextStep(-1)">Fermer</button>
              </div>
           </div>
         </div>
