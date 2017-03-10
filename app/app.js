@@ -23,7 +23,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
-CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', function($scope, $rootScope, Notification, $filter, $http, $q) {
+CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', 'FileLoader', function($scope, $rootScope, Notification, $filter, $http, $q, FileLoader) {
   var ctrl = $scope;
 
   ctrl.config = {
@@ -48,6 +48,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     bank: {
       solde: 10000
     },
+    goals: [],
     _: {
       dialoging: {
         status: false,
@@ -82,8 +83,9 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       newClient: newClient,
       timer: {
         startTime: 0,
-        timestamp: 1488779400,
+        timestamp: 21600, // 1488779400,
         getHour: getHour,
+        getDate: getDate,
         interval: 1000,
         speed: {
           pause: true,
@@ -114,9 +116,39 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     $rootScope.$emit("stock", ctrl.system.stock);
   });
 
+   $rootScope.$on("getTimestamp", function(event, data) {
+    $rootScope.$emit("timestamp", ctrl.system._.timer.timestamp);
+  });
+
+  $rootScope.$on("getWork", function(event, data) {
+    $rootScope.$emit("work", ctrl.system.goals);
+  });
+
+  function addToStock(data) {
+    var found = false;
+
+    for (var i = 0; i < ctrl.system.stock.length; i++) {
+      if (ctrl.system.stock[i].specs.modele === data.obj.specs.modele) {
+        ctrl.system.stock[i].quantity += data.quantity;
+        found = true;
+      }
+    }
+    if (!found) {
+      ctrl.system.stock.push({
+        specs: data.obj.specs,
+        quantity: data.quantity,
+        typeAchat: data.obj.typeAchat,
+        type: data.obj.type
+      });
+    }
+    console.log(ctrl.system.stock);
+  }
+
   function receptionFournisseurDone(data) {
     ctrl.system._.currentTask.active = false;
-    Notification.success({message: "Vous avez récupéré le colis contenant '" + data.obj.fields[0] + "', il a été placé dans le stock", delay: null});
+    Notification.success({message: "Vous avez récupéré le colis contenant '" + data.obj.specs.modele + "', il a été placé dans le stock", delay: null});
+    addToStock(data);
+    console.log(data);
   }
 
   function newClientDone(data) {
@@ -126,7 +158,8 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   function newDialog(cbFinished, mayCancel, cbCancel) {
     return {
       _: {
-        currentStep: 0
+        currentStep: 0,
+        goal: null
       },
       people: {
         name: 'John Doe',
@@ -158,7 +191,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
     if (idx === -1) {
       ctrl.system._.dialoging.status = false;
-      dialog.cbFinished(ctrl.system._.dialoging.answers);
+      dialog.cbFinished({answers: ctrl.system._.dialoging.answers, goal: dialog._.goal, people: dialog.people});
       return;
     }
     ctrl.system._.dialoging.answers.push(idx);
@@ -168,7 +201,12 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
         dse = dialog.steps[ctrl.system._.dialoging.step].me[ctrl.system._.dialoging.answers[i]];
       } else {
         if (bse) {
-          bse = bse[ctrl.system._.dialoging.answers[i]];
+          if (typeof bse[ctrl.system._.dialoging.answers[i]] === 'object') {
+            ctrl.system._.dialoging.dialog._.goal.active = bse[ctrl.system._.dialoging.answers[i]].goal;
+            bse = bse[ctrl.system._.dialoging.answers[i]].text;
+          } else {
+            bse = bse[ctrl.system._.dialoging.answers[i]];
+          }
         }
         if (dse) {
           dse = dse[ctrl.system._.dialoging.answers[i]];
@@ -200,6 +238,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     for (var i = 0; i < dialog.steps[0].me.length; i++) {
         ctrl.system._.dialoging.response.push({libelle: dialog.steps[0].me[i], idx: i, cb: dialog.steps[0].cb});
     }
+    playPressed();
   }
 
   function setRandomPeopleToDialog(dialog) {
@@ -211,37 +250,50 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
         name: res.results[0].name.first + ' ' + res.results[0].name.last,
         email: res.results[0].email,
         tel: res.results[0].cell,
-        photo: res.results[0].picture.large
+        photo: res.results[0].picture.large,
+        thumbnail: res.results[0].picture.thumbnail
       };
       defered.resolve(dialog);
     });
     return defered.promise;
   }
 
-  function newClient() {
-    var dialog = newDialog(function(data) {
-      console.log('Le dialog est finished !');
-      console.log(data);
-    }, false, function() {
-      console.log('Il a kill la new client !');
-    });
+  function loadDialog(file, mayCancel, finishedCb, killedCb) {
+    var dialog = newDialog(finishedCb, mayCancel, killedCb);
+    var deferred = $q.defer();
 
-    setRandomPeopleToDialog(dialog).then(function(dialog) {
-      dialog = addStepToDialog(dialog, ["Bonjour, je souhaiterai un ordinateur puissant pour jouer aux derniers jeux en ultra ..."],
-                                ['Bonjour, oui, tout à fait, quel serait votre budget ?', "Désolé, je n'ai pas le temps en ce moment .. Essayez de repasser ?"]);
-      dialog = addStepToDialog(dialog, ["Et bien écoutez, je peux mettre entre €800 et €900 dans mon ordinateur s'il correspond à ce que je veux.", "Ah .. Très bien, je repasserai"],
-                                [
-                                  ['Et bien super, revennez dans 4 jours pour le récupérer !', 'Ah mince, ça fera pas assez .. Ne pouvez-vous pas mettre plus ?'], 
-                                  ["Merci, bonne journée !", "Vraiment désolé, essayez de repasser demain, je m'occuperai de vous !"]
-                                ]);
-      dialog = addStepToDialog(dialog, [
-                                  ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
-                                  ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
-                                []);
-       dialog = addStepToDialog(dialog, [
-                                  ["Fantastique ! A dans 4 jours !", "Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"], 
-                                  ["Bonne journée à vous aussi !", "Oui, on verra si j'ai le temps !"]],
-                                []);
+    FileLoader.getFile(file).success(function(data) {
+      dialog._.goal = data.goal;
+      dialog._.goal.active = false;
+      if (data.config.randomPeople) {
+        setRandomPeopleToDialog(dialog).then(function(dialog) {
+          $.each(data.steps, function(i, elem) {
+            dialog = addStepToDialog(dialog, elem.client, elem.response);
+          });
+          deferred.resolve(dialog);
+        });
+      } else {
+        $.each(data.steps, function(i, elem) {
+          dialog = addStepToDialog(dialog, elem.client, elem.response);
+        });
+        deferred.resolve(dialog);
+      }
+    });
+    return deferred.promise;
+  }
+
+  function dialogFinished(data) {
+    console.log('Dialog finished');
+    console.log(data);
+    if (data.goal.active) {
+      Notification.primary({message: 'Vous avez du travail ! Consultez le travail à faire pour répondre à la demande du client !', delay: null});
+      ctrl.system.goals.push({goal: data.goal, people: data.people, addedOn: ctrl.system._.timer.timestamp, deadline: ctrl.system._.timer.timestamp + (data.goal.deadline * 3600)});
+      console.log(ctrl.system.goals);
+    }
+  }
+
+  function newClient() {
+    loadDialog('./res/json/dialogs/1.json', true, dialogFinished).then(function(dialog) {
       launchDialog(dialog);
     });
   }
@@ -256,8 +308,8 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     playPressed();
   }
 
-  function addEventToQueueWithInProgressTask(delay, cb, data) {
-    newInProgressTask(taskTitle, null);
+  function addEventToQueueWithInProgressTask(title, delay, cb, data) {
+    newInProgressTask(title, null);
     addEventToQueue(delay, cb, data, true);
   }
 
@@ -267,8 +319,9 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   }
 
   function receptionAmazonne(data) {
-    Notification.success({message: 'Vous vennez de recevoir un colis de Amazonne ! Il contient ' + data.quantity + ' "' + data.obj.fields[0] + '". Le contenu a été ajouté à votre stock !', delay: null});
+    Notification.success({message: 'Vous vennez de recevoir un colis de Amazonne ! Il contient ' + data.quantity + ' "' + data.obj.specs.modele + '". Le contenu a été ajouté à votre stock !', delay: null});
     console.log(data);
+    addToStock(data);
   }
 
   function addEventToQueue(delay, callback, data, ip) {
@@ -379,6 +432,10 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   function getHour() {
     return moment.unix(ctrl.system._.timer.timestamp).format("HH:mm");
+  }
+
+  function getDate() {
+    return moment.unix(ctrl.system._.timer.timestamp).format("DD/MM");
   }
 
   function random(min, max) {

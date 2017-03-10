@@ -70,6 +70,7 @@
                 <a class="noLink"><i ng-click="system._.forwardPressed()" class="fa fa-forward" ng-style="{'color': (system._.timer.speed.forward) ? 'green': ''}"></i> </a>
                 <a class="noLink"><i ng-click="system._.fastForwardPressed()" class="fa fa-fast-forward" ng-style="{'color': (system._.timer.speed.fastForward) ? 'green': ''}"></i> </a> - {{system._.timer.getHour()}}</span><br><br>
                 <i class="{{system._.weather.class}} wi-fw" style="font-size: 25px; width: 100%"></i><br>28.5°C<br>
+                Nous sommes le <b>{{system._.timer.getDate()}}</b><br>
                 <span class="pull-left" ng-style="{'color': (system._.routines.getPopularity() > 80) ? '#27ae60' : (system._.routines.getPopularity() > 35) ? '#d35400' : '#c0392b'}"><b>{{system._.routines.getPopularity()}}%</b></span>
                 <span class="pull-right">
                   ???

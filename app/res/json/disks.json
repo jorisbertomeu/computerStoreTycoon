@@ -1,26 +1,26 @@
 [
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["Sigatte 1000GB33SSD", true, 1000, 79, 32, [567, 631], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "disk"},
+		"fields": ["Sigatte 1000GB33SSD", true, 1000, 79, 32, [567, 631], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["Weystern 1000GBLKHSB", false, 1000, 61, 64, [180, 213], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "disk"},
+		"fields": ["Weystern 1000GBLKHSB", false, 1000, 61, 64, [180, 213], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["Weystern 750GBMLKSDE", false, 750, 64, 54, [154, 172], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "disk"},
+		"fields": ["Weystern 750GBMLKSDE", false, 750, 64, 54, [154, 172], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["Sigatte 500GBJKPSSD", true, 500, 85, 49, [267, 289], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "disk"},
+		"fields": ["Sigatte 500GBJKPSSD", true, 500, 85, 49, [267, 289], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["Weystern 500GBIKALKX", false, 500, 63, 87, [84, 99], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "disk"},
+		"fields": ["Weystern 500GBIKALKX", false, 500, 63, 87, [84, 99], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["Sigatte 250GBOKVSSD", true, 250, 91, 67, [162, 186], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "disk"},
+		"fields": ["Sigatte 250GBOKVSSD", true, 250, 91, 67, [162, 186], [10, 1], [1, 2], ""]
 	}
 ]

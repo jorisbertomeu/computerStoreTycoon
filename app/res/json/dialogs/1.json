@@ -1,0 +1,51 @@
+{
+	"config": {
+		"randomPeople": true
+	},
+	"steps": [
+		{
+			"client":  [
+				"Bonjour, je souhaiterai un ordinateur puissant pour jouer aux derniers jeux en ultra ..."
+			],
+			"response": [
+				"Bonjour, oui, tout à fait, quel serait votre budget ?", 
+				"Désolé, je n'ai pas le temps en ce moment .. Essayez de repasser ?"
+			]
+		},
+		{
+			"client":  [
+				"Et bien écoutez, je peux mettre entre €800 et €900 dans mon ordinateur s'il correspond à ce que je veux.",
+				"Ah .. Très bien, je repasserai."
+			],
+			"response": [
+				[
+					"Et bien super, revennez dans 4 jours pour le récupérer !",
+					"Ah mince, ça fera pas assez .. Ne pouvez-vous pas mettre plus ?"
+				],
+				[
+					"Merci, bonne journée !",
+					"Vraiment désolé, essayez de repasser demain, je m'occuperai de vous !"
+				]
+			]                         
+		},
+		{
+			"client": [
+				[
+					{"text": "Fantastique ! A dans 4 jours !", "goal": true},
+					"Ah, non je ne peux pas, je vais aller voir ailleurs alors, au revoir !"
+				],
+				[
+					"Bonne journée à vous aussi !",
+					"Oui, on verra si j'ai le temps !"
+				]
+			],
+			"response": []
+		}
+	],
+	"goal": {
+		"libelle": "Ordinateur puissant pour jouer aux derniers jeux en ultra",
+		"budget_min": 800,
+		"budget_max": 900,
+		"deadline": 3
+	}
+}

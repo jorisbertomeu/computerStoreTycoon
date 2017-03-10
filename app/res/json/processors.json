@@ -1,42 +1,42 @@
 [
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j7 4680k", 4200, 82, 27, [489, 527], [5, 1], [1, 1], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j7 4680k", "LGA1155", 4200, 82, 27, [489, 527], [5, 1], [1, 1], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j7 4370k", 3200, 75, 34, [367, 415], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j7 4370k", "LGA1151", 3200, 75, 34, [367, 415], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j7 3680j", 2800, 69, 37, [312, 354], [13, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j7 3680j", "LGA2011", 2800, 69, 37, [312, 354], [13, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j5 3180k", 2800, 67, 41, [254, 285], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j5 3180k", "LGA1151", 2800, 67, 41, [254, 285], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j5 2450i", 2400, 61, 45, [215, 251], [15, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j5 2450i", "LGA2011", 2400, 61, 45, [215, 251], [15, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j5 1590b", 2200, 54, 49, [189, 237], [15, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j5 1590b", "LGA775", 2200, 54, 49, [189, 237], [15, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j5 1320b", 1800, 49, 52, [154, 197], [15, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j5 1320b", "LGA775", 1800, 49, 52, [154, 197], [15, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j3 4890k", 2800, 37, 63, [128, 164], [15, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j3 4890k", "LGA1151", 2800, 37, 63, [128, 164], [15, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j3 3460l", 2400, 31, 61, [107, 139], [20, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j3 3460l", "LGA2011", 2400, 31, 61, [107, 139], [20, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 0},
-		"fields": ["Intelle Core j3 2450h", 2000, 27, 68, [94, 117], [15, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 0, "type": "processor"},
+		"fields": ["Intelle Core j3 2450h", "LGA775", 2000, 27, 68, [94, 117], [15, 1], [1, 2], ""]
 	}
 ]

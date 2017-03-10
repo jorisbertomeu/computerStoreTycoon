@@ -168,7 +168,7 @@ angular.module('CST.stock', ['ngRoute'])
 			return {value: field + '%', class: classe};
 		} else if (header === 'Fréquence' || header === 'Fréquence mémoire') {
 			return {value: field + ' Mhz', class: ''};
-		} else if (header === 'Capacité') {
+		} else if (header === 'Capacité' || header === 'Mémoire') {
 			return {value: field + ' GB', class: ''};
 		} else if (header === 'En stock') {
 			return {value: '???', class:''};
@@ -195,6 +195,57 @@ angular.module('CST.stock', ['ngRoute'])
 		return price;
 	}
 
+	function isInArray(val, array) {
+		var found = false;
+
+		for (var i = 0; i < array.length; i++) {
+			if (val === array[i]) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+
+	function setCharAt(str, index, chr) {
+	    if (index > str.length - 1)
+	    	return str;
+	    return str.substr(0, index) + chr + str.substr(index + 1);
+	}
+
+	function uglifyHeader(header) {
+		header = header.toLowerCase();
+		for (var i = 0; i < header.length; i++) {
+			if (header[i] === ' ') {
+				header = setCharAt(header, i, '_');
+			} else if (header[i] === 'é' ||header[i] === 'è') {
+				header = setCharAt(header, i, 'e');
+			} else if (header[i] === '.') {
+				header = setCharAt(header, i, '');
+				i--;
+			}
+
+		}
+		return header;
+	}
+
+	function buildObj(item, headers, type) {
+		var obj = {
+			specs: {},
+			typeAchat: type,
+			type: item._.type
+		};
+		var exclude = ["Qté. min.", "Livraison", "En stock", '#', ''];
+
+		for (var i = 0; i < headers.length; i++) {
+			if (!isInArray(headers[i], exclude)) {
+				obj.specs[uglifyHeader(headers[i])] = item.fields[i - 1];
+			}
+		}
+		console.log(obj);
+		return obj;
+	}
+
 	function buy(item, headers, type) {
 		var idxPrice = -1;
 		var idxQte = 0;
@@ -216,7 +267,8 @@ angular.module('CST.stock', ['ngRoute'])
 		if (item._.qte < item.fields[idxQte][type]) { // Quantité min non respectée
 			Notification.error({message: 'Vous devez en commander au moins ' + item.fields[idxQte][type], delay: null});
 		} else {
-			$rootScope.$emit("addToStock", {value: item.fields[idxPrice][type] * item._.qte, libelle: item.fields[0], obj: item, delay: delay, quantity: item._.qte, type: type});
+			var newObj = buildObj(item, headers, type);
+			$rootScope.$emit("addToStock", {value: item.fields[idxPrice][type] * item._.qte, libelle: item.fields[0], obj: newObj, delay: delay, quantity: item._.qte, type: type});
 			item._.qte = 1;
 			item._.wantBuy[type] = false;
 		}

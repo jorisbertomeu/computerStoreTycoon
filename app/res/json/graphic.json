@@ -1,38 +1,38 @@
 [
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["nVydiä TitanY", 12, 4, 98, 8, [897, 967], [3, 1], [12, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["nVydiä TitanY", 12, 4, 98, 8, [897, 967], [3, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["nVydiä NVX980", 8, 4, 89, 16, [693, 734], [5, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["nVydiä NVX980", 8, 4, 89, 16, [693, 734], [5, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["nVydiä NVX770", 6, 3, 73, 29, [412, 436], [8, 1], [12, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["nVydiä NVX770", 6, 3, 73, 29, [412, 436], [8, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["nVydiä NVX690", 4, 2, 60, 37, [197, 258], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["nVydiä NVX690", 4, 2, 60, 37, [197, 258], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["nVydiä NV280", 1, 2, 38, 59, [67, 102], [10, 1], [24, 72], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["nVydiä NV280", 1, 2, 38, 59, [67, 102], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["AND 7970X", 8, 6, 94, 11, [712, 731], [3, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["AND 7970X", 8, 6, 94, 11, [712, 731], [3, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["AND 7850", 4, 6, 78, 38, [489, 504], [5, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["AND 7850", 4, 6, 78, 38, [489, 504], [5, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["AND 5670", 2, 4, 57, 67, [154, 182], [10, 1], [24, 48], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["AND 5670", 2, 4, 57, 67, [154, 182], [10, 1], [1, 2], ""]
 	},
 	{
-		"_": {"wantBuy": [false, false], "qte": 1},
-		"fields": ["AND MK79", 1, 4, 39, 81, [49, 57], [15, 1], [24, 72], ""]
+		"_": {"wantBuy": [false, false], "qte": 1, "type": "graphic"},
+		"fields": ["AND MK79", 1, 4, 39, 81, [49, 57], [15, 1], [1, 2], ""]
 	}
 ]

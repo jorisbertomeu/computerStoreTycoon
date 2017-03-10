@@ -1,3 +1,188 @@
 <div class="col-lg-12">
-	Travail à faire
+	<table class="table table-striped">
+	    <thead>
+	        <tr>
+	            <th>#</th>
+	            <th>Client</th>
+	            <th>Demande</th>
+	            <th>Budget</th>
+	            <th>Accepté le</th>
+	            <th>Date de rendu</th>
+	            <th></th>
+	            <th></th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr ng-repeat="work in system.work">
+	            <th style="vertical-align: middle;" scope="row">{{$index+1}}</th>
+	            <td style="vertical-align: middle;">
+	            	<div class="clientContainer">
+	            		<img width="24px" class="img-circle" src="{{work.people.thumbnail}}" style="float:left;">
+	            		&nbsp;{{work.people.name}}
+	            		<div class="caretClientContainer">
+	            			<i class="fa fa-caret-down"></i>
+	            		</div>
+	            	</div>
+	            </td>
+	            <td style="width: 200px;">{{work.goal.libelle}}</td>
+	            <td style="vertical-align: middle;">Entre <b>{{work.goal.budget_min | currency: '€'}}</b> et <b>{{work.goal.budget_max | currency: '€'}}</b></td>
+	            <td style="vertical-align: middle;">{{system._.displayTime(work.addedOn)}}</td>
+	            <td style="vertical-align: middle;">{{system._.displayTime(work.deadline)}}</td>
+	            <td style="vertical-align: middle;"><button ng-click="system._.buildComputer(work)" class="btn btn-success btn-xs"><i class="fa fa-cogs"></i> Faire l'ordinateur</button></td>
+	            <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs"><i class="fa fa-times"></i> Annuler la demande</button></td>
+	        </tr>
+
+	    </tbody>
+	</table>
+</div>
+
+<div class="backdrop" ng-show="system.building.active">
+	<div style="margin-top: 20px; opacity: .95" class="col-lg-8 col-lg-offset-2">
+		<span ng-click="system.building.active=false" class="closeBackdrop"><i class="fa fa-times fa-2x"></i></span>
+		<div class="well" style="text-align: center;">
+			<ul class="nav nav-tabs" role="tablist">
+                <li style="cursor: pointer;" role="presentation" class="active" ng-click="system._.setTabActive(1, 'processor')"><a aria-controls="home" role="tab" data-toggle="tab">Processeurs</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'memory')"><a aria-controls="profile" role="tab" data-toggle="tab">Mémoire</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'disk')"><a aria-controls="profile" role="tab" data-toggle="tab">Disques durs</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'motherboard')"><a aria-controls="profile" role="tab" data-toggle="tab">Cartes mère</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'alim')"><a aria-controls="profile" role="tab" data-toggle="tab">Alimentation</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'boxe')"><a aria-controls="profile" role="tab" data-toggle="tab">Boitiers</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'lecteur')"><a aria-controls="profile" role="tab" data-toggle="tab">Lecteur DVD/BD</a></li>
+                <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'graphic')"><a aria-controls="profile" role="tab" data-toggle="tab">Cartes graphiques</a></li>
+            </ul>
+            <div class="tab-content" syle="height: 150px;">
+                <div role="tabpanel" style="overflow:auto;" class="tab-pane active" ng-show="system.view.tabPane1.processor===true">
+                	<div ng-repeat="processors in system.stock | filter:{type: 'processor'}" class="col-lg-12">
+            			<div ng-repeat="processor in processors.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{processor.specs.modele}} <span class="badge" style="float:right;">{{processor.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Fréquence : </b> {{processor.specs.frequence}} Mhz<br>
+			                		<b>Socket : </b> {{processor.specs.socket}}<br>
+			                		<b>Indice de perf. : </b> {{processor.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{processor.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{processor.specs.prix_unit[processor.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                <div style="overflow:auto;" ng-show="system.view.tabPane1.memory===true">
+                   <div ng-repeat="memories in system.stock | filter:{type: 'memory'}" class="col-lg-12">
+            			<div ng-repeat="memory in memories.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{memory.specs.modele}} <span class="badge" style="float:right;">{{memory.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Fréquence : </b> {{memory.specs.frequence}} Mhz<br>
+			                		<b>Capacité : </b> {{memory.specs.capacite}} GB<br>
+			                		<b>Format : </b> {{memory.specs.format}}<br>
+			                		<b>Indice de perf. : </b> {{memory.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{memory.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{memory.specs.prix_unit[memory.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                 <div style="overflow:auto;" ng-show="system.view.tabPane1.disk===true">
+                   <div ng-repeat="disks in system.stock | filter:{type: 'disk'}" class="col-lg-12">
+            			<div ng-repeat="disk in disks.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{disk.specs.modele}} <span class="badge" style="float:right;">{{disk.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>SSD : </b> {{disk.specs.ssd}}<br>
+			                		<b>Capacité : </b> {{disk.specs.capacite}}<br>
+			                		<b>Indice de perf. : </b> {{disk.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{disk.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{disk.specs.prix_unit[disk.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                 <div style="overflow:auto;" ng-show="system.view.tabPane1.motherboard===true">
+                  	 <div ng-repeat="motherboards in system.stock | filter:{type: 'motherboard'}" class="col-lg-12">
+            			<div ng-repeat="motherboard in motherboards.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{motherboard.specs.modele}} <span class="badge" style="float:right;">{{motherboard.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Socket : </b> {{motherboard.specs.socket}}<br>
+			                		<b>Format DIMM : </b> {{motherboard.specs.format_dimm}}<br>
+			                		<b>Fréquence mémoire : </b> {{motherboard.specs.frequence_memoire}} Mhz<br>
+			                		<b>Ports SATA : </b> {{motherboard.specs.ports_sata}}<br>
+			                		<b>Indice de perf. : </b> {{motherboard.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{motherboard.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{motherboard.specs.prix_unit[motherboard.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                 <div style="overflow:auto;" ng-show="system.view.tabPane1.alim===true">
+                    <div ng-repeat="alims in system.stock | filter:{type: 'alim'}" class="col-lg-12">
+            			<div ng-repeat="alim in alims.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{alim.specs.modele}} <span class="badge" style="float:right;">{{alim.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Format : </b> {{alim.specs.format}}<br>
+			                		<b>Consommation : </b> {{alim.specs.consommation}} W<br>
+			                		<b>Indice de perf. : </b> {{alim.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{alim.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{alim.specs.prix_unit[alim.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                 <div style="overflow:auto;" ng-show="system.view.tabPane1.boxe===true">
+                    <div ng-repeat="boxes in system.stock | filter:{type: 'boxe'}" class="col-lg-12">
+            			<div ng-repeat="boxe in boxes.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{boxe.specs.modele}} <span class="badge" style="float:right;">{{boxe.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Format : </b> {{boxe.specs.format}}<br>
+			                		<b>Couleur : </b> {{boxe.specs.couleur}}<br>
+			                		<b>Nb. ventilateurs : </b> {{boxe.specs.nb_ventilateurs}}<br>
+			                		<b>Indice de perf. : </b> {{boxe.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{boxe.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{boxe.specs.prix_unit[boxe.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                 <div style="overflow:auto;" ng-show="system.view.tabPane1.lecteur===true">
+                    <div ng-repeat="lecteurs in system.stock | filter:{type: 'lecteur'}" class="col-lg-12">
+            			<div ng-repeat="lecteur in lecteurs.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{lecteur.specs.modele}} <span class="badge" style="float:right;">{{lecteur.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Type : </b> {{lecteur.specs.type}}<br>
+			                		<b>Indice de perf. : </b> {{lecteur.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{lecteur.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{lecteur.specs.prix_unit[lecteur.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+                 <div style="overflow:auto;" ng-show="system.view.tabPane1.graphic===true">
+                    <div ng-repeat="graphics in system.stock | filter:{type: 'graphic'}" class="col-lg-12">
+            			<div ng-repeat="graphic in graphics.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer">
+		                		{{graphic.specs.modele}} <span class="badge" style="float:right;">{{graphic.quantity}}</span>
+		                		<div style="text-align: left;"><br>
+			                		<b>Mémoire : </b> {{graphic.specs.memoire}} GB<br>
+			                		<b>Nb. sortie vidéo : </b> {{graphic.specs.nb_sortie_video}}<br>
+			                		<b>Indice de perf. : </b> {{graphic.specs.indice_perf}}%<br>
+			                		<b>Popularité : </b> {{graphic.specs.pop}}%<br>
+			                		<b>Prix payé : </b> {{graphic.specs.prix_unit[graphic.typeAchat] | currency:'€'}}<br>
+		                		</div>
+		                	</div>
+	                	</div>
+                	</div>
+                </div>
+            </div>
+		</div>
+	</div>
 </div>
