@@ -15,7 +15,8 @@ var CST = angular.module('CST', [
   /* VIEWS */
   'CST.version',
   /* External module */
-  'ui-notification'
+  'ui-notification',
+  'ang-drag-drop'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');

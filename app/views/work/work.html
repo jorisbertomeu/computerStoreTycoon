@@ -54,7 +54,7 @@
                 <div role="tabpanel" style="overflow:auto;" class="tab-pane active" ng-show="system.view.tabPane1.processor===true">
                 	<div ng-repeat="processors in system.stock | filter:{type: 'processor'}" class="col-lg-12">
             			<div ng-repeat="processor in processors.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            				<div class="hardwareContainer" ui-draggable="true" on-drop-success="dropSuccessHandler($event,$index,men)">
 		                		{{processor.specs.modele}} <span class="badge" style="float:right;">{{processor.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Fréquence : </b> {{processor.specs.frequence}} Mhz<br>
