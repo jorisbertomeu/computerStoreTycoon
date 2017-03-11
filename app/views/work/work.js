@@ -23,6 +23,7 @@ angular.module('CST.work', ['ngRoute'])
 			setTabActive: setTabActive,
 			dropSuccessHandler: dropSuccessHandler,
 			onDrop: onDrop,
+			getPrice: getPrice,
 			translateCategory: translateCategory
 		},
 		view: {
@@ -50,6 +51,7 @@ angular.module('CST.work', ['ngRoute'])
 
 	function buildComputer(work) {
 		ctrl.system.building.active = true;
+		ctrl.system.building.work = work;
 	}
 
 	function setTabActive(id, elem) {
@@ -106,6 +108,15 @@ angular.module('CST.work', ['ngRoute'])
 			}
 		}
 		return ret;
+	}
+
+	function getPrice() {
+		var price = 0;
+
+		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
+			price += ctrl.system.building.workplan.objs[i].quantity * ctrl.system.building.workplan.objs[i].specs.prix_unit[ctrl.system.building.workplan.objs[i].typeAchat];
+		}
+		return price;
 	}
 
 	function hardIsAllowed(data) {
@@ -190,42 +201,34 @@ angular.module('CST.work', ['ngRoute'])
 		if ($data.from === from) {
 			return;
 		}
-		if (from === 1) { // From stock to workplan
-			for (var i = 0; i < ctrl.system.stock.length; i++) {
-				if (ctrl.system.stock[i].type === $data.type) {
-					for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
-						if (ctrl.system.stock[i].objs[j].specs.modele === $data.specs.modele) {
-							if (hardIsAllowed($data)) {
-								ctrl.system.stock[i].objs[j].quantity -= 1;
-								addToWorkplan(angular.copy(ctrl.system.stock[i].objs[j]));
-							}
-							break;
-						}
-					}
-					break;
-				}
-			}
-		} else if (from === 0) { // From workplan to stock
-			for (var i = 0; i < ctrl.system.stock.length; i++) {
-				if (ctrl.system.stock[i].type === $data.type) {
-					for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
-						if (ctrl.system.stock[i].objs[j].specs.modele === $data.specs.modele) {
+		for (var i = 0; i < ctrl.system.stock.length; i++) {
+			if (ctrl.system.stock[i].type === $data.type) {
+				for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
+					if (ctrl.system.stock[i].objs[j].specs.modele === $data.specs.modele) {
+						if (from === 1 && hardIsAllowed($data)) { // From Stock
+							console.log('From stock');
+							ctrl.system.stock[i].objs[j].quantity -= 1;
+							addToWorkplan(angular.copy(ctrl.system.stock[i].objs[j]));
+						} else if (from === 0) { // From Workplan
+							console.log('From wp');
 							ctrl.system.stock[i].objs[j].quantity += 1;
 							deleteFromWorkplan($data);
-							break;
+						} else {
+							console.log('From ??? -> ' + from);
 						}
+						break;
 					}
-					break;
 				}
+				break;
 			}
 		}
 	}
 
 	function dropSuccessHandler($event, $index, obj) {
-		console.log('dropSuccessHandler');
-		console.log($event);
-		console.log($index);
-		console.log(obj);
+		// console.log('dropSuccessHandler');
+		// console.log($event);
+		// console.log($index);
+		// console.log(obj);
 	}
 
 	function addToSplittedStock(elem) {

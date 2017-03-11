@@ -125,6 +125,13 @@
 	display: none;
 }
 
+.backdropHardware {
+    position: absolute;
+    background-color: rgba(0, 0, 0, .1);
+    height: 100%;
+    width: 100%;
+}
+
 .closeBackdrop {
     position: absolute;
     right: 20px;
