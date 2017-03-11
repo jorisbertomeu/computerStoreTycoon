@@ -61,6 +61,9 @@
                 <li>
                     <a ng-click="system._.newClient()"><i class="fa fa-cubes"></i> Nouveau client</a>
                 </li>
+                <li>
+                    <a ng-click="system._.save()"><i class="fa fa-save"></i> Sauvegarder</a>
+                </li>
             </ul>
             <div class="utilPanel" style="text-align: center;">
               <span class="pull-left">{{system.bank.solde | currency:"€"}} (<i class="fa fa-caret-up"></i>)</span>
@@ -165,6 +168,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
   <script src="bower_components/angular/angular.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
   <script src="bower_components/angular-native-dragdrop/draganddrop.min.js"></script>

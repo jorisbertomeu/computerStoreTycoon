@@ -15,6 +15,44 @@
     color: #333;
 }
 
+.buildingPanel {
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.buildPanelheader {
+    border: 1px solid #ccc;
+    margin: -6px;
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.buildHardareHeader {
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin: -4px;
+    /* border-radius: 3px; */
+    margin-bottom: 5px;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.build {
+    padding: 4px;
+}
+
+.build-box {
+    border: 3px solid rgba(200, 0, 0, .5);
+    min-height: 280px !important;
+}
+
+.build-hardware {
+    border: 3px solid rgba(44, 62, 80, .5);
+    /* min-height: 80px !important; */
+}
+
 .noLink:hover {
     text-decoration: none;
     color: #337ab7;

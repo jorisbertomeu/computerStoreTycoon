@@ -1,30 +1,30 @@
 [
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Kingstonne VR16384MBCHS3", 1333, 16, "DDR3", 87, 17, [84, 99], [10, 1], [1, 2], ""]
+		"fields": ["Kingstonne VR16384MBC", 1333, 16, "DDR3", 87, 17, [84, 99], [10, 1], [1, 2], ""]
 	},
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Kingstonne GH8192MBLKY94", 1333, 8, "DDR3", 78, 32, [67, 78], [10, 1], [1, 2], ""]
+		"fields": ["Kingstonne GH8192MBLK", 1333, 8, "DDR3", 78, 32, [67, 78], [10, 1], [1, 2], ""]
 	},
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Corssaire CR8192MBKJS54Z", 1333, 8, "DDR3", 82, 29, [75, 84], [5, 1], [1, 2], ""]
+		"fields": ["Corssaire CR8192MBKJS", 1333, 8, "DDR3", 82, 29, [75, 84], [5, 1], [1, 2], ""]
 	},
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Corssaire CM4096MBJK65DE", 1333, 4, "DDR3", 68, 48, [49, 58], [15, 1], [1, 2], ""]
+		"fields": ["Corssaire CM4096MBJK6", 1333, 4, "DDR3", 68, 48, [49, 58], [15, 1], [1, 2], ""]
 	},
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Daille DL4096MBKLSKD", 1333, 4, "DDR3", 49, 78, [34, 41], [20, 1], [1, 2], ""]
+		"fields": ["Daille DL4096MBKL", 1333, 4, "DDR3", 49, 78, [34, 41], [20, 1], [1, 2], ""]
 	},
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Daille MK4096MBKLSK5", 800, 4, "DDR2", 34, 84, [28, 35], [15, 1], [1, 2], ""]
+		"fields": ["Daille MK4096MBKL", 800, 4, "DDR2", 34, 84, [28, 35], [15, 1], [1, 2], ""]
 	},
 	{
 		"_": {"wantBuy": [false, false], "qte": 0, "type": "memory"},
-		"fields": ["Daille RT2048ML45QI", 800, 2, "DDR2", 27, 78, [21, 28], [20, 1], [1, 2], ""]
+		"fields": ["Daille RT2048ML4", 800, 2, "DDR2", 27, 78, [21, 28], [20, 1], [1, 2], ""]
 	}
 ]

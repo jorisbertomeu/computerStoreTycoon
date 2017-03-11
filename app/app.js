@@ -82,6 +82,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       forwardPressed: forwardPressed,
       fastForwardPressed: fastForwardPressed,
       newClient: newClient,
+      save: save,
       timer: {
         startTime: 0,
         timestamp: 21600, // 1488779400,
@@ -150,6 +151,13 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     Notification.success({message: "Vous avez récupéré le colis contenant '" + data.obj.specs.modele + "', il a été placé dans le stock", delay: null});
     addToStock(data);
     console.log(data);
+  }
+
+  function save() {
+    console.log('Saving in progress !');
+    window.localStorage['CSTSave'] = angular.toJson(ctrl.system);
+    console.log('Saved with success !');
+    Notification.success({message: "Partie enregistrée avec succès !", delay: null});
   }
 
   function newClientDone(data) {
@@ -331,9 +339,23 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   function start() {
     console.log('On démarre !');
-    /* Init Weather */
-    ctrl.system._.weather = ctrl.system._.weatherReference.day[0];
-    ctrl.system._.timer.startTime = ctrl.system._.timer.timestamp;
+    /* On charge une sauvegarde si il y en a une dans le localstorage */
+    var save = angular.fromJson(window.localStorage['CSTSave']);
+    if (save !== undefined && save !== null) {
+      ctrl.system.queue = save.queue;
+      ctrl.system.stock = save.stock;
+      ctrl.system.bank = save.bank;
+      ctrl.system.goals = save.goals;
+      ctrl.system._.weather = save._.weather;
+      ctrl.system._.timer.startTime = save._.timer.startTime;
+      ctrl.system._.timer.timestamp = save._.timer.timestamp;
+      console.log('Save loaded !');
+    } else {
+      /* Init Weather */
+      ctrl.system._.weather = ctrl.system._.weatherReference.day[0];
+      ctrl.system._.timer.startTime = ctrl.system._.timer.timestamp;
+      console.log('Save not found, default loaded');
+    }
   }
 
   function executeQueue(ts) {

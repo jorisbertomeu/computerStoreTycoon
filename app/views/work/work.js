@@ -9,17 +9,21 @@ angular.module('CST.work', ['ngRoute'])
   });
 }])
 
-.controller('workCtrl', function($scope, $rootScope) {
+.controller('workCtrl', function($scope, $rootScope, FileLoader, Notification) {
 	var ctrl = $scope;
 
 	ctrl.system = {
 		stock: [],
 		_: {
+			categoryTranslate : [],
 			receiveWork: null,
 			receiveStock: null,
 			displayTime: displayTime,
 			buildComputer: buildComputer,
-			setTabActive: setTabActive
+			setTabActive: setTabActive,
+			dropSuccessHandler: dropSuccessHandler,
+			onDrop: onDrop,
+			translateCategory: translateCategory
 		},
 		view: {
 			tabPane1: {
@@ -35,7 +39,10 @@ angular.module('CST.work', ['ngRoute'])
 		},
 		work: [],
 		building: {
-			active: false
+			active: false,
+			workplan: {
+				objs: []
+			}
 		}
 	}
 
@@ -71,11 +78,155 @@ angular.module('CST.work', ['ngRoute'])
 	    if (!found) {
 	      ctrl.system.stock[idx].objs.push({
 	        specs: data.specs,
-	        quantity: data.quantity
+	        quantity: data.quantity,
+	        type: data.type,
+	        from: 0, /* From stock */
+	        typeAchat: data.typeAchat
 	      });
 	    }
-	    
 	  }
+
+	function getNbHardware(type) {
+		var nbr = 0;
+
+		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
+			if (ctrl.system.building.workplan.objs[i].type === type) {
+				nbr++;
+			}
+		}
+		return nbr;
+	}
+
+	function getComponent(type) {
+		var ret = [];
+
+		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
+			if (ctrl.system.building.workplan.objs[i].type === type) {
+				ret.push(ctrl.system.building.workplan.objs[i]);
+			}
+		}
+		return ret;
+	}
+
+	function hardIsAllowed(data) {
+		var ret = true;
+
+		if (data.type === 'processor' || data.type === 'motherboard' || data.type === 'alim' || data.type === 'boxe') {
+			if (getNbHardware(data.type) > 0) {
+				ret = false;
+				Notification.error({message: "Vous ne pouvez pas ajouter un composant de type '" + translateCategory(data.type) + "', un seul type de ce composant peut etre assemblé !", delay: 10000});
+			}
+		}
+		if ((data.type === 'processor' || data.type === 'memory' || data.type === 'disk' || data.type === 'lecteur' || data.type === 'graphic') && getNbHardware('motherboard') === 0) {
+			Notification.error({message: "Vous devez placer une carte mère avant d'assembler un composant de type '" + translateCategory(data.type) + "'.", delay: 10000});
+			ret = false;
+		}
+		if ((data.type === 'alim' || data.type === 'lecteur' || data.type === 'motherboard') && getNbHardware('boxe') === 0) {
+			Notification.error({message: "Vous devez placer une Boitier avant d'assembler un composant de type '" + translateCategory(data.type) + "'.", delay: 10000});
+			ret = false;
+		}
+		if (data.type === 'processor') {
+			if (getComponent('motherboard')[0].specs.socket !== data.specs.socket) {
+				Notification.error({message: "Le socket de votre processeur est incompatible avec celui de votre carte mère !", delay: 10000});
+				ret = false;
+			}
+		}
+		if (data.type === 'memory') {
+			if (parseInt(getComponent('motherboard')[0].specs.frequence_memoire, 10) !== data.specs.frequence) {
+				Notification.error({message: "La fréquence de votre mémoire est incompatible avec celle de votre carte mère !", delay: 10000});
+				ret = false;
+			}
+			if (getComponent('motherboard')[0].specs.format_dimm !== data.specs.format) {
+				Notification.error({message: "Le format DIMM de votre mémoire est incompatible avec celle de votre carte mère !", delay: 10000});
+				ret = false;
+			}
+		}
+		if (data.type === 'disk' || data.type === 'lecteur') {
+			if (parseInt(getComponent('motherboard')[0].specs.ports_sata, 10) < (getNbHardware('disk') + getNbHardware('lecteur') + 1)) {
+				Notification.error({message: "Les ports SATA présents sur votre carte mère sont tous occupés !", delay: 10000});
+				ret = false;
+			}
+		}
+		if (data.type === 'alim') {
+			if (getComponent('boxe')[0].specs.format !== data.specs.format) {
+				Notification.error({message: "Votre alimentation n'est pas au même format que l'emplacement prévu dans le boitier !", delay: 10000});
+				ret = false;
+			}
+		}
+		return ret;
+	}
+
+	function addToWorkplan(obj) {
+		var found = false;
+
+		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
+			if (ctrl.system.building.workplan.objs[i].specs.modele === obj.specs.modele) {
+				ctrl.system.building.workplan.objs[i].quantity += 1;
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			obj.quantity = 1;
+			obj.from = 1;
+			ctrl.system.building.workplan.objs.push(obj);
+		}
+	}
+
+	function deleteFromWorkplan(obj) {
+		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
+			if (ctrl.system.building.workplan.objs[i].specs.modele === obj.specs.modele) {
+				ctrl.system.building.workplan.objs[i].quantity -= 1;
+				if (ctrl.system.building.workplan.objs[i].quantity <= 0) {
+					ctrl.system.building.workplan.objs.splice(i, 1);
+				}
+				break;
+			}
+		}
+	}
+
+	function onDrop($event, $data, from) {
+		console.log($data);
+		if ($data.from === from) {
+			return;
+		}
+		if (from === 1) { // From stock to workplan
+			for (var i = 0; i < ctrl.system.stock.length; i++) {
+				if (ctrl.system.stock[i].type === $data.type) {
+					for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
+						if (ctrl.system.stock[i].objs[j].specs.modele === $data.specs.modele) {
+							if (hardIsAllowed($data)) {
+								ctrl.system.stock[i].objs[j].quantity -= 1;
+								addToWorkplan(angular.copy(ctrl.system.stock[i].objs[j]));
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} else if (from === 0) { // From workplan to stock
+			for (var i = 0; i < ctrl.system.stock.length; i++) {
+				if (ctrl.system.stock[i].type === $data.type) {
+					for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
+						if (ctrl.system.stock[i].objs[j].specs.modele === $data.specs.modele) {
+							ctrl.system.stock[i].objs[j].quantity += 1;
+							deleteFromWorkplan($data);
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	function dropSuccessHandler($event, $index, obj) {
+		console.log('dropSuccessHandler');
+		console.log($event);
+		console.log($index);
+		console.log(obj);
+	}
 
 	function addToSplittedStock(elem) {
 		var found = false;
@@ -95,6 +246,18 @@ angular.module('CST.work', ['ngRoute'])
 		}
 	}
 
+	function translateCategory(word) {
+		var replaceBy = "";
+
+		for (var i = 0; i < ctrl.system._.categoryTranslate.length; i++) {
+			if (ctrl.system._.categoryTranslate[i].category === word) {
+				replaceBy = ctrl.system._.categoryTranslate[i].translate;
+				break;
+			}
+		}
+		return replaceBy;
+	}
+
 	function start() {
 		ctrl.system._.receiveWork = $rootScope.$on('work', function(event, data) {
 			console.log(data);
@@ -112,6 +275,9 @@ angular.module('CST.work', ['ngRoute'])
 		});
 		ctrl.$on("$destroy", ctrl.system._.receiveStock);
 		$rootScope.$emit("getStock", {});
+		FileLoader.getFile('./res/json/category_translate.json').success(function(data) {
+			ctrl.system._.categoryTranslate = data;
+		});
 	}
 
 	function displayTime(ts) {

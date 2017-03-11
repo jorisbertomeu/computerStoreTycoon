@@ -1,45 +1,23 @@
 <div class="col-lg-12">
-	<table class="table table-striped">
-	    <thead>
-	        <tr>
-	            <th>#</th>
-	            <th>Client</th>
-	            <th>Demande</th>
-	            <th>Budget</th>
-	            <th>Accepté le</th>
-	            <th>Date de rendu</th>
-	            <th></th>
-	            <th></th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr ng-repeat="work in system.work">
-	            <th style="vertical-align: middle;" scope="row">{{$index+1}}</th>
-	            <td style="vertical-align: middle;">
-	            	<div class="clientContainer">
-	            		<img width="24px" class="img-circle" src="{{work.people.thumbnail}}" style="float:left;">
-	            		&nbsp;{{work.people.name}}
-	            		<div class="caretClientContainer">
-	            			<i class="fa fa-caret-down"></i>
-	            		</div>
-	            	</div>
-	            </td>
-	            <td style="width: 200px;">{{work.goal.libelle}}</td>
-	            <td style="vertical-align: middle;">Entre <b>{{work.goal.budget_min | currency: '€'}}</b> et <b>{{work.goal.budget_max | currency: '€'}}</b></td>
-	            <td style="vertical-align: middle;">{{system._.displayTime(work.addedOn)}}</td>
-	            <td style="vertical-align: middle;">{{system._.displayTime(work.deadline)}}</td>
-	            <td style="vertical-align: middle;"><button ng-click="system._.buildComputer(work)" class="btn btn-success btn-xs"><i class="fa fa-cogs"></i> Faire l'ordinateur</button></td>
-	            <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs"><i class="fa fa-times"></i> Annuler la demande</button></td>
-	        </tr>
-
-	    </tbody>
-	</table>
+	<div class="col-lg-4" ng-repeat="work in system.work">
+		<div class="well">
+			<div class="text-center">
+				<img width="64px" class="img-circle" src="{{work.people.photo}}"><br>
+        		{{work.people.name}}
+			</div><br>
+        	<b>Budget : </b>entre <b>{{work.goal.budget_min | currency: '€'}}</b> et <b>{{work.goal.budget_max | currency: '€'}}</b><br>
+        	<b>Accepté le : </b>{{system._.displayTime(work.addedOn)}}<br>
+        	<b>Date du rendu : </b>{{system._.displayTime(work.deadline)}}<br><br>
+        	<textarea class="form-control" disabled>{{work.goal.libelle}}</textarea><br>
+        	<button ng-click="system._.buildComputer(work)" class="btn btn-success btn-block"><i class="fa fa-cogs"></i> Faire l'ordinateur</button>
+		</div>
+	</div>
 </div>
 
 <div class="backdrop" ng-show="system.building.active">
 	<div style="margin-top: 20px; opacity: .95" class="col-lg-8 col-lg-offset-2">
 		<span ng-click="system.building.active=false" class="closeBackdrop"><i class="fa fa-times fa-2x"></i></span>
-		<div class="well" style="text-align: center;">
+		<div class="well" style="text-align: center;" ui-on-Drop="system._.onDrop($event, $data, 0)">
 			<ul class="nav nav-tabs" role="tablist">
                 <li style="cursor: pointer;" role="presentation" class="active" ng-click="system._.setTabActive(1, 'processor')"><a aria-controls="home" role="tab" data-toggle="tab">Processeurs</a></li>
                 <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'memory')"><a aria-controls="profile" role="tab" data-toggle="tab">Mémoire</a></li>
@@ -53,8 +31,8 @@
             <div class="tab-content" syle="height: 150px;">
                 <div role="tabpanel" style="overflow:auto;" class="tab-pane active" ng-show="system.view.tabPane1.processor===true">
                 	<div ng-repeat="processors in system.stock | filter:{type: 'processor'}" class="col-lg-12">
-            			<div ng-repeat="processor in processors.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer" ui-draggable="true" on-drop-success="dropSuccessHandler($event,$index,men)">
+            			<div ng-repeat="processor in processors.objs" style="padding: 10px" class="col-lg-2" ng-show="processor.quantity > 0">
+            				<div class="hardwareContainer" drag="processor" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, processor)">
 		                		{{processor.specs.modele}} <span class="badge" style="float:right;">{{processor.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Fréquence : </b> {{processor.specs.frequence}} Mhz<br>
@@ -69,8 +47,8 @@
                 </div>
                 <div style="overflow:auto;" ng-show="system.view.tabPane1.memory===true">
                    <div ng-repeat="memories in system.stock | filter:{type: 'memory'}" class="col-lg-12">
-            			<div ng-repeat="memory in memories.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            			<div ng-show="memory.quantity > 0" ng-repeat="memory in memories.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="memory" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, memory)">
 		                		{{memory.specs.modele}} <span class="badge" style="float:right;">{{memory.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Fréquence : </b> {{memory.specs.frequence}} Mhz<br>
@@ -86,12 +64,12 @@
                 </div>
                  <div style="overflow:auto;" ng-show="system.view.tabPane1.disk===true">
                    <div ng-repeat="disks in system.stock | filter:{type: 'disk'}" class="col-lg-12">
-            			<div ng-repeat="disk in disks.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            			<div ng-show="disk.quantity > 0" ng-repeat="disk in disks.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="disk" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, disk)">
 		                		{{disk.specs.modele}} <span class="badge" style="float:right;">{{disk.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>SSD : </b> {{disk.specs.ssd}}<br>
-			                		<b>Capacité : </b> {{disk.specs.capacite}}<br>
+			                		<b>Capacité : </b> {{disk.specs.capacite}} GB<br>
 			                		<b>Indice de perf. : </b> {{disk.specs.indice_perf}}%<br>
 			                		<b>Popularité : </b> {{disk.specs.pop}}%<br>
 			                		<b>Prix payé : </b> {{disk.specs.prix_unit[disk.typeAchat] | currency:'€'}}<br>
@@ -101,9 +79,9 @@
                 	</div>
                 </div>
                  <div style="overflow:auto;" ng-show="system.view.tabPane1.motherboard===true">
-                  	 <div ng-repeat="motherboards in system.stock | filter:{type: 'motherboard'}" class="col-lg-12">
-            			<div ng-repeat="motherboard in motherboards.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+                  	 <div ng-repeat="motherboards in system.stock | filter:{type: 'motherboard'}" class="col-lg-12" disabled>
+            			<div ng-show="motherboard.quantity > 0" ng-repeat="motherboard in motherboards.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="motherboard" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, motherboard)">
 		                		{{motherboard.specs.modele}} <span class="badge" style="float:right;">{{motherboard.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Socket : </b> {{motherboard.specs.socket}}<br>
@@ -120,8 +98,8 @@
                 </div>
                  <div style="overflow:auto;" ng-show="system.view.tabPane1.alim===true">
                     <div ng-repeat="alims in system.stock | filter:{type: 'alim'}" class="col-lg-12">
-            			<div ng-repeat="alim in alims.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            			<div ng-show="alim.quantity > 0" ng-repeat="alim in alims.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="alim" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, alim)">
 		                		{{alim.specs.modele}} <span class="badge" style="float:right;">{{alim.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Format : </b> {{alim.specs.format}}<br>
@@ -136,8 +114,8 @@
                 </div>
                  <div style="overflow:auto;" ng-show="system.view.tabPane1.boxe===true">
                     <div ng-repeat="boxes in system.stock | filter:{type: 'boxe'}" class="col-lg-12">
-            			<div ng-repeat="boxe in boxes.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            			<div ng-show="boxe.quantity > 0"  ng-repeat="boxe in boxes.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="boxe" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, boxe)">
 		                		{{boxe.specs.modele}} <span class="badge" style="float:right;">{{boxe.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Format : </b> {{boxe.specs.format}}<br>
@@ -153,8 +131,8 @@
                 </div>
                  <div style="overflow:auto;" ng-show="system.view.tabPane1.lecteur===true">
                     <div ng-repeat="lecteurs in system.stock | filter:{type: 'lecteur'}" class="col-lg-12">
-            			<div ng-repeat="lecteur in lecteurs.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            			<div ng-show="lecteur.quantity > 0" ng-repeat="lecteur in lecteurs.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="lecteur" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, lecteur)">
 		                		{{lecteur.specs.modele}} <span class="badge" style="float:right;">{{lecteur.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Type : </b> {{lecteur.specs.type}}<br>
@@ -168,8 +146,8 @@
                 </div>
                  <div style="overflow:auto;" ng-show="system.view.tabPane1.graphic===true">
                     <div ng-repeat="graphics in system.stock | filter:{type: 'graphic'}" class="col-lg-12">
-            			<div ng-repeat="graphic in graphics.objs" style="padding: 10px" class="col-lg-2">
-            				<div class="hardwareContainer">
+            			<div ng-show="graphic.quantity > 0" ng-repeat="graphic in graphics.objs" style="padding: 10px" class="col-lg-2">
+            				<div class="hardwareContainer" drag="graphic" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, graphic)">
 		                		{{graphic.specs.modele}} <span class="badge" style="float:right;">{{graphic.quantity}}</span>
 		                		<div style="text-align: left;"><br>
 			                		<b>Mémoire : </b> {{graphic.specs.memoire}} GB<br>
@@ -183,6 +161,24 @@
                 	</div>
                 </div>
             </div>
+		</div>
+		<div class="well" style="text-align: center;overflow: auto;">
+			<div class="col-lg-offset-3 col-lg-6 buildingPanel" style="min-height: 300px !important;" ui-on-Drop="system._.onDrop($event, $data, 1)">
+				<div class="buildPanelheader">
+					Plan de travail
+				</div>
+				<div ng-repeat="obj in system.building.workplan.objs" class="col-lg-4" style="padding: 5px !important;" ui-draggable="true" on-drop-success="system._.dropSuccessHandler($event, $index, obj)" drag="obj">
+					<div class="build build-hardware">
+						<div class="buildHardareHeader">
+							{{system._.translateCategory(obj.type)}} 
+						</div>
+						<span style="font-size: 11px;">
+							{{obj.specs.modele}}<br>
+							x{{obj.quantity}}
+						</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
