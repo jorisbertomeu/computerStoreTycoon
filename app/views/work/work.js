@@ -88,23 +88,24 @@ angular.module('CST.work', ['ngRoute'])
 	    }
 	  }
 
-	function getNbHardware(type) {
+	function getNbHardware(from, type) {
 		var nbr = 0;
 
-		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
-			if (ctrl.system.building.workplan.objs[i].type === type) {
+		console.log(from);
+		for (var i = 0; i < from.length; i++) {
+			if (from[i].type === type) {
 				nbr++;
 			}
 		}
 		return nbr;
 	}
 
-	function getComponent(type) {
+	function getComponent(from, type) {
 		var ret = [];
 
-		for (var i = 0; i < ctrl.system.building.workplan.objs.length; i++) {
-			if (ctrl.system.building.workplan.objs[i].type === type) {
-				ret.push(ctrl.system.building.workplan.objs[i]);
+		for (var i = 0; i < from.length; i++) {
+			if (from[i].type === type) {
+				ret.push(from[i]);
 			}
 		}
 		return ret;
@@ -119,48 +120,56 @@ angular.module('CST.work', ['ngRoute'])
 		return price;
 	}
 
-	function hardIsAllowed(data) {
+	function hardIsAllowed(from, data, silentMode, toTest) {
 		var ret = true;
 
-		if (data.type === 'processor' || data.type === 'motherboard' || data.type === 'alim' || data.type === 'boxe') {
-			if (getNbHardware(data.type) > 0) {
+		if ((data.type === 'processor' || data.type === 'motherboard' || data.type === 'alim' || data.type === 'boxe') && !toTest) {
+			if (getNbHardware(from, data.type) > 0) {
 				ret = false;
-				Notification.error({message: "Vous ne pouvez pas ajouter un composant de type '" + translateCategory(data.type) + "', un seul type de ce composant peut etre assemblé !", delay: 10000});
+				if (!silentMode)
+					Notification.error({message: "Vous ne pouvez pas ajouter un composant de type '" + translateCategory(data.type) + "', un seul type de ce composant peut etre assemblé !", delay: 10000});
 			}
 		}
-		if ((data.type === 'processor' || data.type === 'memory' || data.type === 'disk' || data.type === 'lecteur' || data.type === 'graphic') && getNbHardware('motherboard') === 0) {
-			Notification.error({message: "Vous devez placer une carte mère avant d'assembler un composant de type '" + translateCategory(data.type) + "'.", delay: 10000});
+		if ((data.type === 'processor' || data.type === 'memory' || data.type === 'disk' || data.type === 'lecteur' || data.type === 'graphic') && getNbHardware(from, 'motherboard') === 0) {
+			if (!silentMode)
+				Notification.error({message: "Vous devez placer une carte mère avant d'assembler un composant de type '" + translateCategory(data.type) + "'.", delay: 10000});
 			ret = false;
 		}
-		if ((data.type === 'alim' || data.type === 'lecteur' || data.type === 'motherboard') && getNbHardware('boxe') === 0) {
-			Notification.error({message: "Vous devez placer une Boitier avant d'assembler un composant de type '" + translateCategory(data.type) + "'.", delay: 10000});
+		if ((data.type === 'alim' || data.type === 'lecteur' || data.type === 'motherboard') && getNbHardware(from, 'boxe') === 0) {
+			if (!silentMode)
+				Notification.error({message: "Vous devez placer une Boitier avant d'assembler un composant de type '" + translateCategory(data.type) + "'.", delay: 10000});
 			ret = false;
 		}
 		if (data.type === 'processor') {
-			if (getComponent('motherboard')[0].specs.socket !== data.specs.socket) {
-				Notification.error({message: "Le socket de votre processeur est incompatible avec celui de votre carte mère !", delay: 10000});
+			if (getNbHardware(from, 'motherboard') > 0 && getComponent(from, 'motherboard')[0].specs.socket !== data.specs.socket) {
+				if (!silentMode)
+					Notification.error({message: "Le socket de votre processeur est incompatible avec celui de votre carte mère !", delay: 10000});
 				ret = false;
 			}
 		}
 		if (data.type === 'memory') {
-			if (parseInt(getComponent('motherboard')[0].specs.frequence_memoire, 10) !== data.specs.frequence) {
-				Notification.error({message: "La fréquence de votre mémoire est incompatible avec celle de votre carte mère !", delay: 10000});
+			if (parseInt(getComponent(from, 'motherboard')[0].specs.frequence_memoire, 10) !== data.specs.frequence) {
+				if (!silentMode)
+					Notification.error({message: "La fréquence de votre mémoire est incompatible avec celle de votre carte mère !", delay: 10000});
 				ret = false;
 			}
-			if (getComponent('motherboard')[0].specs.format_dimm !== data.specs.format) {
-				Notification.error({message: "Le format DIMM de votre mémoire est incompatible avec celle de votre carte mère !", delay: 10000});
+			if (getComponent(from, 'motherboard')[0].specs.format_dimm !== data.specs.format) {
+				if (!silentMode)
+					Notification.error({message: "Le format DIMM de votre mémoire est incompatible avec celle de votre carte mère !", delay: 10000});
 				ret = false;
 			}
 		}
 		if (data.type === 'disk' || data.type === 'lecteur') {
-			if (parseInt(getComponent('motherboard')[0].specs.ports_sata, 10) < (getNbHardware('disk') + getNbHardware('lecteur') + 1)) {
-				Notification.error({message: "Les ports SATA présents sur votre carte mère sont tous occupés !", delay: 10000});
+			if (parseInt(getComponent(from, 'motherboard')[0].specs.ports_sata, 10) < (getNbHardware(from, 'disk') + getNbHardware(from, 'lecteur') + 1)) {
+				if (!silentMode)
+					Notification.error({message: "Les ports SATA présents sur votre carte mère sont tous occupés !", delay: 10000});
 				ret = false;
 			}
 		}
 		if (data.type === 'alim') {
-			if (getComponent('boxe')[0].specs.format !== data.specs.format) {
-				Notification.error({message: "Votre alimentation n'est pas au même format que l'emplacement prévu dans le boitier !", delay: 10000});
+			if (getComponent(from, 'boxe')[0].specs.format !== data.specs.format) {
+				if (!silentMode)
+					Notification.error({message: "Votre alimentation n'est pas au même format que l'emplacement prévu dans le boitier !", delay: 10000});
 				ret = false;
 			}
 		}
@@ -196,6 +205,25 @@ angular.module('CST.work', ['ngRoute'])
 		}
 	}
 
+	function allowedToBeRemoved(obj) {
+		var tmp = angular.copy(ctrl.system.building.workplan.objs);
+		var allowed = 0;
+
+		for (var i = 0; i < tmp.length; i++) {
+			if (tmp[i].specs.modele === obj.specs.modele) {
+				tmp[i].quantity -= 1;
+				if (tmp[i].quantity <= 0) {
+					tmp.splice(i, 1);
+				}
+				break;
+			}
+		}
+		for (var i = 0; i < tmp.length; i++) {
+			allowed += (hardIsAllowed(tmp, tmp[i], false, true) === true) ? 0 : 1;
+		}
+		return (allowed !== 0) ? false : true;
+	}
+
 	function onDrop($event, $data, from) {
 		console.log($data);
 		if ($data.from === from) {
@@ -205,11 +233,11 @@ angular.module('CST.work', ['ngRoute'])
 			if (ctrl.system.stock[i].type === $data.type) {
 				for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
 					if (ctrl.system.stock[i].objs[j].specs.modele === $data.specs.modele) {
-						if (from === 1 && hardIsAllowed($data)) { // From Stock
+						if (from === 1 && hardIsAllowed(ctrl.system.building.workplan.objs, $data)) { // From Stock
 							console.log('From stock');
 							ctrl.system.stock[i].objs[j].quantity -= 1;
 							addToWorkplan(angular.copy(ctrl.system.stock[i].objs[j]));
-						} else if (from === 0) { // From Workplan
+						} else if (from === 0 && allowedToBeRemoved($data)) { // From Workplan
 							console.log('From wp');
 							ctrl.system.stock[i].objs[j].quantity += 1;
 							deleteFromWorkplan($data);
