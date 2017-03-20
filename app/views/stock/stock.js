@@ -29,6 +29,8 @@ angular.module('CST.stock', ['ngRoute'])
 			}
 		},
 		_: {
+			showByCat: showByCat,
+			showInfoButton: showInfoButton,
 			receiveStock: null,
 			commandeType: 0,
 			routines: {
@@ -103,6 +105,17 @@ angular.module('CST.stock', ['ngRoute'])
 		});
 	}
 
+	function showByCat(type) {
+		var tab = [];
+
+		$.each(ctrl.system.stock, function(i, elem) {
+			if (elem.type === type) {
+				tab.push(elem);
+			}
+		});
+		return tab;
+	}
+
 	function changeTabTo(dest) {
 		if (dest === 0) {
 			ctrl.system._.tabs.fournisseur = true;
@@ -168,6 +181,8 @@ angular.module('CST.stock', ['ngRoute'])
 			return {value: field + '%', class: classe};
 		} else if (header === 'Fréquence' || header === 'Fréquence mémoire') {
 			return {value: field + ' Mhz', class: ''};
+		} else if (header === 'Consommation') {
+			return {value: field + ' W', class: ''};
 		} else if (header === 'Capacité' || header === 'Mémoire') {
 			return {value: field + ' GB', class: ''};
 		} else if (header === 'En stock') {
@@ -272,6 +287,17 @@ angular.module('CST.stock', ['ngRoute'])
 			item._.qte = 1;
 			item._.wantBuy[type] = false;
 		}
+	}
+
+	function showInfoButton(header) {
+		var show = false;
+
+		if (header === 'Socket' || header === 'Fréquence' || header === 'Capacité' || header === 'Format' || header === 'SSD' || header === 'Format DIMM'
+			|| header === 'Ports SATA' || header === 'Fréquence mémoire' || header === 'Consommation' || header === 'Nb. ventilateurs' || header === 'Type'
+			|| header === 'Mémoire' || header === 'Nb. sortie vidéo') {
+			show = true;
+		}
+		return show;
 	}
 
 }]);

@@ -79,6 +79,16 @@
     border-radius: 0px 5px 5px 0px;
 }
 
+.btn-circle {
+  width: 25px;
+  height: 25px;
+  text-align: center !important;
+  padding: 4px 0 !important;
+  font-size: 12px !important;
+  line-height: 1.428571429 !important;
+  border-radius: 15px !important;
+}
+
 .caretClientContainer:hover {
     background-color: #EFEFEF;
 }
