@@ -79,7 +79,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-6" style="text-align: right;">_money_setter_ : </div>
-				<div class="col-lg-6" style="text-align: center;"><input class="form-control input-sm" placeholder="How much € do u want ?"></div><br><br>
+				<div class="col-lg-6" style="text-align: center;"><input ng-model="system.params.money" ng-change="system._.setMoney()" class="form-control input-sm" placeholder="How much € do u want ?"></div><br><br>
 				<div class="col-lg-6" style="text-align: right;">_allow_no_intervention_ : </div>
 				<div class="col-lg-6" style="text-align: center;"><button class="btn btn-danger btn-xs">False</button></div><br><br>
 				<div class="col-lg-6" style="text-align: right;">_free_shopping_ : </div>

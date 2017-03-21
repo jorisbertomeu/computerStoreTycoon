@@ -120,6 +120,11 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     $rootScope.$emit("stock", ctrl.system.stock);
   });
 
+  $rootScope.$on("setMoney", function(event, data) {
+    ctrl.system.bank.solde = parseInt(data);
+    Notification.success({message: "Nouveau solde bancaire : €" + data, delay: null});
+  });
+
    $rootScope.$on("getTimestamp", function(event, data) {
     $rootScope.$emit("timestamp", ctrl.system._.timer.timestamp);
   });
