@@ -1,6 +1,12 @@
 {
 	"config": {
-		"randomPeople": true
+		"randomPeople": false
+	},
+	"people": {
+		"name": "Jean Dujardin",
+		"email": "jean.dujardin@gmail.com",
+		"photo": "http://www.konkours.com/w_data/images/110100/110033/110033_128.jpg",
+		"tel": "+33628759450"
 	},
 	"steps": [
 		{

@@ -282,6 +282,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
           deferred.resolve(dialog);
         });
       } else {
+        dialog.people = data.people;
         $.each(data.steps, function(i, elem) {
           dialog = addStepToDialog(dialog, elem.client, elem.response);
         });
