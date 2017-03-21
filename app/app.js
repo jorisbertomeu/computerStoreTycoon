@@ -24,7 +24,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
-CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', 'FileLoader', function($scope, $rootScope, Notification, $filter, $http, $q, FileLoader) {
+CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', 'FileLoader', '$route', function($scope, $rootScope, Notification, $filter, $http, $q, FileLoader, $route) {
   var ctrl = $scope;
 
   ctrl.config = {
@@ -51,6 +51,8 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     },
     goals: [],
     _: {
+      loadSave: loadSave,
+      jsonLoadSave: null,
       dialoging: {
         status: false,
         people: null,
@@ -158,6 +160,13 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     window.localStorage['CSTSave'] = angular.toJson(ctrl.system);
     console.log('Saved with success !');
     Notification.success({message: "Partie enregistrée avec succès !", delay: null});
+  }
+
+  function loadSave() {
+    console.log(ctrl.system._.jsonLoadSave);
+    window.localStorage['CSTSave'] = angular.toJson(ctrl.system._.jsonLoadSave);
+    Notification.success({message: "Fichier de sauvegarde chargé avec succès !", delay: null});
+    $route.reload();
   }
 
   function newClientDone(data) {

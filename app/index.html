@@ -64,6 +64,9 @@
                 <li>
                     <a ng-click="system._.save()"><i class="fa fa-save"></i> Sauvegarder</a>
                 </li>
+                <li>
+                    <a data-toggle="modal" data-target="#loadSaveModal"><i class="fa fa-download"></i> Charger sauvegarde</a>
+                </li>
             </ul>
             <div class="utilPanel" style="text-align: center;">
               <span class="pull-left">{{system.bank.solde | currency:"€"}} (<i class="fa fa-caret-up"></i>)</span>
@@ -163,6 +166,21 @@
   </div>
 
   <div>Angular seed app: v<span app-version></span></div>
+
+  <div class="modal fade" id="loadSaveModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel">
+    <div class="modal-dialog" style="width: 50%" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="stockModalLabel">Charger sauvegarde</h4>
+        </div>
+        <div class="modal-body">
+          <textarea ng-model="system._.jsonLoadSave" class="form-control" rows="8" placeholder="JSON here !"></textarea><br>
+          <span class="pull-right"><button ng-click="system._.loadSave()" class="btn btn-primary"><i class="fa fa-cog"></i> Charger</button></span><br><br>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
