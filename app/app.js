@@ -164,7 +164,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   function loadSave() {
     console.log(ctrl.system._.jsonLoadSave);
-    window.localStorage['CSTSave'] = angular.toJson(ctrl.system._.jsonLoadSave);
+    window.localStorage['CSTSave'] = ctrl.system._.jsonLoadSave;
     Notification.success({message: "Fichier de sauvegarde chargé avec succès !", delay: null});
     $route.reload();
   }
