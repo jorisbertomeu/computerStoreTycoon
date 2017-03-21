@@ -6,23 +6,20 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Fréquence</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(1)" ng-if="$index < (system.view.modal.getHeaders(1).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>Intel Core i7 4680k</td>
-				            <td>3.40 Ghz</td>
-				            <td style="color: green">79%</td>
-				            <td>87%</td>
-				            <td>42</td>
+				       <tr ng-repeat="item in system._.showByCat('processor')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(1)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(1)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(1)[2]).class}}">{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(1)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(1)[3]).class}}">{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(1)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(1)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(1)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(1)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(1)[5]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -36,27 +33,21 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Fréquence</th>
-				            <th>Capacité</th>
-				            <th>Format</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(2)" ng-if="$index < (system.view.modal.getHeaders(2).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>Kingston VR4096MBCHS3</td>
-				            <td>1333 Mhz</td>
-				            <td>4 GO</td>
-				            <td>DDR3</td>
-				            <td style="color: green">57%</td>
-				            <td>81%</td>
-				            <td>9</td>
+				       <tr ng-repeat="item in system._.showByCat('memory')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(2)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(2)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(2)[2]).class}}">{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(2)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(2)[3]).class}}">{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(2)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(2)[4]).class}}">{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(2)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(2)[5]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(2)[5]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(2)[6]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(2)[6]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -70,25 +61,20 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>SSD</th>
-				            <th>Capacité</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(3)" ng-if="$index < (system.view.modal.getHeaders(3).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>Segate 1000VB33HSB</td>
-				            <td style="color: green"><i class="fa fa-check"></i></td>
-				            <td>1 TO</td>
-				            <td style="color: green">61%</td>
-				            <td>90%</td>
-				            <td>12</td>
+				       <tr ng-repeat="item in system._.showByCat('disk')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(3)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(3)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.ssd, null, system.view.modal.getHeaders(3)[2]).class}}">{{system.view.modal.displayField(item.specs.ssd, null, system.view.modal.getHeaders(3)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(3)[3]).class}}">{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(3)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(3)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(3)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(3)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(3)[5]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -102,29 +88,22 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Socket</th>
-				            <th>Format DIMM</th>
-				            <th>Fréquence mémoire</th>
-				            <th>Ports SATA</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(4)" ng-if="$index < (system.view.modal.getHeaders(4).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>Asus P9B</td>
-				            <td>LGA2011</td>
-				            <td>DDR3</td>
-				            <td>1333 Mhz</td>
-				            <td>4</td>
-				            <td style="color: green">68%</td>
-				            <td>72%</td>
-				            <td>5</td>
+				       <tr ng-repeat="item in system._.showByCat('motherboard')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(4)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(4)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(4)[2]).class}}">{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(4)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.format_dimm, null, system.view.modal.getHeaders(4)[3]).class}}">{{system.view.modal.displayField(item.specs.format_dimm, null, system.view.modal.getHeaders(4)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.frequence_memoire, null, system.view.modal.getHeaders(4)[4]).class}}">{{system.view.modal.displayField(item.specs.frequence_memoire, null, system.view.modal.getHeaders(4)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.ports_sata, null, system.view.modal.getHeaders(4)[5]).class}}">{{system.view.modal.displayField(item.specs.ports_sata, null, system.view.modal.getHeaders(4)[5]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(4)[6]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(4)[6]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(4)[7]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(4)[7]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -138,25 +117,20 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Format</th>
-				            <th>Consommation</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(5)" ng-if="$index < (system.view.modal.getHeaders(5).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>Corsair 11T9Y</td>
-				            <td>ATX</td>
-				            <td>600 W</td>
-				            <td style="color: green">46%</td>
-				            <td>90%</td>
-				            <td>8</td>
+				       <tr ng-repeat="item in system._.showByCat('alim')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(5)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(5)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(5)[2]).class}}">{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(5)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.consommation, null, system.view.modal.getHeaders(5)[3]).class}}">{{system.view.modal.displayField(item.specs.consommation, null, system.view.modal.getHeaders(5)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(5)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(5)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(5)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(5)[5]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -170,27 +144,21 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Format</th>
-				            <th>Couleur</th>
-				            <th>Ventilateurs</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(6)" ng-if="$index < (system.view.modal.getHeaders(6).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>CoolerMaster MX12B</td>
-				            <td>ATX</td>
-				            <td>Noir</td>
-				            <td>4</td>
-				            <td style="color: green">62%</td>
-				            <td>90%</td>
-				            <td>2</td>
+				       <tr ng-repeat="item in system._.showByCat('boxe')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(6)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(6)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(6)[2]).class}}">{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(6)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.couleur, null, system.view.modal.getHeaders(6)[3]).class}}">{{system.view.modal.displayField(item.specs.couleur, null, system.view.modal.getHeaders(6)[3]).value}}</td>
+				             <td class="{{system.view.modal.displayField(item.specs.nb_ventilateurs, null, system.view.modal.getHeaders(6)[4]).class}}">{{system.view.modal.displayField(item.specs.nb_ventilateurs, null, system.view.modal.getHeaders(6)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(6)[5]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(6)[5]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(6)[6]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(6)[6]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -204,23 +172,19 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Type</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(7)" ng-if="$index < (system.view.modal.getHeaders(7).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>Pioneer BD12PT</td>
-				            <td>Blueray</td>
-				            <td style="color: green">63%</td>
-				            <td>90%</td>
-				            <td>2</td>
+				       <tr ng-repeat="item in system._.showByCat('lecteur')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(7)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(7)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.type, null, system.view.modal.getHeaders(7)[2]).class}}">{{system.view.modal.displayField(item.specs.type, null, system.view.modal.getHeaders(7)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(7)[3]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(7)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(7)[4]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(7)[4]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -234,25 +198,20 @@
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
-				        <tr>
-				            <th>#</th>
-				            <th>Modèle</th>
-				            <th>Mémoire</th>
-				            <th>Sorties vidéo</th>
-				            <th>Indice perf.</th>
-				            <th>Pop.</th>
-				            <th>Qté.</th>
+				       <tr>
+				            <th ng-repeat="header in system.view.modal.getHeaders(8)" ng-if="$index < (system.view.modal.getHeaders(8).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				        <tr>
-				            <th scope="row">1</th>
-				            <td>GTX 1080Ti</td>
-				            <td>11 GO</td>
-				            <td>4</td>
-				            <td style="color: green">87%</td>
-				            <td>90%</td>
-				            <td>2</td>
+				       <tr ng-repeat="item in system._.showByCat('graphic')">
+				            <th scope="row">{{$index + 1}}</th>
+				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(8)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(8)[1]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.memoire, null, system.view.modal.getHeaders(8)[2]).class}}">{{system.view.modal.displayField(item.specs.memoire, null, system.view.modal.getHeaders(8)[2]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.nb_sortie_video, null, system.view.modal.getHeaders(8)[3]).class}}">{{system.view.modal.displayField(item.specs.nb_sortie_video, null, system.view.modal.getHeaders(8)[3]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(8)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(8)[4]).value}}</td>
+				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(8)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(8)[5]).value}}</td>
+				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
 				</table>
@@ -291,7 +250,7 @@
 					    		<table class="table table-striped">
 								    <thead>
 								        <tr>
-								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}}</th>
+								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}} <a ng-show="system._.showInfoButton(header)"><i class="fa fa-question"></i></a></th>
 								        </tr>
 								    </thead>
 								    <tbody>
@@ -321,7 +280,7 @@
 					        	<table class="table table-striped">
 								    <thead>
 								       <tr>
-								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}}</th>
+								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
 								        </tr>
 								    </thead>
 								    <tbody>
