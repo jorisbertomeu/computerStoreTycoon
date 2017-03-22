@@ -123,6 +123,10 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   $rootScope.$on("getClients", function(event, data) {
     $rootScope.$emit("clients", ctrl.system.clients);
+
+  $rootScope.$on("setMoney", function(event, data) {
+    ctrl.system.bank.solde = parseInt(data);
+    Notification.success({message: "Nouveau solde bancaire : €" + data, delay: null});
   });
 
    $rootScope.$on("getTimestamp", function(event, data) {
@@ -296,6 +300,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
           deferred.resolve(dialog);
         });
       } else {
+        dialog.people = data.people;
         $.each(data.steps, function(i, elem) {
           dialog = addStepToDialog(dialog, elem.client, elem.response);
         });

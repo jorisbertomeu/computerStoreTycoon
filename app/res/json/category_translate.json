@@ -1,0 +1,34 @@
+[
+	{
+		"category": "processor",
+		"translate": "Processeur"
+	},
+	{
+		"category": "memory",
+		"translate": "Mémoire"
+	},
+	{
+		"category": "disk",
+		"translate": "Disque dur"
+	},
+	{
+		"category": "motherboard",
+		"translate": "Carte mère"
+	},
+	{
+		"category": "alim",
+		"translate": "Alimentation"
+	},
+	{
+		"category": "boxe",
+		"translate": "Boitier"
+	},
+	{
+		"category": "lecteur",
+		"translate": "Lecteur DVD/BD"
+	},
+	{
+		"category": "graphic",
+		"translate": "Carte graphique"
+	}
+]
