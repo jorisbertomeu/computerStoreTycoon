@@ -46,6 +46,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   ctrl.system = {
     queue: [],
     stock: [],
+    clients: [],
     bank: {
       solde: 10000
     },
@@ -118,6 +119,10 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   $rootScope.$on("getStock", function(event, data) {
     $rootScope.$emit("stock", ctrl.system.stock);
+  });
+
+  $rootScope.$on("getClients", function(event, data) {
+    $rootScope.$emit("clients", ctrl.system.clients);
   });
 
    $rootScope.$on("getTimestamp", function(event, data) {
@@ -238,7 +243,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       }
     } else if (!bse) { /* Discussion terminée ! */
       ctrl.system._.dialoging.status = false;
-      dialog.cbFinished();
+      dialog.cbFinished({answers: ctrl.system._.dialoging.answers, goal: dialog._.goal, people: dialog.people});
     } else {
       ctrl.system._.dialoging.finished = true;
     }
@@ -301,13 +306,17 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   }
 
   function dialogFinished(data) {
+    var client = {};
+
     console.log('Dialog finished');
     console.log(data);
+    client.people = data.people;
+    client.goal = data.goal;
     if (data.goal.active) {
       Notification.primary({message: 'Vous avez du travail ! Consultez le travail à faire pour répondre à la demande du client !', delay: null});
       ctrl.system.goals.push({goal: data.goal, people: data.people, addedOn: ctrl.system._.timer.timestamp, deadline: ctrl.system._.timer.timestamp + (data.goal.deadline * 3600)});
-      console.log(ctrl.system.goals);
     }
+    ctrl.system.clients.push(client);
   }
 
   function newClient() {
@@ -353,6 +362,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     if (save !== undefined && save !== null) {
       ctrl.system.queue = save.queue;
       ctrl.system.stock = save.stock;
+      ctrl.system.clients = save.clients;
       ctrl.system.bank = save.bank;
       ctrl.system.goals = save.goals;
       ctrl.system._.weather = save._.weather;

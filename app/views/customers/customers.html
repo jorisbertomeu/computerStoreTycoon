@@ -1,3 +1,12 @@
 <div class="col-lg-12">
-	Clients
+	<div class="col-lg-4" ng-repeat="client in system.clients">
+		<div class="well">
+			<div class="text-center">
+				<img width="64px" class="img-circle" src="{{client.people.photo}}"><br>
+        		{{system._.formatName(client.people.name)}}
+			</div><br>
+        	<span class="col-lg-6"><button class="btn btn-success btn-block"><i class="fa fa-phone"></i> Appeler</button></span>
+        	<span class="col-lg-6"><button class="btn btn-primary btn-block"><i class="fa fa-envelope"></i> E-mail</button></span><br><br>
+		</div>
+	</div>
 </div>
