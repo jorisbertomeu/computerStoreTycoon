@@ -41,7 +41,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
         fastForward: 50
       }
     }
-  }
+  };
 
   ctrl.system = {
     queue: [],
@@ -123,13 +123,14 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   $rootScope.$on("getClients", function(event, data) {
     $rootScope.$emit("clients", ctrl.system.clients);
+  });
 
   $rootScope.$on("setMoney", function(event, data) {
     ctrl.system.bank.solde = parseInt(data);
     Notification.success({message: "Nouveau solde bancaire : €" + data, delay: null});
   });
 
-   $rootScope.$on("getTimestamp", function(event, data) {
+  $rootScope.$on("getTimestamp", function(event, data) {
     $rootScope.$emit("timestamp", ctrl.system._.timer.timestamp);
   });
 

@@ -16,19 +16,25 @@ angular.module('CST.customers', ['ngRoute'])
 		clients: [],
 		_: {
 			formatName: formatName,
-			receiveClients: null
+			receiveClients: null,
+			callClient: callClient,
+			phoneIsActive: false
 		}
 	};
 
 	start();
 
 	function formatName(name) {
-		for (var i = 0; name.length; i++) {
+		for (var i = 0; i < name.length; i++) {
 			if (i === 0) {
-				name.replaceAt(i, name[i].toUpperCase());
+				name = name.charAt(i).toUpperCase() + name.substring(1).toLowerCase();
 			}
 		}
 		return name;
+	}
+
+	function callClient(client) {
+		ctrl.system._.phoneIsActive = true;
 	}
 
 	function start() {

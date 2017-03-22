@@ -5,8 +5,26 @@
 				<img width="64px" class="img-circle" src="{{client.people.photo}}"><br>
         		{{system._.formatName(client.people.name)}}
 			</div><br>
-        	<span class="col-lg-6"><button class="btn btn-success btn-block"><i class="fa fa-phone"></i> Appeler</button></span>
+        	<span class="col-lg-6"><button ng-click="system._.callClient(client)" class="btn btn-success btn-block"><i class="fa fa-phone"></i> Appeler</button></span>
         	<span class="col-lg-6"><button class="btn btn-primary btn-block"><i class="fa fa-envelope"></i> E-mail</button></span><br><br>
 		</div>
 	</div>
 </div>
+<!-- ng-show="system._.phoneIsActive" -->
+<div ng-include src="'views/phone/phone.html'"></div>
+
+<!-- <div class="backdrop">
+	<div style="margin-top: 5%; opacity: .85" class="col-lg-2 col-lg-offset-5" ng-controller="phoneCtrl">
+		<div class="phoneBase">
+			<div class="phoneHp">
+
+			</div>
+			<div class="phoneScreen">
+
+			</div>
+			<div class="phoneButton">
+				<button ng-click="homeButtonPressed()" class="btn btn-default btn-circle btn-lg">O</button>
+			</div>
+		</div>
+	</div>
+</div> -->
