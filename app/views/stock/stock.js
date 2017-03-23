@@ -56,12 +56,13 @@ angular.module('CST.stock', ['ngRoute'])
 
 	function showInfo(cat, header) {
 		console.log('Cat = ' + cat + ' header = ' + header);
-		ctrl.system.view.info.title = translateCategoryByNo(cat);
+		ctrl.system.view.info.title = translateCategoryByNo(cat-1);
 		$("#infoModal").modal();
 	}
 
 	function translateCategoryByNo(no) {
-		return translateCategory(ctrl.system._.categoryList[no - 1]);
+		console.log(no);
+		return translateCategory(ctrl.system._.categoryList[no-1]);
 	}
 
 	function translateCategory(word) {
@@ -83,6 +84,9 @@ angular.module('CST.stock', ['ngRoute'])
 		});
 		ctrl.$on("$destroy", ctrl.system._.receiveStock);
 		$rootScope.$emit("getStock", {});
+		FileLoader.getFile('./res/json/category_translate.json').success(function(data) {
+			ctrl.system._.categoryTranslate = data;
+		});
 
 		/* Get components data to populate Shop */
 		$.each(ctrl.system._.categoryList, function(i, elem) {
@@ -93,6 +97,7 @@ angular.module('CST.stock', ['ngRoute'])
 				ctrl.system.view.headers = Object.defineProperty(ctrl.system.view.headers, ctrl.system._.categoryList[i], {value: data, writable: true});
 			});
 		});
+
 	}
 
 	function showByCat(type) {
