@@ -26,9 +26,17 @@ angular.module('CST.stock', ['ngRoute'])
 				getData: getData,
 				displayField: displayField,
 				buy: buy
+			},
+			info: {
+				title: 'titi'
 			}
 		},
 		_: {
+			categoryList: ['processor', 'memory', 'disk', 'motherboard', 'alim', 'boxe', 'lecteur', 'graphic'],
+			uglifyHeader: uglifyHeader,
+			translateCategoryByNo: translateCategoryByNo,
+			categoryTranslate: [],
+			showInfo: showInfo,
 			showByCat: showByCat,
 			showInfoButton: showInfoButton,
 			receiveStock: null,
@@ -46,6 +54,28 @@ angular.module('CST.stock', ['ngRoute'])
 
 	start();
 
+	function showInfo(cat, header) {
+		console.log('Cat = ' + cat + ' header = ' + header);
+		ctrl.system.view.info.title = translateCategoryByNo(cat);
+		$("#infoModal").modal();
+	}
+
+	function translateCategoryByNo(no) {
+		return translateCategory(ctrl.system._.categoryList[no - 1]);
+	}
+
+	function translateCategory(word) {
+		var replaceBy = "";
+
+		for (var i = 0; i < ctrl.system._.categoryTranslate.length; i++) {
+			if (ctrl.system._.categoryTranslate[i].category === word) {
+				replaceBy = ctrl.system._.categoryTranslate[i].translate;
+				break;
+			}
+		}
+		return replaceBy;
+	}
+
 	function start() {
 		ctrl.system._.receiveStock = $rootScope.$on('stock', function(event, data) {
 			console.log(data);
@@ -53,55 +83,15 @@ angular.module('CST.stock', ['ngRoute'])
 		});
 		ctrl.$on("$destroy", ctrl.system._.receiveStock);
 		$rootScope.$emit("getStock", {});
+
 		/* Get components data to populate Shop */
-		FileLoader.getFile('./res/json/processors.json').success(function(data) {
-			ctrl.system.view.data.processors = data;
-		});
-		FileLoader.getFile('./res/json/memory.json').success(function(data) {
-			ctrl.system.view.data.memory = data;
-		});
-		FileLoader.getFile('./res/json/disks.json').success(function(data) {
-			ctrl.system.view.data.disks = data;
-		});
-		FileLoader.getFile('./res/json/motherboards.json').success(function(data) {
-			ctrl.system.view.data.motherboards = data;
-		});
-		FileLoader.getFile('./res/json/alimentation.json').success(function(data) {
-			ctrl.system.view.data.alimentation = data;
-		});
-		FileLoader.getFile('./res/json/boxes.json').success(function(data) {
-			ctrl.system.view.data.boxes = data;
-		});
-		FileLoader.getFile('./res/json/lecteurs.json').success(function(data) {
-			ctrl.system.view.data.lecteurs = data;
-		});
-		FileLoader.getFile('./res/json/graphic.json').success(function(data) {
-			ctrl.system.view.data.graphic = data;
-		});
-		/* Get header's components */
-		FileLoader.getFile('./res/json/processors_header.json').success(function(data) {
-			ctrl.system.view.headers.processors = data;
-		});
-		FileLoader.getFile('./res/json/memory_header.json').success(function(data) {
-			ctrl.system.view.headers.memory = data;
-		});
-		FileLoader.getFile('./res/json/disks_header.json').success(function(data) {
-			ctrl.system.view.headers.disks = data;
-		});
-		FileLoader.getFile('./res/json/motherboards_header.json').success(function(data) {
-			ctrl.system.view.headers.motherboards = data;
-		});
-		FileLoader.getFile('./res/json/alimentation_header.json').success(function(data) {
-			ctrl.system.view.headers.alimentation = data;
-		});
-		FileLoader.getFile('./res/json/boxes_header.json').success(function(data) {
-			ctrl.system.view.headers.boxes = data;
-		});
-		FileLoader.getFile('./res/json/lecteurs_header.json').success(function(data) {
-			ctrl.system.view.headers.lecteurs = data;
-		});
-		FileLoader.getFile('./res/json/graphic_header.json').success(function(data) {
-			ctrl.system.view.headers.graphic = data;
+		$.each(ctrl.system._.categoryList, function(i, elem) {
+			FileLoader.getFile('./res/json/' + ctrl.system._.categoryList[i] + '.json', i).success(function(data) {
+				ctrl.system.view.data = Object.defineProperty(ctrl.system.view.data, ctrl.system._.categoryList[i], {value: data, writable: true});
+			});
+			FileLoader.getFile('./res/json/' + ctrl.system._.categoryList[i] + '_header.json').success(function(data) {
+				ctrl.system.view.headers = Object.defineProperty(ctrl.system.view.headers, ctrl.system._.categoryList[i], {value: data, writable: true});
+			});
 		});
 	}
 
@@ -127,43 +117,11 @@ angular.module('CST.stock', ['ngRoute'])
 	}
 
 	function getHeaders(type) {
-		if (type === 1) { // Processeurs
-			return ctrl.system.view.headers.processors;
-		} else if (type === 2) { // Mémoire
-			return ctrl.system.view.headers.memory;
-		} else if (type === 3) { // Disks
-			return ctrl.system.view.headers.disks;
-		} else if (type === 4) { // MB
-			return ctrl.system.view.headers.motherboards;
-		} else if (type === 5) { // Alim
-			return ctrl.system.view.headers.alimentation;
-		}  else if (type === 6) { // Boitiers
-			return ctrl.system.view.headers.boxes;
-		} else if (type === 7) { // Lecteurs
-			return ctrl.system.view.headers.lecteurs;
-		} else if (type === 8) { // graphic
-			return ctrl.system.view.headers.graphic;
-		}
+		return ctrl.system.view.headers[ctrl.system._.categoryList[type - 1]];
 	}
 
 	function getData(type) {
-		if (type === 1) { // Processeurs
-			return ctrl.system.view.data.processors;
-		} else if (type === 2) { // Mémoire
-			return ctrl.system.view.data.memory;
-		} else if (type === 3) { // Mémoire
-			return ctrl.system.view.data.disks;
-		} else if (type === 4) { // MB
-			return ctrl.system.view.data.motherboards;
-		} else if (type === 5) { // Alim
-			return ctrl.system.view.data.alimentation;
-		} else if (type === 6) { // Boitiers
-			return ctrl.system.view.data.boxes;
-		} else if (type === 7) { // Lecteurs
-			return ctrl.system.view.data.lecteurs;
-		} else if (type === 8) { // graphic
-			return ctrl.system.view.data.graphic;
-		}
+		return ctrl.system.view.data[ctrl.system._.categoryList[type - 1]];
 	}
 
 	function displayField(field, type, header) {

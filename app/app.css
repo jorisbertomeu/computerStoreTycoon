@@ -44,6 +44,41 @@
     height: 7%;
 }
 
+.phoneHome {
+    height: 98%;
+}
+
+.fakeLink {
+    cursor: pointer;
+    color: #3498db;
+}
+
+.phoneAppMessageHeader {
+    height: 6%;
+    border-bottom: 1px solid black;
+}
+
+.phoneApp {
+    height: 102.5%;
+    margin-top: -18px;
+    padding-top: 25px;
+    margin-right: -5px;
+    margin-left: -5px;
+    background-color: white;
+    color: black;
+}
+
+.phoneAppMessageList {
+    width: 100%;
+    border-bottom: 1px solid black;
+    height: 12%;
+    padding: 2px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
 .phoneScreen {
     height: 86%;
     background-image: url('http://www.designbolts.com/wp-content/uploads/2015/07/low-poly-iphone-6-wallpaper.jpg');

@@ -4,14 +4,31 @@ angular.module('CST')
 
 .controller('phoneCtrl', function($scope) {
   var ctrl = $scope;
+  var appList = [
+  	'home',
+  	'messages',
+  	'amazonne'
+  ];
 
   ctrl.views = {
-  	home: true
+  	home: true,
+  	messages: false,
+  	amazonne: false
   };
-  ctrl.homeButtonPressed = homeButtonPressed;
+  ctrl.system = {
+  	_: {
+  		currentApp: 0
+  	},
+  	openApp: openApp
+  };
 
-  function homeButtonPressed() {
-    console.log('Home button pressed bro !');
-    ctrl.views.home = true;
+  function openApp(no) {
+  	ctrl.system._.currentApp = no;
+  	for (var i = 0; i < appList.length; i++) {
+  		if (i !== no)
+  			ctrl.views[appList[i]] = false;
+  		else
+  			ctrl.views[appList[i]] = true;
+  	}
   }
 });

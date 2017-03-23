@@ -5,26 +5,75 @@
 
 			</div>
 			<div class="phoneScreen">
-				<div class="phoneStatusBar">
+				<div class="phoneStatusBar" ng-style="{'color': (system._.currentApp===0) ? 'white': 'black'}">
 					<div class="col-md-5" style="padding: 5px !important;"><img src="http://v1000.tv/docs/images/WifiBar.png" style="width: 15%"> Telecom</div>
 					<div class="col-md-2 text-center" style="padding: 5px !important;">15:49</div>
 					<div class="col-md-5 pull-right" style="padding: 5px !important;"><span class="pull-right">100%</span></div>
 				</div>
-				<div ng-show="views.home" style="font-size: 10px;">
-					<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.softwarert.com/wp-content/uploads/iphone-phone-call-icon.png"> Téléphone</div>
-					<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_calendar.png"> Calendrier</div>
-					<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="https://tripletsisters.files.wordpress.com/2013/11/ios-7-photos-icon-pn1.png?w=514&h=514"> Photos</div>
-					<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://icons.iconarchive.com/icons/iynque/ios7-style/1024/Camera-icon.png"> Caméra</div>
+				<div ng-show="views.home" style="font-size: 10px;" class="phoneHome">
+					<div class="col-md-3 text-center clickable" ng-click="system.openApp(1)" style="padding: 5px;"><img class="forcedSizeImage" src="http://fr.fordesigner.com/imguploads/Image/cjbc/zcool/png20080526/1211769208.png"> Messages</div>
+					<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://rperezvalero.com/img/amazon-iphone.png"> Amazonne</div>
+					<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="https://tripletsisters.files.wordpress.com/2013/11/ios-7-photos-icon-pn1.png?w=514&h=514"> Photos</div>
+					<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://icons.iconarchive.com/icons/iynque/ios7-style/1024/Camera-icon.png"> Caméra</div>
+					<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://media.idownloadblog.com/wp-content/uploads/2016/03/iAd-icon-medium.png"> iAd</div>
 					<div class="bottomBarHomeScreen">
-						<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.softwarert.com/wp-content/uploads/iphone-phone-call-icon.png"> Téléphone</div>
-						<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_calendar.png"> Calendrier</div>
-						<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_calendar.png"> Calendrier</div>
-						<div class="col-md-3 text-center" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_calendar.png"> Calendrier</div>
+						<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.softwarert.com/wp-content/uploads/iphone-phone-call-icon.png"> Téléphone</div>
+						<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.soutientechno.com/wp-content/uploads/2016/07/Other-Mail-icon.png"> Mails</div>
+						<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.sync-iphone.com/wp-content/uploads/2010/09/syncing-iphone-notes.png"> Notes</div>
+						<div class="col-md-3 text-center clickable" ng-click="system.openApp(2)" style="padding: 5px;"><img class="forcedSizeImage" src="http://www.nitrodesign.com/designforlife/wp-content/uploads/2013/06/ic_calendar.png"> Calendrier</div>
 					</div>
+				</div>
+				<div ng-show="views.messages" style="font-size: 10px; border-top: 1px solid black;" class="phoneApp">
+					<div class="phoneAppMessageHeader">
+						<div class="col-md-2 fakeLink">Modifier</div>
+						<div class="col-md-8 text-center"><b>Messages (8)</b></div>
+						<div class="col-md-2 float-right fakeLink"><i class="fa fa-edit"></i></div>
+					</div>
+					<div class="phoneAppMessageList">
+						<div class="col-md-2" style="padding: 6px;"><img width="100%" class="img-circle" src="https://randomuser.me/api/portraits/women/82.jpg"></div>
+						<div class="col-md-10">
+							<b>Tina Watson</b><br>
+							Bonjour, j'aurai souhaité savoir si mon ordinateur ...
+						</div>
+					</div>
+					<div class="phoneAppMessageList">
+						<div class="col-md-2" style="padding: 6px;"><img width="100%" class="img-circle" src="https://randomuser.me/api/portraits/women/82.jpg"></div>
+						<div class="col-md-10">
+							<b>Tina Watson</b><br>
+							Bonjour, j'aurai souhaité savoir si mon ordinateur ...
+						</div>
+					</div>
+					<div class="phoneAppMessageList">
+						<div class="col-md-2" style="padding: 6px;"><img width="100%" class="img-circle" src="https://randomuser.me/api/portraits/women/82.jpg"></div>
+						<div class="col-md-10">
+							<b>Tina Watson</b><br>
+							Bonjour, j'aurai souhaité savoir si mon ordinateur ...
+						</div>
+					</div>
+					<div class="phoneAppMessageList">
+						<div class="col-md-2" style="padding: 6px;"><img width="100%" class="img-circle" src="https://randomuser.me/api/portraits/women/82.jpg"></div>
+						<div class="col-md-10">
+							<b>Tina Watson</b><br>
+							Bonjour, j'aurai souhaité savoir si mon ordinateur ...
+						</div>
+					</div>
+					<div class="phoneAppMessageList">
+						<div class="col-md-2" style="padding: 6px;"><img width="100%" class="img-circle" src="https://randomuser.me/api/portraits/women/82.jpg"></div>
+						<div class="col-md-10">
+							<b>Tina Watson</b><br>
+							Bonjour, j'aurai souhaité savoir si mon ordinateur ...
+						</div>
+					</div>
+			</div>
+			<div ng-show="views.amazonne" style="font-size: 10px; border-top: 1px solid black;" class="phoneApp">
+				<div class="col-md-12 text-center"><br><br>
+					<img src="https://maxcdn.icons8.com/Android_L/PNG/512/Transport/under_construction-512.png" width="50%"><br><br>
+					Cette application est actuellement en construction. Veuillez rééssayer plus tard ..<br>
+					<i class="fa fa-cog fa-spin fa-2x"></i>
 				</div>
 			</div>
 			<div class="phoneButton">
-				<button ng-click="homeButtonPressed()" class="btn btn-default btn-circle btn-lg">O</button>
+				<button ng-click="system.openApp(0)" class="btn btn-default btn-circle btn-lg" style="color: white; background-color: #222223; border-color: #222223;">O</button>
 			</div>
 		</div>
 	</div>

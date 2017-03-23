@@ -1,24 +1,24 @@
 <p class="karma">karma_stock</p>
 <div class="col-lg-12">
-	<div class="col-lg-12">
+	<div class="col-lg-12" ng-repeat="category in system._.categoryList">
 		<div class="panel panel-default">
-		  	<div class="panel-heading">Processeurs <button data-toggle="modal" ng-click="system._.commandeType=1" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
+		  	<div class="panel-heading">{{system._.translateCategoryByNo($index + 1)}} <button data-toggle="modal" ng-click="system._.commandeType = ($index + 1)" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
 		  	<div style="max-height:300px; overflow-y: auto">
 			  	<table class="table table-striped">
 				    <thead>
 				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(1)" ng-if="$index < (system.view.modal.getHeaders(1).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+				            <th ng-repeat="header in system.view.modal.getHeaders($index+1)" ng-if="$index < (system.view.modal.getHeaders($parent.$index+1).length - 5)">{{header}} <a ng-click="system._.showInfo($parent.$index, header)" class="fakeLink" ng-show="system._.showInfoButton(header)"><i class="fa fa-question"></i></a></th>
 				            <th>Quantité</th>
 				        </tr>
 				    </thead>
 				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('processor')">
+				       <tr ng-repeat="item in system._.showByCat(system._.categoryList[$index])">
 				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(1)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(1)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(1)[2]).class}}">{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(1)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(1)[3]).class}}">{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(1)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(1)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(1)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(1)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(1)[5]).value}}</td>
+				            <td ng-repeat="header in system.view.modal.getHeaders($parent.$index+1)"
+				            	ng-if="$index < (system.view.modal.getHeaders($parent.$parent.$index+1).length - 5) && $index !== 0"
+				            	class="{{system.view.modal.displayField(item.specs[system._.uglifyHeader(header)], null, header).class}}">
+				            		{{system.view.modal.displayField(item.specs[system._.uglifyHeader(header)], null, header).value}}
+				            </td>
 				            <td>x{{item.quantity}}</td>
 				        </tr>
 				    </tbody>
@@ -27,194 +27,15 @@
 		</div>
 	</div>
 
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Mémoire <button data-toggle="modal" ng-click="system._.commandeType=2" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(2)" ng-if="$index < (system.view.modal.getHeaders(2).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('memory')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(2)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(2)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(2)[2]).class}}">{{system.view.modal.displayField(item.specs.frequence, null, system.view.modal.getHeaders(2)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(2)[3]).class}}">{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(2)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(2)[4]).class}}">{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(2)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(2)[5]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(2)[5]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(2)[6]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(2)[6]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+	<div class="modal-dialog" style="width: 50%" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="infoModalLabel">Info - {{system.view.info.title}}</h4>
 			</div>
-		</div>
-	</div>
-
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Disques dur <button data-toggle="modal" ng-click="system._.commandeType=3" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(3)" ng-if="$index < (system.view.modal.getHeaders(3).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('disk')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(3)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(3)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.ssd, null, system.view.modal.getHeaders(3)[2]).class}}">{{system.view.modal.displayField(item.specs.ssd, null, system.view.modal.getHeaders(3)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(3)[3]).class}}">{{system.view.modal.displayField(item.specs.capacite, null, system.view.modal.getHeaders(3)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(3)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(3)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(3)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(3)[5]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Cartes mère <button data-toggle="modal" ng-click="system._.commandeType=4" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(4)" ng-if="$index < (system.view.modal.getHeaders(4).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('motherboard')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(4)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(4)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(4)[2]).class}}">{{system.view.modal.displayField(item.specs.socket, null, system.view.modal.getHeaders(4)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.format_dimm, null, system.view.modal.getHeaders(4)[3]).class}}">{{system.view.modal.displayField(item.specs.format_dimm, null, system.view.modal.getHeaders(4)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.frequence_memoire, null, system.view.modal.getHeaders(4)[4]).class}}">{{system.view.modal.displayField(item.specs.frequence_memoire, null, system.view.modal.getHeaders(4)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.ports_sata, null, system.view.modal.getHeaders(4)[5]).class}}">{{system.view.modal.displayField(item.specs.ports_sata, null, system.view.modal.getHeaders(4)[5]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(4)[6]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(4)[6]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(4)[7]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(4)[7]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Blocs d'alimentation <button data-toggle="modal" ng-click="system._.commandeType=5" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(5)" ng-if="$index < (system.view.modal.getHeaders(5).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('alim')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(5)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(5)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(5)[2]).class}}">{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(5)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.consommation, null, system.view.modal.getHeaders(5)[3]).class}}">{{system.view.modal.displayField(item.specs.consommation, null, system.view.modal.getHeaders(5)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(5)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(5)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(5)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(5)[5]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Boitiers <button data-toggle="modal" ng-click="system._.commandeType=6" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(6)" ng-if="$index < (system.view.modal.getHeaders(6).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('boxe')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(6)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(6)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(6)[2]).class}}">{{system.view.modal.displayField(item.specs.format, null, system.view.modal.getHeaders(6)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.couleur, null, system.view.modal.getHeaders(6)[3]).class}}">{{system.view.modal.displayField(item.specs.couleur, null, system.view.modal.getHeaders(6)[3]).value}}</td>
-				             <td class="{{system.view.modal.displayField(item.specs.nb_ventilateurs, null, system.view.modal.getHeaders(6)[4]).class}}">{{system.view.modal.displayField(item.specs.nb_ventilateurs, null, system.view.modal.getHeaders(6)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(6)[5]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(6)[5]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(6)[6]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(6)[6]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Lecteurs DVD/BD <button data-toggle="modal" ng-click="system._.commandeType=7" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(7)" ng-if="$index < (system.view.modal.getHeaders(7).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('lecteur')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(7)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(7)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.type, null, system.view.modal.getHeaders(7)[2]).class}}">{{system.view.modal.displayField(item.specs.type, null, system.view.modal.getHeaders(7)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(7)[3]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(7)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(7)[4]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(7)[4]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-		  	<div class="panel-heading">Cartes graphique <button data-toggle="modal" ng-click="system._.commandeType=8" data-target="#stockModal" class="btn btn-sm btn-success pull-right"><i class="fa fa-shopping-cart"></i> Commander</button><div class="clearfix"></div></div>
-		  	<div style="max-height:300px; overflow-y: auto">
-			  	<table class="table table-striped">
-				    <thead>
-				       <tr>
-				            <th ng-repeat="header in system.view.modal.getHeaders(8)" ng-if="$index < (system.view.modal.getHeaders(8).length - 5)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
-				            <th>Quantité</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat('graphic')">
-				            <th scope="row">{{$index + 1}}</th>
-				            <td class="{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(8)[1]).class}}">{{system.view.modal.displayField(item.specs.modele, null, system.view.modal.getHeaders(8)[1]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.memoire, null, system.view.modal.getHeaders(8)[2]).class}}">{{system.view.modal.displayField(item.specs.memoire, null, system.view.modal.getHeaders(8)[2]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.nb_sortie_video, null, system.view.modal.getHeaders(8)[3]).class}}">{{system.view.modal.displayField(item.specs.nb_sortie_video, null, system.view.modal.getHeaders(8)[3]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(8)[4]).class}}">{{system.view.modal.displayField(item.specs.indice_perf, null, system.view.modal.getHeaders(8)[4]).value}}</td>
-				            <td class="{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(8)[5]).class}}">{{system.view.modal.displayField(item.specs.pop, null, system.view.modal.getHeaders(8)[5]).value}}</td>
-				            <td>x{{item.quantity}}</td>
-				        </tr>
-				    </tbody>
-				</table>
+			<div class="modal-body">
+				hey
 			</div>
 		</div>
 	</div>
@@ -225,16 +46,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="stockModalLabel">Commandes - 
-					<span ng-show="system._.commandeType===1">Processeurs</span>
-					<span ng-show="system._.commandeType===2">Mémoire</span>
-					<span ng-show="system._.commandeType===3">Disques dur</span>
-					<span ng-show="system._.commandeType===4">Cartes mère</span>
-					<span ng-show="system._.commandeType===5">Blocs d'alimentation</span>
-					<span ng-show="system._.commandeType===6">Boitiers</span>
-					<span ng-show="system._.commandeType===7">Lecteurs DVD/BD</span>
-					<span ng-show="system._.commandeType===8">Cartes graphiques</span>
-				</h4>
+				<h4 class="modal-title" id="stockModalLabel">Commandes - {{system._.translateCategoryByNo(system._.commandeType)}}</h4>
 			</div>
 			<div class="modal-body">
 				<ul class="nav nav-tabs">
@@ -280,7 +92,7 @@
 					        	<table class="table table-striped">
 								    <thead>
 								       <tr>
-								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}} <button ng-show="system._.showInfoButton(header)" type="button" class="btn btn-info btn-xs btn-circle"><i class="fa fa-info"></i></button></th>
+								            <th ng-repeat="header in system.view.modal.getHeaders(system._.commandeType)">{{header}} <a ng-show="system._.showInfoButton(header)"><i class="fa fa-question"></i></a></th>
 								        </tr>
 								    </thead>
 								    <tbody>
