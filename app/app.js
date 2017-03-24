@@ -48,7 +48,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   ctrl.system = {
     audio: {
-      currentFile: '1.mp3',
+      currentFile: 1,
       play: false,
       volume: 0.5
     },
@@ -414,6 +414,11 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     }
     $window.document.getElementById('audioPlayer').play();
     ctrl.system.audio.play = true;
+    $("#audioPlayer").on("ended", function() {
+      ctrl.system.audio.currentFile += 1;
+      $('#audioPlayer').attr('src', "res/audio/ambient/" + ctrl.system.audio.currentFile + ".mp3");
+      $window.document.getElementById('audioPlayer').play();
+    });
   }
 
   function executeQueue(ts) {
