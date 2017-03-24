@@ -40,10 +40,18 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
         forward: 500,
         fastForward: 50
       }
+    },
+    luckTree: {
+      newClient: 25
     }
   };
 
   ctrl.system = {
+    audio: {
+      currentFile: '1.mp3',
+      play: false,
+      volume: 0.5
+    },
     queue: [],
     stock: [],
     clients: [],
@@ -123,6 +131,24 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   $rootScope.$on("getStock", function(event, data) {
     $rootScope.$emit("stock", ctrl.system.stock);
+  });
+
+  $rootScope.$on("audioCommand", function(event, data) {
+    console.log(data);
+    if (data.command === 0) { // pause
+      $window.document.getElementById('audioPlayer').pause();
+      ctrl.system.audio.play = false;
+    } else if (data.command === 1) { // Play
+      $window.document.getElementById('audioPlayer').play();
+      ctrl.system.audio.play = true;
+    } else if (data.command === 2) { // Volume
+      $window.document.getElementById('audioPlayer').volume = data.value;
+      ctrl.system.audio.volume = data.value;
+    }
+  });
+
+  $rootScope.$on("getAudio", function(event, data) {
+    $rootScope.$emit("audio", ctrl.system.audio);
   });
 
   $rootScope.$on("getClients", function(event, data) {
@@ -270,7 +296,6 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     for (var i = 0; i < dialog.steps[0].me.length; i++) {
         ctrl.system._.dialoging.response.push({libelle: dialog.steps[0].me[i], idx: i, cb: dialog.steps[0].cb});
     }
-    playPressed();
   }
 
   function setRandomPeopleToDialog(dialog) {
@@ -330,6 +355,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   }
 
   function newClient() {
+    pausePressed();
     loadDialog('./res/json/dialogs/1.json', true, dialogFinished).then(function(dialog) {
       launchDialog(dialog);
     });
@@ -386,6 +412,8 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       ctrl.system._.timer.startTime = ctrl.system._.timer.timestamp;
       console.log('Save not found, default loaded');
     }
+    $window.document.getElementById('audioPlayer').play();
+    ctrl.system.audio.play = true;
   }
 
   function executeQueue(ts) {
@@ -409,12 +437,27 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     }
   }
 
+  function possibility(luck) { // 1 chance sur {luck} de renvoyer true
+    var rdm = random(0, 100);
+
+    if (rdm < (100 / luck)) {
+      return true;
+    }
+    return false;
+  }
+
+  function maybeNewClient() {
+    if (possibility(ctrl.config.luckTree.newClient)) {
+      newClient();
+    }
+  }
+
   function tickFunction() {
-    console.log('Tick');
     ctrl.system._.timer.timestamp += 60;
 
     ctrl.system._.routines.checkNewDay();
     executeQueue(ctrl.system._.timer.timestamp);
+    maybeNewClient();
     $scope.$evalAsync();
     if (!ctrl.system._.timer.speed.pause) {
       setTimeout(tickFunction, ctrl.system._.timer.interval);
@@ -471,7 +514,6 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   function fastForwardPressed() {
     var oldPauseState = ctrl.system._.timer.speed.pause;
-
     console.log('Fast Forward !');
     ctrl.system._.timer.speed.pause = false;
     ctrl.system._.timer.speed.play = false;

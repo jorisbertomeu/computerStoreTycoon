@@ -6,9 +6,9 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-6" style="text-align: right;">Musique de fond : </div>
-				<div class="col-lg-6" style="text-align: center;"><button class="btn btn-success btn-xs">Activée</button></div><br><br>
+				<div class="col-lg-6" style="text-align: center;"><button ng-click="system._.playPauseAudio()" ng-class="{'btn-success': !system.params.audio.play, 'btn-danger': system.params.audio.play,}" class="btn btn-xs"><span ng-show="!system.params.audio.play">Activer</span><span ng-show="system.params.audio.play">Désactiver</span></button></div><br><br>
 				<div class="col-lg-6" style="text-align: right;">Volume musique de fond : </div>
-				<div class="col-lg-6" style="text-align: center;"><input type="range"  min="0" max="100" /></div><br><br>
+				<div class="col-lg-6" style="text-align: center;"><input type="range"  ng-model="system.params.audio.volumeTmp" min="0" max="100" ng-change="system._.changeVolumeMusic()"/></div><br><br>
 				<div class="col-lg-6" style="text-align: right;">Bruitages : </div>
 				<div class="col-lg-6" style="text-align: center;"><button class="btn btn-success btn-xs">Activée</button></div><br><br>
 				<div class="col-lg-6" style="text-align: right;">Volume bruitages : </div>
