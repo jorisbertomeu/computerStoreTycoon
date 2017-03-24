@@ -61,7 +61,6 @@ angular.module('CST.stock', ['ngRoute'])
 	}
 
 	function translateCategoryByNo(no) {
-		console.log(no);
 		return translateCategory(ctrl.system._.categoryList[no-1]);
 	}
 
