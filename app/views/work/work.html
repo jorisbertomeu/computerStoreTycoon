@@ -284,10 +284,60 @@
 					</div>
 					<button class="btn btn-block btn-info">Installer un OS</button>
 					<hr>
-					<button class="btn btn-block btn-primary">Tester l'ordinateur</button>
+					<button class="btn btn-block btn-primary" data-toggle="modal" ng-click="system._.initTesting()" data-target="#testOrdinateurModal">Tester l'ordinateur</button>
 					<button class="btn btn-block btn-primary">Lancer un benchmarking</button>
 					<hr>
 					<button class="btn btn-block btn-success">Mettre de coté pour le client</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="testOrdinateurModal" tabindex="-1" role="dialog" aria-labelledby="testOrdinateurModalLbl" style="z-index: 999999;">
+	<div class="modal-dialog" style="width: 30%" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="system.building.active=true"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="testOrdinateurModalLbl">Tester l'ordinateur <span><button ng-click="system._.debug(1)" class="btn btn-primary btn-xs"><i class="fa fa-debug"></i> Debug</button></span></h4>
+			</div>
+			<div class="modal-body">
+				<div class="screenTest">
+					<div ng-show="system._.testing.bios" class="screenTestContent" style="background-color: black; color:white;">
+						Phoenix - Award WorkstationBIOS v6.00PC, An Energy Star Ally<br>
+						Copyright (C) 1984-2017, Phoenix Technologies, TLD<br><br>
+						NFORCE4 A ver 4.2K 08/08/2016<br><br>
+						Main Processor : {{system._.getComponent(system.building.workplan.objs, 'processor')[0].specs.modele}}<br>
+						Memory Testing : {{system._.convertFromGo(system._.calculateTotalMemory(), 'Ko')}}<br>
+						CPU0 Memory Information : Single Channel, 64-bit<br><br>
+						RVNN : 5.062.1906/16/09<br>
+						<span ng-repeat="i in system._.getNumber(system._.getComponent(system.building.workplan.objs, 'motherboard')[0].specs.ports_sata) track by $index">SATA Channel {{i + 1}} : {{system._.getSataComponent($index)}}<br></span>
+						<br><br>
+						Press DEL to enter SETUP, F11 to Enter Boot Menu<br>
+						08/08/2016-NF-CK804-6A61FE1EC-00_
+					</div>
+					<div ng-show="system._.testing.osNotFound" class="screenTestContent" style="background-color: black; color:white;">
+						Operating System not found
+					</div>
+					<div ng-show="system._.testing.startupOs" class="screenTestContent text-center" style="background-color: black; color:white;">
+						<img src="https://media.giphy.com/media/QV4J3pmMDUHUk/giphy.gif" height="100%">
+					</div>
+					<div ng-show="system._.testing.osStarted" class="screenTestContent text-center" style="background-color: black; color:white;background-image: url('http://img11.deviantart.net/830d/i/2015/293/1/0/windows_10_curious_blue_wallpaper_768p_by_david_93x-d84bp53.png');background-size: cover;padding: 10px;">
+						<div class="col-lg-6"><button class="btn btn-danger btn-block">Installer antivirus</button></div>
+						<div class="col-lg-6"><button class="btn btn-danger btn-block">Installer navigateur</button></div><br><br>
+						<div class="col-lg-6"><button class="btn btn-danger btn-block">Installer OpenOffice</button></div>
+
+						<div class="col-lg-6"><button class="btn btn-warning btn-block">Tester le son</button></div><br><br>
+						<div class="col-lg-6"><button class="btn btn-warning btn-block">Tester internet</button></div>
+						<div class="col-lg-6"><button class="btn btn-warning btn-block">Tester clavier/souris</button></div><br><br>
+						<div class="col-lg-6"><button class="btn btn-warning btn-block">Tester la mémoire</button></div>
+						<div class="col-lg-6"><button class="btn btn-warning btn-block">Tester le(s) disque(s)</button></div><br><br>
+
+						<div class="col-lg-6"><button class="btn btn-success btn-block">Exécuter un benchmark</button></div>
+						<div class="col-lg-6"><button class="btn btn-success btn-block">Jouer à un jeu PC</button></div><br><br>
+						<div class="col-lg-6"><button class="btn btn-success btn-block">Overclocker</button></div>
+						<div class="col-lg-6"><button class="btn btn-info btn-block">Eteindre</button></div>
+					</div>
 				</div>
 			</div>
 		</div>

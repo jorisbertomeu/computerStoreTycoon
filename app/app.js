@@ -24,7 +24,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
-CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', 'FileLoader', '$route', function($scope, $rootScope, Notification, $filter, $http, $q, FileLoader, $route) {
+CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '$http', '$q', 'FileLoader', '$route', '$location', '$window', function($scope, $rootScope, Notification, $filter, $http, $q, FileLoader, $route, $location, $window) {
   var ctrl = $scope;
 
   ctrl.config = {
@@ -116,6 +116,10 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
         Notification.error({message: 'Votre solde est insuffisant pour dépenser ' + $filter('currency')(data.value, '€') + " pour '" + data.libelle + "'", delay: null});
       }
     });
+
+  $rootScope.$on('$stateChangeSuccess', function (event) {
+      $window.ga('send', 'pageview', $location.path());
+  });
 
   $rootScope.$on("getStock", function(event, data) {
     $rootScope.$emit("stock", ctrl.system.stock);
@@ -363,6 +367,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   function start() {
     console.log('On démarre !');
+    $window.ga('create', 'UA-96095228-1', 'auto');
     /* On charge une sauvegarde si il y en a une dans le localstorage */
     var save = angular.fromJson(window.localStorage['CSTSave']);
     if (save !== undefined && save !== null) {

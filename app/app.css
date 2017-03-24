@@ -1,5 +1,10 @@
 /* app css stylesheet */
 
+@font-face {
+    font-family: "biosFont";
+    src: url('AldotheApache.ttf');
+}
+
 .utilPanel {
 	width: 100%;
     bottom: 21px;
@@ -42,6 +47,24 @@
 
 .phoneHp {
     height: 7%;
+}
+
+.screenTest {
+    background-image: url("https://static.vecteezy.com/system/resources/previews/000/057/265/non_2x/flat-monitor-screen-vector.jpg");
+    background-size: cover;
+    padding-left: 29px;
+    height: 380px;
+    padding-top: 22px;
+}
+
+.biosFont {
+    font-family: "biosFont";
+}
+
+.screenTestContent {
+    height: 277px;
+    width: 486px;
+    overflow-y: auto;
 }
 
 .phoneHome {

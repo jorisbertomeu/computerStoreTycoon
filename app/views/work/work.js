@@ -9,14 +9,21 @@ angular.module('CST.work', ['ngRoute'])
   });
 }])
 
-.controller('workCtrl', function($scope, $rootScope, FileLoader, Notification) {
+.controller('workCtrl', function($scope, $rootScope, FileLoader, Notification, $timeout) {
 	var ctrl = $scope;
 
 	ctrl.system = {
 		stock: [],
 		_: {
+			calculateTotalMemory: calculateTotalMemory,
+			getNumber: getNumber,
+			convertFromGo: convertFromGo,
+			getSataComponent: getSataComponent,
+			debug: debugFn,
+			getComponent: getComponent,
 			categoryTranslate : [],
 			receiveWork: null,
+			initTesting: initTesting,
 			receiveStock: null,
 			displayTime: displayTime,
 			buildComputer: buildComputer,
@@ -24,7 +31,13 @@ angular.module('CST.work', ['ngRoute'])
 			dropSuccessHandler: dropSuccessHandler,
 			onDrop: onDrop,
 			getPrice: getPrice,
-			translateCategory: translateCategory
+			translateCategory: translateCategory,
+			testing: {
+				bios: true,
+				startupOs: false,
+				osNotFound: false,
+				osStarted: false
+			}
 		},
 		view: {
 			tabPane1: {
@@ -40,6 +53,10 @@ angular.module('CST.work', ['ngRoute'])
 		},
 		work: [],
 		building: {
+			sataComponent: [],
+			os: {
+				installed: true
+			},
 			active: false,
 			workplan: {
 				objs: []
@@ -86,7 +103,62 @@ angular.module('CST.work', ['ngRoute'])
 	        typeAchat: data.typeAchat
 	      });
 	    }
-	  }
+	}
+
+	function getSataComponent(idx) {
+		var totalSata = parseInt(getComponent(ctrl.system.building.workplan.objs, 'motherboard')[0].specs.ports_sata, 10);
+		var found = false;
+		var component = "None";
+
+		$.each(getComponent(ctrl.system.building.workplan.objs, 'disk'), function(i, elem) {
+			if (ctrl.system.building.sataComponent.indexOf(elem.specs.modele) < 0 && !found) {
+				found = true;
+				component = elem.specs.modele;
+				ctrl.system.building.sataComponent.push(elem.specs.modele);
+			}
+		});
+		$.each(getComponent(ctrl.system.building.workplan.objs, 'lecteur'), function(i, elem) {
+			if (ctrl.system.building.sataComponent.indexOf(elem.specs.modele) < 0 && !found) {
+				found = true;
+				component = elem.specs.modele;
+				ctrl.system.building.sataComponent.push(elem.specs.modele);
+			}
+		});
+		return (ctrl.system.building.sataComponent.length > idx) ? ctrl.system.building.sataComponent[idx] : 'None';
+	}
+
+	function initTesting() {
+		ctrl.system._.testing.bios = true;
+		ctrl.system._.testing.osStarted = false;
+		ctrl.system._.testing.osNotFound = false;
+		ctrl.system._.testing.startupOs = false;
+
+		ctrl.system.building.active = false;
+		ctrl.system.building.sataComponent = [];
+		setTimeout(function() {
+			if (ctrl.system.building.os.installed) {
+				$timeout(function() { ctrl.system._.testing.startupOs = true });
+				setTimeout(function() {
+					$timeout(function() {
+						ctrl.system._.testing.osStarted = true;
+						ctrl.system._.testing.startupOs = false;
+					});
+				}, 5000);
+			} else
+				$timeout(function() { ctrl.system._.testing.osNotFound = true });
+			$timeout(function() { ctrl.system._.testing.bios = false });
+			console.log(ctrl.system._.testing);
+		}, 3000);
+	}
+
+	function getNumber(nbr) {
+		var arr = [];
+
+		for(var i = 0; i < nbr; i++) {
+			arr.push(i);
+		}
+		return arr;
+	}
 
 	function getNbHardware(from, type) {
 		var nbr = 0;
@@ -98,6 +170,33 @@ angular.module('CST.work', ['ngRoute'])
 			}
 		}
 		return nbr;
+	}
+
+	function calculateTotalMemory() {
+		var total = 0;
+
+		$.each(ctrl.system._.getComponent(ctrl.system.building.workplan.objs, 'memory'), function(i, elem) {
+			total += elem.specs.capacite;
+		});
+		return total;
+	}
+
+	function convertFromGo(value, unit) {
+		var tab = [{unit: 'ko', ratio: 1048576}];
+		var ret = 0;
+
+		$.each(tab, function(i, elem) {
+			if (elem.unit === unit.toLowerCase()) {
+				ret = value * elem.ratio;
+			}
+		});
+		return ret + ' ' + unit;
+	}
+
+	function debugFn(p) {
+		if (p === 1) {
+			console.log(ctrl.system._.getComponent(ctrl.system.building.workplan.objs, 'processor'));
+		}
 	}
 
 	function getComponent(from, type) {

@@ -78,7 +78,7 @@ angular.module('CST.stock', ['ngRoute'])
 
 	function start() {
 		ctrl.system._.receiveStock = $rootScope.$on('stock', function(event, data) {
-			console.log(data);
+			// console.log(data);
 			ctrl.system.stock = data;
 		});
 		ctrl.$on("$destroy", ctrl.system._.receiveStock);
