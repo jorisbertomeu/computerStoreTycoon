@@ -9,7 +9,8 @@
         	<b>Accepté le : </b>{{system._.displayTime(work.addedOn)}}<br>
         	<b>Date du rendu : </b>{{system._.displayTime(work.deadline)}}<br><br>
         	<textarea class="form-control" disabled>{{work.goal.libelle}}</textarea><br>
-        	<button ng-click="system._.buildComputer(work)" class="btn btn-success btn-block"><i class="fa fa-cogs"></i> Faire l'ordinateur</button>
+        	<button ng-show="!work.computer.done" ng-click="system._.buildComputer(work, $index)" class="btn btn-success btn-block"><i class="fa fa-cogs"></i> Assembler l'ordinateur</button>
+        	<button ng-show="work.computer.done" class="btn btn-success btn-block" disabled><i class="fa fa-cogs"></i> Ordinateur déja assemblé</button>
 		</div>
 	</div>
 </div>
@@ -282,12 +283,11 @@
 			 		<div class="buildPanelheader" style="margin-left: 1px; margin-right: 1px;">
 						Action
 					</div>
-					<button class="btn btn-block btn-info" ng-click="system._.installOs()">Installer un OS</button>
+					<button class="btn btn-block btn-info" ng-click="system._.installOs()"><i class="fa fa-windows"></i> Installer un OS</button>
 					<hr>
-					<button class="btn btn-block btn-primary" ng-click="system._.initTesting()">Tester l'ordinateur</button>
-					<button class="btn btn-block btn-primary">Lancer un benchmarking</button>
+					<button class="btn btn-block btn-primary" ng-click="system._.initTesting()"><i class="fa fa-cogs"></i> Tester l'ordinateur</button>
 					<hr>
-					<button class="btn btn-block btn-success">Mettre de coté pour le client</button>
+					<button class="btn btn-block btn-success" ng-click="system._.computerDone()"><i class="fa fa-check"></i> Mettre de coté pour le client</button>
 				</div>
 			</div>
 		</div>

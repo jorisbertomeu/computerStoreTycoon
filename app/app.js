@@ -139,6 +139,10 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     $rootScope.$emit("stock", ctrl.system.stock);
   });
 
+  $rootScope.$on("setStock", function(event, data) {
+    ctrl.system.stock = data;
+  });
+
   $rootScope.$on("audioCommand", function(event, data) {
     console.log(data);
     if (data.command === 0) { // pause
@@ -151,6 +155,11 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       $window.document.getElementById('audioPlayer').volume = data.value;
       ctrl.system.audio.volume = data.value;
     }
+  });
+
+  $rootScope.$on('workComputerDone', function (event, data) {
+    ctrl.system.goals[data.workId].computer.done = true;
+    ctrl.system.goals[data.workId].computer.components = data.components;
   });
 
   $rootScope.$on("getAudio", function(event, data) {
@@ -368,7 +377,16 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     client.goal = data.goal;
     if (data.goal.active) {
       Notification.primary({message: 'Vous avez du travail ! Consultez le travail à faire pour répondre à la demande du client !', delay: null});
-      ctrl.system.goals.push({goal: data.goal, people: data.people, addedOn: ctrl.system._.timer.timestamp, deadline: ctrl.system._.timer.timestamp + (data.goal.deadline * 3600)});
+      ctrl.system.goals.push({
+        computer: {
+          done: false,
+          components: []
+        }, 
+        goal: data.goal, 
+        people: data.people, 
+        addedOn: ctrl.system._.timer.timestamp, 
+        deadline: ctrl.system._.timer.timestamp + (data.goal.deadline * 3600)
+      });
     }
     console.log(ctrl.system.clients);
     ctrl.system.clients.push(client);

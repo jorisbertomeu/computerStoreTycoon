@@ -16,6 +16,7 @@ angular.module('CST.work', ['ngRoute'])
 		stock: [],
 		_: {
 			installOs: installOs,
+			computerDone: computerDone,
 			calculateTotalMemory: calculateTotalMemory,
 			getNumber: getNumber,
 			convertFromGo: convertFromGo,
@@ -55,9 +56,10 @@ angular.module('CST.work', ['ngRoute'])
 		},
 		work: [],
 		building: {
+			workId: -1,
 			sataComponent: [],
 			os: {
-				installed: true
+				installed: false
 			},
 			active: false,
 			workplan: {
@@ -68,9 +70,37 @@ angular.module('CST.work', ['ngRoute'])
 
 	start();
 
-	function buildComputer(work) {
+	function buildComputer(work, idx) {
 		ctrl.system.building.active = true;
 		ctrl.system.building.work = work;
+		ctrl.system.building.workId = idx;
+	}
+
+	function updateStock() {
+		var stock = [];
+
+		for (var i = 0; i < ctrl.system.stock.length; i++) {
+			for (var j = 0; j < ctrl.system.stock[i].objs.length; j++) {
+				stock.push(ctrl.system.stock[i].objs[j]);
+			}
+		}
+		$rootScope.$emit("setStock", stock);
+	}
+
+	function computerDone() {
+		console.log(ctrl.system.stock);
+		Notification.success({message: "L'ordinateur a été mit de côté pour " + ctrl.system.building.work.people.name, delay: null});
+		updateStock();
+		$rootScope.$emit("workComputerDone", {
+			workId: ctrl.system.building.workId,
+			components: ctrl.system.building.workplan.objs
+		});
+		ctrl.system.building.active = false;
+		ctrl.system.building.work = null;
+		ctrl.system.building.sataComponent = [];
+		ctrl.system.building.os.installed = false;
+		ctrl.system.building.workplan.objs = [];
+		ctrl.system.building.workId = -1;
 	}
 
 	function setTabActive(id, elem) {
@@ -108,6 +138,10 @@ angular.module('CST.work', ['ngRoute'])
 	}
 
 	function installOs() {
+		if (!computerIsOk()) {
+			Notification.error({message: "L'ordinateur n'est pas en état de fonctionner, il manque des pièces !", delay: null});
+			return;
+		}
 		$rootScope.$emit("newInProgressTask", {
 			title: "Installation d'un système d'exploitation",
 			time: 0.19, // -> 11mn - Correspond au temps du sample audio de 11 secondes 
@@ -430,6 +464,8 @@ angular.module('CST.work', ['ngRoute'])
 		$rootScope.$emit("getWork", {});
 		ctrl.system._.inProgressTaskReceived = $rootScope.$on('inProgressTaskFinished', function(event, data) {
 			console.log("L'installation de l'OS a terminé bro ;)");
+			ctrl.system.building.os.installed = true;
+			Notification.success({message: "Le système d'exploitation a été installé avec succès !", delay: null});
 		});
 		ctrl.$on("$destroy", ctrl.system._.inProgressTaskReceived);
 		ctrl.system._.receiveStock = $rootScope.$on('stock', function(event, data) {
@@ -447,6 +483,6 @@ angular.module('CST.work', ['ngRoute'])
 	}
 
 	function displayTime(ts) {
-		return moment(moment.unix(ts)).format("DD/MM hh:mm");
+		return moment(moment.unix(ts)).format("DD/MM HH:mm");
 	}
 });
