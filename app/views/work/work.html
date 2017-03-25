@@ -15,7 +15,7 @@
 </div>
 
 <div class="backdrop" ng-show="system.building.active">
-	<div style="margin-top: 20px; opacity: .95" class="col-lg-8 col-lg-offset-2">
+	<div style="margin-top: 20px; opacity: .95" class="col-lg-10 col-lg-offset-1">
 		<span ng-click="system.building.active=false" class="closeBackdrop"><i class="fa fa-times fa-2x"></i></span>
 		<div class="well" style="text-align: center;" ui-on-Drop="system._.onDrop($event, $data, 0)">
 			<ul class="nav nav-tabs" role="tablist">
@@ -29,7 +29,7 @@
                 <li style="cursor: pointer;" role="presentation" ng-click="system._.setTabActive(1, 'graphic')"><a aria-controls="profile" role="tab" data-toggle="tab">Cartes graphiques</a></li>
             </ul>
             <div class="tab-content" syle="height: 150px;">
-                <div role="tabpanel" style="overflow:auto;" class="tab-pane active" ng-show="system.view.tabPane1.processor===true">
+                <div role="tabpanel" style="overflow:auto;height:250px;" class="tab-pane active" ng-show="system.view.tabPane1.processor===true">
                 	<div ng-repeat="processors in system.stock | filter:{type: 'processor'}" class="col-lg-12">
             			<div ng-repeat="processor in processors.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="processor.quantity <= 0"  class="hardwareContainer" drag="processor" style="background-color: rgba(200, 0, 0, .1);">
@@ -55,7 +55,7 @@
 	                	</div>
                 	</div>
                 </div>
-                <div style="overflow:auto;" ng-show="system.view.tabPane1.memory===true">
+                <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.memory===true">
                    <div ng-repeat="memories in system.stock | filter:{type: 'memory'}" class="col-lg-12">
             			<div ng-repeat="memory in memories.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="memory.quantity <= 0" class="hardwareContainer" drag="memory" style="background-color: rgba(200, 0, 0, .1);">
@@ -83,7 +83,7 @@
 	                	</div>
                 	</div>
                 </div>
-                 <div style="overflow:auto;" ng-show="system.view.tabPane1.disk===true">
+                 <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.disk===true">
                    <div ng-repeat="disks in system.stock | filter:{type: 'disk'}" class="col-lg-12">
             			<div ng-repeat="disk in disks.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="disk.quantity <= 0" class="hardwareContainer" drag="disk" style="background-color: rgba(200, 0, 0, .1);">
@@ -109,7 +109,7 @@
 	                	</div>
                 	</div>
                 </div>
-                 <div style="overflow:auto;" ng-show="system.view.tabPane1.motherboard===true">
+                 <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.motherboard===true">
                   	 <div ng-repeat="motherboards in system.stock | filter:{type: 'motherboard'}" class="col-lg-12">
             			<div ng-repeat="motherboard in motherboards.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="motherboard.quantity <= 0" class="hardwareContainer" style="background-color: rgba(200, 0, 0, .1);">
@@ -139,7 +139,7 @@
 	                	</div>
                 	</div>
                 </div>
-                 <div style="overflow:auto;" ng-show="system.view.tabPane1.alim===true">
+                 <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.alim===true">
                     <div ng-repeat="alims in system.stock | filter:{type: 'alim'}" class="col-lg-12">
             			<div ng-repeat="alim in alims.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="alim.quantity <= 0" class="hardwareContainer" style="background-color: rgba(200, 0, 0, .1);">
@@ -165,7 +165,7 @@
 	                	</div>
                 	</div>
                 </div>
-                 <div style="overflow:auto;" ng-show="system.view.tabPane1.boxe===true">
+                 <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.boxe===true">
                     <div ng-repeat="boxes in system.stock | filter:{type: 'boxe'}" class="col-lg-12">
             			<div ng-repeat="boxe in boxes.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="boxe.quantity <= 0" class="hardwareContainer" drag="boxe" style="background-color: rgba(200, 0, 0, .1);">
@@ -193,7 +193,7 @@
 	                	</div>
                 	</div>
                 </div>
-                 <div style="overflow:auto;" ng-show="system.view.tabPane1.lecteur===true">
+                 <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.lecteur===true">
                     <div ng-repeat="lecteurs in system.stock | filter:{type: 'lecteur'}" class="col-lg-12">
             			<div ng-repeat="lecteur in lecteurs.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="lecteur.quantity <= 0" class="hardwareContainer" style="background-color: rgba(200, 0, 0, .1);">
@@ -217,7 +217,7 @@
 	                	</div>
                 	</div>
                 </div>
-                 <div style="overflow:auto;" ng-show="system.view.tabPane1.graphic===true">
+                 <div style="overflow:auto;height:250px;" ng-show="system.view.tabPane1.graphic===true">
                     <div ng-repeat="graphics in system.stock | filter:{type: 'graphic'}" class="col-lg-12">
             			<div ng-repeat="graphic in graphics.objs" style="padding: 10px" class="col-lg-2">
             				<div ng-show="graphic.quantity <= 0" class="hardwareContainer" drag="graphic" style="background-color: rgba(200, 0, 0, .1);">
@@ -282,9 +282,9 @@
 			 		<div class="buildPanelheader" style="margin-left: 1px; margin-right: 1px;">
 						Action
 					</div>
-					<button class="btn btn-block btn-info">Installer un OS</button>
+					<button class="btn btn-block btn-info" ng-click="system._.installOs()">Installer un OS</button>
 					<hr>
-					<button class="btn btn-block btn-primary" data-toggle="modal" ng-click="system._.initTesting()" data-target="#testOrdinateurModal">Tester l'ordinateur</button>
+					<button class="btn btn-block btn-primary" ng-click="system._.initTesting()">Tester l'ordinateur</button>
 					<button class="btn btn-block btn-primary">Lancer un benchmarking</button>
 					<hr>
 					<button class="btn btn-block btn-success">Mettre de coté pour le client</button>
@@ -295,14 +295,14 @@
 </div>
 
 <div class="modal fade" id="testOrdinateurModal" tabindex="-1" role="dialog" aria-labelledby="testOrdinateurModalLbl" style="z-index: 999999;">
-	<div class="modal-dialog" style="width: 30%" role="document">
+	<div class="modal-dialog" style="width: 600px" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="system.building.active=true"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="testOrdinateurModalLbl">Tester l'ordinateur <span><button ng-click="system._.debug(1)" class="btn btn-primary btn-xs"><i class="fa fa-debug"></i> Debug</button></span></h4>
 			</div>
 			<div class="modal-body">
-				<div class="screenTest">
+				<div class="screenTest" style="width:544px;margin-left:14px;">
 					<div ng-show="system._.testing.bios" class="screenTestContent" style="background-color: black; color:white;">
 						Phoenix - Award WorkstationBIOS v6.00PC, An Energy Star Ally<br>
 						Copyright (C) 1984-2017, Phoenix Technologies, TLD<br><br>

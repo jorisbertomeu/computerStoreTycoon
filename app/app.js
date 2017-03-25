@@ -112,6 +112,12 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
   start();
 
+  function playSound(file) {
+    $('#soundPlayer').attr('src', file);
+    $window.document.getElementById('soundPlayer').volume = 0.3;
+    $window.document.getElementById('soundPlayer').play();
+  }
+
   $rootScope.$on("addToStock", function(event, data) {
       if (data.value === 0) {
         return;
@@ -168,6 +174,12 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     $rootScope.$emit("work", ctrl.system.goals);
   });
 
+  $rootScope.$on("newInProgressTask", function(event, data) {
+    if (data.soundFile)
+      playSound(data.soundFile);
+    addEventToQueueWithInProgressTask(data.title, data.time, remoteInProgressTask, data.data);
+  });
+
   function addToStock(data) {
     var found = false;
 
@@ -185,7 +197,13 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
         type: data.obj.type
       });
     }
+    playSound("res/audio/misc/triangle.mp3");
     console.log(ctrl.system.stock);
+  }
+
+  function remoteInProgressTask(data) {
+    $rootScope.$emit("inProgressTaskFinished", data);
+    ctrl.system._.currentTask.active = false;
   }
 
   function receptionFournisseurDone(data) {
@@ -285,6 +303,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   }
 
   function launchDialog(dialog) {
+    playSound("res/audio/misc/new_client.mp3");
     ctrl.system._.dialoging.status = true;
     ctrl.system._.dialoging.people = dialog.people;
     ctrl.system._.dialoging.finished = false;
@@ -351,6 +370,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
       Notification.primary({message: 'Vous avez du travail ! Consultez le travail à faire pour répondre à la demande du client !', delay: null});
       ctrl.system.goals.push({goal: data.goal, people: data.people, addedOn: ctrl.system._.timer.timestamp, deadline: ctrl.system._.timer.timestamp + (data.goal.deadline * 3600)});
     }
+    console.log(ctrl.system.clients);
     ctrl.system.clients.push(client);
   }
 
@@ -377,6 +397,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   }
 
   function receptionFournisseur(data) {
+    playSound("res/audio/misc/klaxon_camion.mp3");
     addEventToQueueWithInProgressTask("Réception d'un colis du fournisseur ...", 0.17, receptionFournisseurDone, data);
     Notification.primary({message: "Le fournisseur vient d'arriver, vous allez réceptionner le colis", delay: null});
   }
@@ -399,7 +420,9 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     if (save !== undefined && save !== null) {
       ctrl.system.queue = save.queue;
       ctrl.system.stock = save.stock;
-      ctrl.system.clients = save.clients;
+      console.log('Save clients -> ' + save.clients);
+      ctrl.system.clients = (save.clients === undefined) ? new Array() : save.clients;
+      console.log(ctrl.system.clients);
       ctrl.system.bank = save.bank;
       ctrl.system.goals = save.goals;
       ctrl.system._.weather = save._.weather;
@@ -462,7 +485,9 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
     ctrl.system._.routines.checkNewDay();
     executeQueue(ctrl.system._.timer.timestamp);
-    maybeNewClient();
+    if (!ctrl.system._.currentTask.active) { // If TimedTask in progress
+      maybeNewClient(); // No new client if timed time in progress ..
+    }
     $scope.$evalAsync();
     if (!ctrl.system._.timer.speed.pause) {
       setTimeout(tickFunction, ctrl.system._.timer.interval);

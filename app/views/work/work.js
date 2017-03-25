@@ -15,6 +15,7 @@ angular.module('CST.work', ['ngRoute'])
 	ctrl.system = {
 		stock: [],
 		_: {
+			installOs: installOs,
 			calculateTotalMemory: calculateTotalMemory,
 			getNumber: getNumber,
 			convertFromGo: convertFromGo,
@@ -23,6 +24,7 @@ angular.module('CST.work', ['ngRoute'])
 			getComponent: getComponent,
 			categoryTranslate : [],
 			receiveWork: null,
+			inProgressTaskReceived: null,
 			initTesting: initTesting,
 			receiveStock: null,
 			displayTime: displayTime,
@@ -105,6 +107,16 @@ angular.module('CST.work', ['ngRoute'])
 	    }
 	}
 
+	function installOs() {
+		$rootScope.$emit("newInProgressTask", {
+			title: "Installation d'un système d'exploitation",
+			time: 0.19, // -> 11mn - Correspond au temps du sample audio de 11 secondes 
+			data: null,
+			soundFile: "res/audio/misc/hard_drive.mp3"
+		});
+		Notification.primary({message: "Installation du système d'exploitation en cours ...", delay: null});
+	}
+
 	function getSataComponent(idx) {
 		var totalSata = parseInt(getComponent(ctrl.system.building.workplan.objs, 'motherboard')[0].specs.ports_sata, 10);
 		var found = false;
@@ -127,7 +139,28 @@ angular.module('CST.work', ['ngRoute'])
 		return (ctrl.system.building.sataComponent.length > idx) ? ctrl.system.building.sataComponent[idx] : 'None';
 	}
 
+	function computerIsOk() {
+		if (getNbHardware(ctrl.system.building.workplan.objs, 'processor') === 0)
+			return false;
+		if (getNbHardware(ctrl.system.building.workplan.objs, 'memory') === 0)
+			return false;
+		if (getNbHardware(ctrl.system.building.workplan.objs, 'disk') === 0)
+			return false;
+		if (getNbHardware(ctrl.system.building.workplan.objs, 'motherboard') === 0)
+			return false;
+		if (getNbHardware(ctrl.system.building.workplan.objs, 'alim') === 0)
+			return false;
+		if (getNbHardware(ctrl.system.building.workplan.objs, 'boxe') === 0)
+			return false;
+		return true;
+	}
+
 	function initTesting() {
+		if (!computerIsOk()) {
+			Notification.error({message: "L'ordinateur ne peut pas démarrer, il manque des pièces essentielles !", delay: null});
+			return;
+		}
+		$('#testOrdinateurModal').modal('show');
 		ctrl.system._.testing.bios = true;
 		ctrl.system._.testing.osStarted = false;
 		ctrl.system._.testing.osNotFound = false;
@@ -395,7 +428,10 @@ angular.module('CST.work', ['ngRoute'])
 		});
 		ctrl.$on("$destroy", ctrl.system._.receiveWork);
 		$rootScope.$emit("getWork", {});
-
+		ctrl.system._.inProgressTaskReceived = $rootScope.$on('inProgressTaskFinished', function(event, data) {
+			console.log("L'installation de l'OS a terminé bro ;)");
+		});
+		ctrl.$on("$destroy", ctrl.system._.inProgressTaskReceived);
 		ctrl.system._.receiveStock = $rootScope.$on('stock', function(event, data) {
 			console.log(data);
 			for (var i = 0; i < data.length; i++) {
