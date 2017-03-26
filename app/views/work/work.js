@@ -93,7 +93,10 @@ angular.module('CST.work', ['ngRoute'])
 		updateStock();
 		$rootScope.$emit("workComputerDone", {
 			workId: ctrl.system.building.workId,
-			components: ctrl.system.building.workplan.objs
+			components: ctrl.system.building.workplan.objs,
+			software: {
+				osInstalled: ctrl.system.building.os.installed
+			}
 		});
 		ctrl.system.building.active = false;
 		ctrl.system.building.work = null;

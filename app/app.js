@@ -160,6 +160,7 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
   $rootScope.$on('workComputerDone', function (event, data) {
     ctrl.system.goals[data.workId].computer.done = true;
     ctrl.system.goals[data.workId].computer.components = data.components;
+    ctrl.system.goals[data.workId].computer.software = data.software;
   });
 
   $rootScope.$on("getAudio", function(event, data) {
@@ -376,20 +377,66 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
     client.people = data.people;
     client.goal = data.goal;
     if (data.goal.active) {
+      var delay = ctrl.system._.timer.timestamp + (data.goal.deadline * 3600);
+
       Notification.primary({message: 'Vous avez du travail ! Consultez le travail à faire pour répondre à la demande du client !', delay: null});
       ctrl.system.goals.push({
         computer: {
           done: false,
-          components: []
+          components: [],
+          software: null
         }, 
         goal: data.goal, 
         people: data.people, 
         addedOn: ctrl.system._.timer.timestamp, 
-        deadline: ctrl.system._.timer.timestamp + (data.goal.deadline * 3600)
+        deadline: delay
       });
+      addEventToQueue(data.goal.deadline, clientComeToGetComputer, ctrl.system.goals.length - 1, false);
     }
     console.log(ctrl.system.clients);
     ctrl.system.clients.push(client);
+  }
+
+  function goalIsOk(goal) {
+    var res = true;
+    var message = "";
+
+    console.log(goal);
+    message += "<span style=\"display: block;\" class=\"text-center\"><img class=\"img-circle\" width=\"64px\" src=\"" + goal.people.photo + "\"></span><br>";
+    message += "<b>Client : </b> " + goal.people.name + "<br>";
+    if (!goal.computer.done) {
+      res = false;
+      message += "<b>Ordinateur assemblé :</b> Non<br>";
+    } else {
+      message += "<b>Ordinateur assemblé :</b> Oui<br>";
+    }
+    if (!goal.computer.software.osInstalled) {
+      res = false;
+      message += "<b>OS installé :</b> Non<br>";
+    } else {
+      message += "<b>OS installé :</b> Oui<br>";
+    }
+
+
+    return {res: res, message: message};
+  }
+
+  function clientComeToGetComputer(goalIdx) {
+    var result = goalIsOk(ctrl.system.goals[goalIdx]);
+
+    if (!result.res) {
+      Notification.error({
+        title: "Récupération de l'ordinateur",
+        message: result.message,
+        delay: null
+      });
+    } else {
+      Notification.success({
+        title: "Récupération de l'ordinateur",
+        message: result.message,
+        delay: null
+      });
+    }
   }
 
   function newClient() {
@@ -503,9 +550,9 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
     ctrl.system._.routines.checkNewDay();
     executeQueue(ctrl.system._.timer.timestamp);
-    if (!ctrl.system._.currentTask.active) { // If TimedTask in progress
-      maybeNewClient(); // No new client if timed time in progress ..
-    }
+    //if (!ctrl.system._.currentTask.active) { // If TimedTask in progress
+    //  maybeNewClient(); // No new client if timed time in progress ..
+    //}
     $scope.$evalAsync();
     if (!ctrl.system._.timer.speed.pause) {
       setTimeout(tickFunction, ctrl.system._.timer.interval);

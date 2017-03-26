@@ -12,7 +12,7 @@
 				        </tr>
 				    </thead>
 				    <tbody>
-				       <tr ng-repeat="item in system._.showByCat(system._.categoryList[$index])">
+				       <tr ng-repeat="item in system._.showByCat(system._.categoryList[$index])" ng-class="{'danger': item.quantity === 0}">
 				            <th scope="row">{{$index + 1}}</th>
 				            <td ng-repeat="header in system.view.modal.getHeaders($parent.$index+1)"
 				            	ng-if="$index < (system.view.modal.getHeaders($parent.$parent.$index+1).length - 5) && $index !== 0"
