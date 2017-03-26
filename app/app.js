@@ -550,9 +550,9 @@ CST.controller('mainCtrl', ['$scope', '$rootScope', 'Notification', '$filter', '
 
     ctrl.system._.routines.checkNewDay();
     executeQueue(ctrl.system._.timer.timestamp);
-    //if (!ctrl.system._.currentTask.active) { // If TimedTask in progress
-    //  maybeNewClient(); // No new client if timed time in progress ..
-    //}
+    if (!ctrl.system._.currentTask.active) { // If TimedTask in progress
+      maybeNewClient(); // No new client if timed time in progress ..
+    }
     $scope.$evalAsync();
     if (!ctrl.system._.timer.speed.pause) {
       setTimeout(tickFunction, ctrl.system._.timer.interval);
